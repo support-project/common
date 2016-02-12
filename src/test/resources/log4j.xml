@@ -24,7 +24,7 @@
 
 	<!-- 特定のログのレベルの指定 -->
 	<category name="org.apache">
-		<level value="INFO" />
+		<level value="WARN" />
 	</category>
 	
 	<!-- 
@@ -54,7 +54,7 @@
 	
 	<!-- Root Logger: Other -->
 	<root>
-		<priority value="TRACE" />
+		<priority value="WARN" />
 		<appender-ref ref="APP_STDOUT" />
 	</root>
 
