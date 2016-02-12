@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<oRmappingToolConfig>
+	<connectionConfig>
+		<driverClass>org.h2.Driver</driverClass>
+		<URL>jdbc:h2:{user.home}/.knowledge/testDB</URL>
+		<user>sa</user>
+		<password></password>
+		<schema>public</schema>
+		<autocommit>false</autocommit>
+		<maxConn>5</maxConn>
+	</connectionConfig>
+	
+	<entityGenConfig>
+		<entityOutDir>/data/project/red/src/common/src/test/</entityOutDir>
+		<entityPackage>org.support.project.ormapping.gen.entity</entityPackage>
+		<entitySuffix>Entity</entitySuffix>
+	</entityGenConfig>
+	
+	
+	<daoGenConfig>
+		<daoOutDir>/data/project/red/src/common/src/test/</daoOutDir>
+		<daoPackage>org.support.project.ormapping.gen.dao</daoPackage>
+		<daoSuffix>Dao</daoSuffix>
+	</daoGenConfig>
+	
+	<initializeConfig>
+		<sqlPaths>/ddl.sql</sqlPaths>
+		<sqlPaths>/init_data.sql</sqlPaths>
+	</initializeConfig>
+	
+</oRmappingToolConfig>
