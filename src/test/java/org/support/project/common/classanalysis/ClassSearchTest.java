@@ -14,7 +14,7 @@ public class ClassSearchTest {
 						+ "*************************************************\n");
 		ClassSearchImpl classSearch = new ClassSearchImpl();
 		try {
-			Class<?>[] classes = classSearch.classSearch("java.lang", false);
+			Class<?>[] classes = classSearch.classSearch("org.support.project.common.bat", false);
 			for (Class<?> class1 : classes) {
 				System.out.println(class1.getName());
 			}
@@ -50,7 +50,7 @@ public class ClassSearchTest {
 				+ "*************************************************\n");
 		ClassSearchImpl classSearch = new ClassSearchImpl();
 		try {
-			Class<?>[] classes = classSearch.classSearch("org.apache.commons.lang", false);
+			Class<?>[] classes = classSearch.classSearch("net.arnx.jsonic.io", false);
 			for (Class<?> class1 : classes) {
 				System.out.println(class1.getName());
 			}
