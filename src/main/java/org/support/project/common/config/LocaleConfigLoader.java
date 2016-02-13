@@ -28,7 +28,9 @@ public class LocaleConfigLoader {
 		StringBuffer path = new StringBuffer();
 		path.append(configDir);
 		path.append(configName);
-		path.append(locale.toString());
+		if (locale != null) {
+			path.append(locale.toString());
+		}
 		if (configPathMap.containsKey(path.toString())) {
 			if (LOG.isTraceEnabled()) {
 				LOG.trace("load config: " + configPathMap.get(path.toString()) + ".");

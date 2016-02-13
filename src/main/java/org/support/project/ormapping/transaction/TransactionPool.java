@@ -43,7 +43,7 @@ public class TransactionPool implements ConnectionPool {
 	}
 
 	public void setConfigName(String configName) {
-		if (this.configName != null && !configName.equals(configName)) {
+		if (this.configName != null && !this.configName.equals(configName)) {
 			throw new ORMappingException("トランザクション管理は、今のところ一つのコネクション設定に対して有効です。");
 		}
 		this.configName = configName;

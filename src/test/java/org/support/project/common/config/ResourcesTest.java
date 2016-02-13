@@ -35,11 +35,12 @@ public class ResourcesTest {
 
 	@Test
 	public void testGetString() {
-		String str = Resources.getInstance().getResource("errors.invalid");
+		Locale locale = Locale.JAPANESE;
+		String str = Resources.getInstance(locale).getResource("errors.invalid", "1");
 		logger.info(str);
-		assertEquals("{0}が不正です。", str);
+		assertEquals("1が不正です。", str);
 		
-		str = Resources.getInstance(CommonBaseParameter.COMMON_RESOURCE).getResource("errors.common.notimpl");
+		str = Resources.getInstance(CommonBaseParameter.COMMON_RESOURCE, locale).getResource("errors.common.notimpl");
 		logger.info(str);
 		assertEquals("未実装です。", str);
 		
@@ -51,10 +52,10 @@ public class ResourcesTest {
 	@Test
 	public void testGetStringUS() {
 		Locale locale = Locale.ENGLISH;
-		String str = Resources.getInstance(locale).getResource("errors.invalid");
+		String str = Resources.getInstance(locale).getResource("errors.invalid", "aaa");
 		logger.info(str);
-		assertEquals("{0} is invalid.", str);
-		assertNotEquals("{0}が不正です。", str);
+		assertEquals("aaa is invalid.", str);
+		assertNotEquals("aaaが不正です。", str);
 		
 		//str = Resources.getInstance().getResource("errors.common.notimpl");
 		//logger.info(str);

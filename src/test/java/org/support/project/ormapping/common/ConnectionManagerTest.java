@@ -6,9 +6,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.support.project.common.log.Log;
 import org.support.project.common.log.LogFactory;
+import org.support.project.common.logic.H2DBServerLogic;
+import org.support.project.di.Container;
 import org.support.project.ormapping.common.ResultSetLoader;
 import org.support.project.ormapping.config.ORMappingParameter;
 import org.support.project.ormapping.config.Connection.ConfigType;
@@ -19,6 +23,16 @@ public class ConnectionManagerTest {
 	/** ログ */
 	private static Log logger = LogFactory.getLog(ConnectionManagerTest.class);
 
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+		H2DBServerLogic logic = Container.getComp(H2DBServerLogic.class);
+		logic.start();
+	}
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
+		H2DBServerLogic logic = Container.getComp(H2DBServerLogic.class);
+		logic.stop();
+	}
 	
 	@Test
 	public void testGetConnection() throws SQLException {

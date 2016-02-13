@@ -6,11 +6,16 @@ import org.junit.runner.Description;
 import org.support.project.common.log.Log;
 import org.support.project.common.log.LogFactory;
 
+/**
+ * TestWatcher
+ * @author Koda
+ */
 public class TestWatcher extends org.junit.rules.TestWatcher {
 	/** ログ */
-	private static Log LOG = LogFactory.getLog(TestWatcher.class);
-
+	private static final Log LOG = LogFactory.getLog(TestWatcher.class);
+	/** Date */
 	private Date start;
+	
 	@Override
 	protected void starting(Description description) {
 		super.starting(description);

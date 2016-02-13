@@ -20,39 +20,40 @@ public abstract class StringUtils extends org.apache.commons.lang.StringUtils {
 	/** 半角英数字 */
 	private static String sHan = "0123456789"
 			+ "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-	
+	/** FOLDER_SEPARATOR */
 	public static final String FOLDER_SEPARATOR = "/";
-
+	/** WINDOWS_FOLDER_SEPARATOR */
 	public static final String WINDOWS_FOLDER_SEPARATOR = "\\";
-
+	/** TOP_PATH */
 	public static final String TOP_PATH = "..";
-
+	/** CURRENT_PATH */
 	public static final String CURRENT_PATH = ".";
-
+	/** EXTENSION_SEPARATOR */
 	public static final char EXTENSION_SEPARATOR = '.';
-
+	/** MAIL_FORMAT */
 	public static final String MAIL_FORMAT = "^[a-zA-Z0-9!#$%&'_`/=~\\*\\+\\-\\?\\^\\{\\|\\}]+(\\.[a-zA-Z0-9!#$%&'_`/=~\\*\\+\\-\\?\\^\\{\\|\\}]+)*"
 			+ "@" + "[a-zA-Z0-9][a-zA-Z0-9\\-]*(\\.[a-zA-Z0-9\\-]+)*$";
 	
 	/**
 	 * 文字列がNULLか空文字列かどうかのチェック
-	 * 
-	 * @param str
-	 *            文字列
+	 * @param str 文字列
 	 * @return 空かどうかのチェック結果
 	 */
 	public static boolean isEmpty(String str) {
 		return (str == null || str.length() == 0);
 	}
+	/**
+	 * 空かチェック
+	 * @param str オブジェクト
+	 * @return チェック結果
+	 */
 	public static boolean isEmpty(Object str) {
 		return (str == null || "".equals(str));
 	}
 
 	/**
 	 * 文字列がNULLか空文字列かどうかのチェック
-	 * 
-	 * @param str
-	 *            文字列
+	 * @param str 文字列
 	 * @return 空かどうかのチェック結果
 	 */
 	public static boolean isNotEmpty(String str) {
@@ -61,9 +62,8 @@ public abstract class StringUtils extends org.apache.commons.lang.StringUtils {
 
 	/**
 	 * 文字列がIntegerになるかチェックする
-	 * 
-	 * @param str
-	 * @return
+	 * @param str 文字列
+	 * @return チェック結果
 	 */
 	public static boolean isInteger(String str) {
 		try {
@@ -76,8 +76,8 @@ public abstract class StringUtils extends org.apache.commons.lang.StringUtils {
 	
 	/**
 	 * 文字列がLongになるかチェックする
-	 * @param str
-	 * @return
+	 * @param str 文字列
+	 * @return チェック結果
 	 */
 	public static boolean isLong(String str) {
 		try {
@@ -90,9 +90,8 @@ public abstract class StringUtils extends org.apache.commons.lang.StringUtils {
 
 	/**
 	 * 文字列が数値であるかチェックする
-	 * 
-	 * @param str
-	 * @return
+	 * @param str 文字列
+	 * @return チェック結果
 	 */
 	public static boolean isNumeric(String str) {
 		try {
@@ -171,16 +170,19 @@ public abstract class StringUtils extends org.apache.commons.lang.StringUtils {
 
 	/**
 	 * ゼロパディング
-	 * 
-	 * @param num
-	 *            num
-	 * @param digit
-	 *            digit
+	 * @param num num
+	 * @param digit digit
 	 * @return String
 	 */
 	public static String zeroPadding(int num, int digit) {
 		return zeroPadding(new Long(num), digit);
 	}
+	/**
+	 * ゼロパディング
+	 * @param num num
+	 * @param digit digit
+	 * @return String
+	 */
 	public static String zeroPadding(long num, int digit) {
 		StringBuffer sb = new StringBuffer();
 		String numStr = String.valueOf(num);
@@ -229,9 +231,9 @@ public abstract class StringUtils extends org.apache.commons.lang.StringUtils {
 	/**
 	 * テキスト値＋１の値を返す
 	 * 
-	 * @param maxLength
-	 * @param maxNo
-	 * @return
+	 * @param maxLength maxLength
+	 * @param maxNo maxNo
+	 * @return テキスト
 	 */
 	public static String nextMaxNo(int maxLength, String maxNo) {
 		if (maxNo == null) {
@@ -246,9 +248,9 @@ public abstract class StringUtils extends org.apache.commons.lang.StringUtils {
 	/**
 	 * テキストと数値の桁あわせ
 	 * 
-	 * @param intNum
-	 * @param maxLength
-	 * @return
+	 * @param intNum num
+	 * @param maxLength maxLength
+	 * @return テキスト
 	 */
 	public static String addLength(long intNum, int maxLength) {
 		String num = String.valueOf(intNum);
@@ -257,11 +259,9 @@ public abstract class StringUtils extends org.apache.commons.lang.StringUtils {
 
 	/**
 	 * 桁あわせ
-	 * 
-	 * @param num
-	 * @param maxLength
-	 * @return
-	 * 
+	 * @param num num
+	 * @param maxLength maxLength
+	 * @return テキスト
 	 */
 	private static String addLength(String num, int maxLength) {
 		StringBuffer buff = new StringBuffer();
@@ -274,10 +274,9 @@ public abstract class StringUtils extends org.apache.commons.lang.StringUtils {
 
 	/**
 	 * テキスト値＋１の値を返す(Hex)
-	 * 
-	 * @param maxLength
-	 * @param maxNo
-	 * @return
+	 * @param maxLength maxLength
+	 * @param maxNo maxNo
+	 * @return テキスト
 	 */
 	public static String nextMaxNoHex(int maxLength, String maxNo) {
 		if (maxNo == null) {
@@ -292,10 +291,9 @@ public abstract class StringUtils extends org.apache.commons.lang.StringUtils {
 
 	/**
 	 * テキストと数値の桁あわせ(Hex)
-	 * 
-	 * @param intNum
-	 * @param maxLength
-	 * @return
+	 * @param num num
+	 * @param maxLength maxLength
+	 * @return テキスト
 	 */
 	public static String addLengthHex(long num, int maxLength) {
 		String hexStr = Long.toHexString(num).toUpperCase();
@@ -321,8 +319,8 @@ public abstract class StringUtils extends org.apache.commons.lang.StringUtils {
 	/**
 	 * 全角空白を含めたtrim
 	 * 
-	 * @param s
-	 * @return
+	 * @param s 文字列
+	 * @return trimした文字
 	 */
 	public static String trimUni(String s) {
 		int len = s.length();
@@ -343,9 +341,9 @@ public abstract class StringUtils extends org.apache.commons.lang.StringUtils {
 	/**
 	 * 複数行に渡るテキストを行単位にTrimをかける
 	 * 
-	 * @param text
-	 * @return
-	 * @throws IOException
+	 * @param text テキスト
+	 * @return trim結果
+	 * @throws IOException IOException
 	 */
 	public static String lineTrim(String text) throws IOException {
 		BufferedReader reader = new BufferedReader(new StringReader(text));
@@ -503,17 +501,16 @@ public abstract class StringUtils extends org.apache.commons.lang.StringUtils {
 		return RandomUtil.randamGen(len);
 	}
 
-
+	/**
+	 * 半角英数字->全角英数字に置換する。 原理は、置換対象文字列 sSrc から1文字づつ取り出して sHan
+	 * に該当する文字があったら、その文字が何文字目にあるか取得して、sZen から同じ文字目から文字を 取ると、全角にすり返るという方法。 例)
+	 * sSrc = "ab1"; 1番目の文字 "a" は、sHanの36文字目なので、sZenの36文字目は、"ａ"で、置換 2番目の文字
+	 * "b" は、sHanの37文字目なので、sZenの37文字目は、"ｂ"で、置換 3番目の文字 "1"
+	 * は、sHanの1文字目なので、sZenの1文字目は、"１"で、置換
+	 * 
+	 * @param str
+	 */
 	public static String convHankaku(String str) {
-		/**
-		 * 半角英数字->全角英数字に置換する。 原理は、置換対象文字列 sSrc から1文字づつ取り出して sHan
-		 * に該当する文字があったら、その文字が何文字目にあるか取得して、sZen から同じ文字目から文字を 取ると、全角にすり返るという方法。 例)
-		 * sSrc = "ab1"; 1番目の文字 "a" は、sHanの36文字目なので、sZenの36文字目は、"ａ"で、置換 2番目の文字
-		 * "b" は、sHanの37文字目なので、sZenの37文字目は、"ｂ"で、置換 3番目の文字 "1"
-		 * は、sHanの1文字目なので、sZenの1文字目は、"１"で、置換
-		 * 
-		 * @param args
-		 */
 		String sSrc = str;
 		// 対象文字数分ループ
 		for (int iLoop = 0; iLoop < sSrc.length(); iLoop++) {
@@ -533,7 +530,12 @@ public abstract class StringUtils extends org.apache.commons.lang.StringUtils {
 		return sSrc;
 	}
 	
-	
+	/**
+	 * パターンのカウントを取得
+	 * @param source 文字列
+	 * @param pattern パターン
+	 * @return カウント
+	 */
 	public static int countOccurrencesOf(String source, String pattern) {
 		int count = 0;
 		if (source != null) {
@@ -545,8 +547,9 @@ public abstract class StringUtils extends org.apache.commons.lang.StringUtils {
 				count++;
 			}
 			return count;
-		} else
+		} else {
 			return 0;
+		}
 	}
 	
 //	public static String join(List<String> list, String separator) {

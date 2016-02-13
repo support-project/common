@@ -34,7 +34,7 @@ public class IDGen {
 			digest = MessageDigest.getInstance(ALGORITHM);
 			StringBuilder builder = new StringBuilder();
 			builder.append(key);
-			builder.append(DateUtils.TRANSFER_DATETIME.format(new Date()));
+			builder.append(DateUtils.getTransferDateFormat().format(new Date()));
 			builder.append(count);
 			byte[] hash = digest.digest(builder.toString().getBytes());
 			StringBuilder sb = new StringBuilder();

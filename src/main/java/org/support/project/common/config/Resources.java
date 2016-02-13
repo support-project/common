@@ -24,7 +24,6 @@ import org.support.project.common.log.LogFactory;
  * 
  * これを使うと、今まで読み込んだリソースファイルを全て保持していく
  * (APPResouceとDIResourceを読み込むと、両方のリソースが取得できるようになる)
- * TODO きっちり分けたほうが良い？
  * 
  */
 public class Resources {
@@ -48,9 +47,9 @@ public class Resources {
 	/**
 	 * インスタンスを取得
 	 * 
-	 * @param key
-	 * @param locale
-	 * @return
+	 * @param key key
+	 * @param locale locale
+	 * @return インスタンス
 	 */
 	public static Resources getInstance(String key, Locale locale) {
 		if (mapOnLocale == null) {
@@ -77,8 +76,8 @@ public class Resources {
 		
 	/**
 	 * インスタンスを取得
-	 * @param key
-	 * @return
+	 * @param key key
+	 * @return インスタンス
 	 */
 	public static Resources getInstance(String key) {
 		Locale locale = Locale.getDefault();
@@ -88,8 +87,8 @@ public class Resources {
 	
 	/**
 	 * インスタンスを取得
-	 * @param locale
-	 * @return
+	 * @param locale locale
+	 * @return インスタンス
 	 */
 	public static Resources getInstance(Locale locale) {
 		String key = CommonBaseParameter.APP_RESOURCE;
@@ -99,7 +98,7 @@ public class Resources {
 	
 	/**
 	 * インスタンスを取得
-	 * @return
+	 * @return インスタンス
 	 */
 	public static Resources getInstance() {
 		// CommonBaseParameter.APP_RESOURCE に指定のあるResourcesを取得
@@ -155,8 +154,8 @@ public class Resources {
 			InputStream inputStream = getStream(basename, locale);
 			if (inputStream == null) {
 				logger.error("Resources: " + basename + " is not find.");
+				return;
 			}
-			
 			InputStreamReader isr = new InputStreamReader(inputStream, "UTF-8");
 			BufferedReader reader = new BufferedReader(isr);
 			ResourceBundle bundle = new PropertyResourceBundle(reader);
@@ -171,9 +170,9 @@ public class Resources {
 	
 	/**
 	 * ロケールに従い、読み込むファイルを取得する
-	 * @param basename
-	 * @param locale
-	 * @return
+	 * @param basename basename
+	 * @param locale locale
+	 * @return 読み込むファイル
 	 */
 	private InputStream getStream(String basename, Locale locale) {
 		InputStream inputStream = null;
@@ -214,7 +213,10 @@ public class Resources {
 	}
 
 	/**
-	 * Returns the value for the specified resource key.
+	 * 指定のキーのりーソースの文字列を取得
+	 * @param key key
+	 * @param params params
+	 * @return 文字列
 	 */
 	public String getResource(String key, String... params) {
 		String value = getString(key);
@@ -257,15 +259,18 @@ public class Resources {
 	}
 
 	/**
-	 * Returns the value for the specified resource key.
+	 * 指定のキーのりーソースの文字列を取得
+	 * @param key key
+	 * @return 文字列
 	 */
 	public String getResource(String key) {
-		return getResource(key, null);
+		return getResource(key, new String[0]);
 	}
 
 	/**
-	 * Returns the value for <code>key</code> by searching the resource bundles in inverse order or <code>null</code> if no value can be found for
-	 * <code>key</code>.
+	 * 指定のキーのりーソースの文字列を取得
+	 * @param key key
+	 * @return 文字列
 	 */
 	private String getString(String key) {
 		Iterator<ResourceBundle> it = bundles.iterator();

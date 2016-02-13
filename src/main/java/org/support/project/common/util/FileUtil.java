@@ -12,20 +12,18 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 
-import org.support.project.common.log.Log;
-import org.support.project.common.log.LogFactory;
-
+/**
+ * ファイル操作のユーティリティ
+ * @author Koda
+ */
 public class FileUtil {
-	/** ログ */
-	private static Log log = LogFactory.getLog(FileUtil.class);
-
 	/**
 	 * ファイルを削除します ディレクトリの場合、中身をまず削除し、確実に削除ができます。
 	 * 
 	 * @param f
 	 */
 	public static void delete(File f) {
-		if (f.exists() == false) {
+		if (!f.exists()) {
 			return;
 		}
 
@@ -36,8 +34,10 @@ public class FileUtil {
 		}
 		if (f.isDirectory()) {
 			File[] files = f.listFiles();
-			for (int i = 0; i < files.length; i++) {
-				delete(files[i]);
+			if (files != null) {
+				for (int i = 0; i < files.length; i++) {
+					delete(files[i]);
+				}
 			}
 			f.delete();
 		}
@@ -46,8 +46,7 @@ public class FileUtil {
 	/**
 	 * ファイル名から拡張子を取得する
 	 * 
-	 * @param filename
-	 *            拡張子付き文字列
+	 * @param file ファイル
 	 * @return 拡張子
 	 */
 	public static String getExtension(File file) {
@@ -57,8 +56,7 @@ public class FileUtil {
 	/**
 	 * ファイル名称の取得(パスの最後のファイル名)
 	 * 
-	 * @param fileName
-	 *            ファイル名称(パス含む)
+	 * @param file ファイル
 	 * @return ファイル名称
 	 */
 	public static String getFileName(File file) {
@@ -167,7 +165,7 @@ public class FileUtil {
 			reader = new BufferedReader(new InputStreamReader(in, encode));
 			StringBuilder builder = new StringBuilder();
 			String s;
-			while((s = reader.readLine())!=null){
+			while ((s = reader.readLine()) != null) {
 				builder.append(s);
 				builder.append("\n");
 			}

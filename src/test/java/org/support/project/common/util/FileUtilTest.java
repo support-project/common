@@ -36,7 +36,7 @@ public class FileUtilTest {
 	public void tearDown() throws Exception {
 	}
 
-	@Test
+	//@Test
 	@Order(order=5)
 	public void testDelete() {
 		File outdir = new File("/data/temp/test");
@@ -58,7 +58,7 @@ public class FileUtilTest {
 		assertEquals("hoge.txt", fileName);
 	}
 
-	@Test
+	//@Test
 	@Order(order=4)
 	public void testCopy() throws IOException {
 		InputStream inputStream = null;

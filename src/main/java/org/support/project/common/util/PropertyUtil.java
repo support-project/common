@@ -235,86 +235,82 @@ public class PropertyUtil {
 	 * @return
 	 */
 	public static boolean equalsProperty(Object obj1, Object obj2) {
-		if (obj1 == null && obj2 != null) {
-			return false;
-		}
-		if (obj1 != null && obj2 == null) {
-			return false;
-		}
-		if (obj1 == null && obj2 == null) {
+		if (obj1 == null) {
+			if (obj2 == null) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			if (obj2 == null) {
+				return false;
+			}
+			if (obj1.getClass().isPrimitive() && obj2.getClass().isPrimitive()) {
+				//比較の対象はプリミティブ型
+				return equalsPrimitive(obj1, obj2);
+			} else {
+				for (Class clazz : VALUE_CLASSES) {
+					if (clazz.isAssignableFrom(obj1.getClass()) 
+							|| clazz.isAssignableFrom(obj2.getClass())) {
+						return obj1.equals(obj2);
+					}
+				}
+			}
+			
+			//値を直接持たないオブジェクトの場合
+			List<String> props1 = PropertyUtil.getPropertyNames(obj1.getClass());
+			List<String> props2 = PropertyUtil.getPropertyNames(obj2.getClass());
+			
+			if (props1.size() == 0 && props2.size() == 0) {
+				//プロパティを持たないオブジェクト
+				return obj1.equals(obj2);
+			}
+			
+			for (String prop : props1) {
+				if (props2.contains(prop)) {
+					//同一のプロパティが存在する
+					Object value1 = PropertyUtil.getPropertyValue(obj1, prop);
+					Object value2 = PropertyUtil.getPropertyValue(obj2, prop);
+					
+					if (value1 == null) {
+						if (value2 != null) {
+							if (LOG.isDebugEnabled()) {
+								LOG.debug("property [" + prop + "] is wrong. 1's value is " + value1 + ". 2's value is " + value1 + ".");
+							}
+							return false;
+						}
+					} else if (!equalsProperty(value1, value2)) {
+						if (LOG.isDebugEnabled()) {
+							LOG.debug("property [" + prop + "] is wrong. 1's value is " + value1 + ". 2's value is " + value1 + ".");
+						}
+						return false;
+					}
+					props2.remove(prop);
+				}
+			}
+			
+			for (String prop : props2) {
+				if (props1.contains(prop)) {
+					Object value1 = PropertyUtil.getPropertyValue(obj1, prop);
+					Object value2 = PropertyUtil.getPropertyValue(obj2, prop);
+					if (value1 == null) {
+						if (value2 != null) {
+							if (LOG.isDebugEnabled()) {
+								LOG.debug("property [" + prop + "] is wrong. 1's value is " + value1 + ". 2's value is " + value1 + ".");
+							}
+							return false;
+						}
+					} else if (!equalsProperty(value1, value2)) {
+						if (LOG.isDebugEnabled()) {
+							LOG.debug("property [" + prop + "] is wrong. 1's value is " + value1 + ". 2's value is " + value1 + ".");
+						}
+						return false;
+					}
+				}
+			}
+			
 			return true;
 		}
-		
-//		if (!obj1.getClass().getName().equals(obj2.getClass().getName())) {
-//			//型は完全一致しか認めない
-//			return false;
-//		}
-		
-		if (obj1.getClass().isPrimitive() && obj2.getClass().isPrimitive()) {
-			//比較の対象はプリミティブ型
-			return equalsPrimitive(obj1, obj2);
-		} else {
-			for (Class clazz : VALUE_CLASSES) {
-				if (clazz.isAssignableFrom(obj1.getClass()) 
-						|| clazz.isAssignableFrom(obj2.getClass())) {
-					return obj1.equals(obj2);
-				}
-			}
-		}
-		
-		//値を直接持たないオブジェクトの場合
-		List<String> props1 = PropertyUtil.getPropertyNames(obj1.getClass());
-		List<String> props2 = PropertyUtil.getPropertyNames(obj2.getClass());
-		
-		if (props1.size() == 0 && props2.size() == 0) {
-			//プロパティを持たないオブジェクト
-			return obj1.equals(obj2);
-		}
-		
-		for (String prop : props1) {
-			if (props2.contains(prop)) {
-				//同一のプロパティが存在する
-				Object value1 = PropertyUtil.getPropertyValue(obj1, prop);
-				Object value2 = PropertyUtil.getPropertyValue(obj2, prop);
-				
-				if (value1 == null) {
-					if (value2 != null) {
-						if (LOG.isDebugEnabled()) {
-							LOG.debug("property [" + prop + "] is wrong. 1's value is " + value1 + ". 2's value is " + value1 + ".");
-						}
-						return false;
-					}
-				} else if (!equalsProperty(value1,value2)) {
-					if (LOG.isDebugEnabled()) {
-						LOG.debug("property [" + prop + "] is wrong. 1's value is " + value1 + ". 2's value is " + value1 + ".");
-					}
-					return false;
-				}
-				props2.remove(prop);
-			}
-		}
-		
-		for (String prop : props2) {
-			if (props1.contains(prop)) {
-				Object value1 = PropertyUtil.getPropertyValue(obj1, prop);
-				Object value2 = PropertyUtil.getPropertyValue(obj2, prop);
-				if (value1 == null) {
-					if (value2 != null) {
-						if (LOG.isDebugEnabled()) {
-							LOG.debug("property [" + prop + "] is wrong. 1's value is " + value1 + ". 2's value is " + value1 + ".");
-						}
-						return false;
-					}
-				} else if (!equalsProperty(value1,value2)) {
-					if (LOG.isDebugEnabled()) {
-						LOG.debug("property [" + prop + "] is wrong. 1's value is " + value1 + ". 2's value is " + value1 + ".");
-					}
-					return false;
-				}
-			}
-		}
-		
-		return true;
 	}
 
 	/**

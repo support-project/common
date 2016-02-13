@@ -8,7 +8,11 @@ import org.support.project.common.serialize.Serialize;
 import org.support.project.common.serialize.SerializerValue;
 import org.support.project.ormapping.config.ConnectionConfig;
 
-@Serialize(value=SerializerValue.Jaxb)
+/**
+ * ORMapping のツール設定クラス
+ * @author Koda
+ */
+@Serialize(value = SerializerValue.Jaxb)
 @XmlRootElement
 public class ORmappingToolConfig implements Serializable {
 	/**
@@ -34,8 +38,7 @@ public class ORmappingToolConfig implements Serializable {
 	/**
 	 * @param initializeConfig セットする initializeConfig
 	 */
-	public void setInitializeConfig(
-			ORMappingDatabaseInitializeConfig initializeConfig) {
+	public void setInitializeConfig(ORMappingDatabaseInitializeConfig initializeConfig) {
 		this.initializeConfig = initializeConfig;
 	}
 	/**

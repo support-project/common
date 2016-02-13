@@ -23,6 +23,10 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Calendar;
 
+/**
+ * PreparedStatement
+ * @author Koda
+ */
 public class StopPreparedStatement implements PreparedStatement {
 
 	@Override
@@ -33,7 +37,7 @@ public class StopPreparedStatement implements PreparedStatement {
 	@Override
 	public ResultSet executeQuery(String sql) throws SQLException {
 		// Auto-generated method stub
-		return null;
+		return new StopResultSet();
 	}
 
 	@Override
@@ -45,7 +49,6 @@ public class StopPreparedStatement implements PreparedStatement {
 	@Override
 	public void close() throws SQLException {
 		// Auto-generated method stub
-
 	}
 
 	@Override

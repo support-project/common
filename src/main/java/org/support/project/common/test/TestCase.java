@@ -30,7 +30,7 @@ public class TestCase {
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
 		H2DBServerLogic logic = Container.getComp(H2DBServerLogic.class);
-		//logic.stop();
+		logic.stop();
 	}
 	
 	@Test
