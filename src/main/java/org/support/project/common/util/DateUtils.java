@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import org.support.project.common.log.Log;
 import org.support.project.common.log.LogFactory;
@@ -95,8 +96,8 @@ public class DateUtils {
 	 *             日付フォーマットが不正な場合
 	 */
 	public static int differenceDays(String strDate1, String strDate2) throws ParseException {
-		Date date1 = DateFormat.getDateInstance().parse(strDate1);
-		Date date2 = DateFormat.getDateInstance().parse(strDate2);
+		Date date1 = gateDayFormat().parse(strDate1);
+		Date date2 = gateDayFormat().parse(strDate2);
 		return differenceDays(date1, date2);
 	}
 
