@@ -10,6 +10,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.support.project.common.log.Log;
 import org.support.project.common.log.LogFactory;
+import org.support.project.common.logic.H2DBServerLogic;
 import org.support.project.common.util.FileUtil;
 import org.support.project.ormapping.gen.dao.BlobTableDao;
 import org.support.project.ormapping.gen.entity.BlobTableEntity;
@@ -19,15 +20,16 @@ public class BlobTableDaoTest {
 
 	/** ログ */
 	private static Log logger = LogFactory.getLog(BlobTableDaoTest.class);
-	
 	@BeforeClass
-	public static void checkDb() {
+	public static void setUpBeforeClass() throws Exception {
+		H2DBServerLogic.get().start();
 		InitializeDao dao = InitializeDao.get();
 		//全テーブル削除
 		dao.dropAllTable();
 		// Webのデータベース登録
 		dao.initializeDatabase("/ddl.sql");
 	}
+	
 
 	/*
 	@Test

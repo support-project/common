@@ -9,6 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.support.project.common.log.Log;
 import org.support.project.common.log.LogFactory;
+import org.support.project.common.logic.H2DBServerLogic;
 import org.support.project.di.Container;
 
 public class IntercepterTest {
@@ -17,6 +18,7 @@ public class IntercepterTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+		H2DBServerLogic.get().start();
 	}
 
 	@AfterClass
