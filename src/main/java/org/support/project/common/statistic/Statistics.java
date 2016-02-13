@@ -8,21 +8,24 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * データ分析用のクラス
+ * データ分析用のクラス.
  * 
  * @author koda
  * 
  */
-public class Statistics {
+public final class Statistics {
+	/** ユーティリティクラスなので、コンストラクタを隠蔽. */
+	private Statistics() { }
+	/** 数値設定ミス. */
 	private static final Double MISSG = null;
 
 	/**
-	 * 与えられた配列の最小値を取得
+	 * 与えられた配列の最小値を取得.
 	 * 
-	 * @param data
-	 * @return
+	 * @param nums 配列
+	 * @return 最小値
 	 */
-	public static Double min(Double[] nums) {
+	public static Double min(final Double[] nums) {
 		Double min = null;
 		if (nums == null) {
 			return null;
@@ -39,12 +42,12 @@ public class Statistics {
 	}
 
 	/**
-	 * 与えられた配列の最大値を取得
+	 * 与えられた配列の最大値を取得.
 	 * 
-	 * @param data
-	 * @return
+	 * @param nums 配列
+	 * @return 最大値
 	 */
-	public static Double max(Double[] nums) {
+	public static Double max(final Double[] nums) {
 		Double max = null;
 		if (nums == null) {
 			return null;
@@ -61,12 +64,12 @@ public class Statistics {
 	}
 
 	/**
-	 * 与えられた配列の合計を取得
+	 * 与えられた配列の合計を取得.
 	 * 
-	 * @param data
-	 * @return
+	 * @param nums 配列
+	 * @return 合計値
 	 */
-	public static Double sum(Double[] nums) {
+	public static Double sum(final Double[] nums) {
 		Double total = null;
 		if (nums == null) {
 			return null;
@@ -83,12 +86,12 @@ public class Statistics {
 	}
 
 	/**
-	 * 与えられた配列の積を取得
+	 * 与えられた配列の積を取得.
 	 * 
-	 * @param data
-	 * @return
+	 * @param nums 配列
+	 * @return 積
 	 */
-	public static Double product(Double[] nums) {
+	public static Double product(final Double[] nums) {
 		Double total = null;
 		if (nums == null) {
 			return null;
@@ -105,12 +108,12 @@ public class Statistics {
 	}
 
 	/**
-	 * 与えられた配列のカウントを取得
+	 * 与えられた配列のカウントを取得.
 	 * 
-	 * @param data
-	 * @return
+	 * @param nums 配列
+	 * @return カウント
 	 */
-	public static Integer count(Double[] nums) {
+	public static Integer count(final Double[] nums) {
 		if (nums == null) {
 			return null;
 		}
@@ -118,12 +121,12 @@ public class Statistics {
 	}
 
 	/**
-	 * 与えられた配列の相加平均(ArithmeticMean)、算術平均を取得
+	 * 与えられた配列の相加平均(ArithmeticMean)、算術平均を取得.
 	 * 
-	 * @param data
-	 * @return
+	 * @param nums 配列
+	 * @return 相加平均(ArithmeticMean)、算術平均
 	 */
-	public static Double arimean(Double[] nums) {
+	public static Double arimean(final Double[] nums) {
 		if (nums == null) {
 			return null;
 		}
@@ -135,22 +138,22 @@ public class Statistics {
 	}
 
 	/**
-	 * 与えられた配列の相加平均(ArithmeticMean)、算術平均を取得
+	 * 与えられた配列の相加平均(ArithmeticMean)、算術平均を取得.
 	 * 
-	 * @param data
-	 * @return
+	 * @param nums 配列
+	 * @return 相加平均(ArithmeticMean)、算術平均
 	 */
-	public static Double avg(Double[] nums) {
+	public static Double avg(final Double[] nums) {
 		return arimean(nums);
 	}
 
 	/**
-	 * 与えられた配列の幾何平均(GeometricMean)、相乗平均を取得
+	 * 与えられた配列の幾何平均(GeometricMean)、相乗平均を取得.
 	 * 
-	 * @param data
-	 * @return
+	 * @param nums 配列
+	 * @return 幾何平均(GeometricMean)、相乗平均
 	 */
-	public static Double geomean(Double[] nums) {
+	public static Double geomean(final Double[] nums) {
 		if (nums == null) {
 			return null;
 		}
@@ -176,8 +179,8 @@ public class Statistics {
 	/**
 	 * 与えられた配列の調和平均(harmonic mean)を取得
 	 * 
-	 * @param nums
-	 * @return
+	 * @param nums 配列
+	 * @return 調和平均
 	 */
 	public static Double harmean(Double[] nums) {
 		if (nums == null) {
@@ -193,10 +196,11 @@ public class Statistics {
 	/**
 	 * 与えられた配列の加重平均(WeightedMean)を取得
 	 * 
-	 * @param data
-	 * @return
+	 * @param nums 配列
+	 * @param weights 加重
+	 * @return 加重平均
 	 */
-	public static Double weimean(List<Map<String, Double>> nums, Map<String, Double> weights) {
+	public static Double weimean(final List<Map<String, Double>> nums, final Map<String, Double> weights) {
 		if (nums == null) {
 			return null;
 		}
@@ -220,10 +224,10 @@ public class Statistics {
 	/**
 	 * 与えられた配列の分散(variance)を取得 (不偏分散) 標本に基づく、分散の予測値を返します。
 	 * 
-	 * @param data
-	 * @return
+	 * @param nums 配列
+	 * @return 分散
 	 */
-	public static Double var(Double[] nums) {
+	public static Double var(final Double[] nums) {
 		if (nums == null) {
 			return null;
 		}
@@ -240,20 +244,20 @@ public class Statistics {
 	/**
 	 * 与えられた配列の標準偏差(standard deviation)を取得 (ExcelではSTDEVA)
 	 * 
-	 * @param data
-	 * @return
+	 * @param data 配列
+	 * @return 標準偏差
 	 */
-	public static Double stdev(Double[] data) {
+	public static Double stdev(final Double[] data) {
 		return Math.sqrt(var(data));
 	}
 
 	/**
 	 * 与えられた配列の分散(variance)を取得 (標本分散) 母集団に基づく分散を返します。
 	 * 
-	 * @param data
-	 * @return
+	 * @param nums 配列
+	 * @return 分散
 	 */
-	public static Double varp(Double[] nums) {
+	public static Double varp(final Double[] nums) {
 		if (nums == null) {
 			return null;
 		}
@@ -270,21 +274,21 @@ public class Statistics {
 	/**
 	 * 与えられた配列の標準偏差(standard deviation)を取得 (ExcelではSTDEV.P)
 	 * 
-	 * @param data
-	 * @return
+	 * @param nums 配列
+	 * @return 標準偏差
 	 */
-	public static Double stdevp(Double[] data) {
-		return Math.sqrt(varp(data));
+	public static Double stdevp(final Double[] nums) {
+		return Math.sqrt(varp(nums));
 	}
 
 	/**
 	 * 二つの配列間の共分散を計算します
 	 * 
-	 * @param x
-	 * @param y
-	 * @return
+	 * @param x 配列１
+	 * @param y 配列２
+	 * @return 共分散
 	 */
-	public static Double covariance(Double[] x, Double[] y) {
+	public static Double covariance(final Double[] x, final Double[] y) {
 		Double avg1 = arimean(x);
 		Double avg2 = arimean(y);
 
@@ -302,11 +306,11 @@ public class Statistics {
 	/**
 	 * 二つの配列間の相関を計算する
 	 * 
-	 * @param x
-	 * @param y
-	 * @return
+	 * @param x 配列１
+	 * @param y 配列２
+	 * @return 相関
 	 */
-	public static Double correlation(Double[] x, Double[] y) {
+	public static Double correlation(final Double[] x, final Double[] y) {
 		Double std1 = stdevp(x);
 		Double std2 = stdevp(y);
 		Double covariance = covariance(x, y);
@@ -316,8 +320,8 @@ public class Statistics {
 	/**
 	 * 与えられた配列の歪度（わいど, skewness）を計算します ExcelではSKEW
 	 * 
-	 * @param data
-	 * @return
+	 * @param data 配列
+	 * @return 歪度
 	 */
 	public static Double skew(Double[] data) {
 		Double avg = arimean(data);
@@ -355,16 +359,16 @@ public class Statistics {
 	/**
 	 * 与えられた配列の尖度（せんど、Kurtosis)を計算します ExcelではCURT
 	 * 
-	 * @param data
-	 * @return
+	 * @param nums 配列
+	 * @return 尖度
 	 */
-	public static Double kurt(Double[] data) {
-		Double avg = arimean(data);
+	public static Double kurt(final Double[] nums) {
+		Double avg = arimean(nums);
 
 		Double stdev = 0.00;
 		Double count = 0.00;
-		for (int i = 0; i < data.length; i++) {
-			Double d = data[i];
+		for (int i = 0; i < nums.length; i++) {
+			Double d = nums[i];
 			if (d != MISSG) {
 				d = d - avg;
 				stdev = stdev + d * d;
@@ -379,8 +383,8 @@ public class Statistics {
 		}
 
 		double kurt = 0.;
-		for (int i = 0; i < data.length; i++) {
-			Double d = data[i];
+		for (int i = 0; i < nums.length; i++) {
+			Double d = nums[i];
 			if (d != MISSG) {
 				d = d - avg;
 				d = d / stdev;
@@ -395,11 +399,11 @@ public class Statistics {
 	/**
 	 * 指定の数の、与えられた配列に対する相対値のランクを計算します
 	 * 
-	 * @param value
-	 * @param data
-	 * @return
+	 * @param value 指定値
+	 * @param data 配列
+	 * @return 相対値のランク
 	 */
-	public static Double rank(Double value, Double[] data) {
+	public static Double rank(final Double value, final Double[] data) {
 		int n = data.length;
 		Double d;
 		Integer rank;
@@ -446,10 +450,10 @@ public class Statistics {
 	/**
 	 * 配列の最頻値を計算します。 最頻が複数(同じ件数の値が複数)ある場合は、一番初めの数字になります。 全てが1件づつだった場合、nullとしておきます。
 	 * 
-	 * @param data
-	 * @return
+	 * @param data 配列
+	 * @return 最頻値
 	 */
-	public static Double mode(Double[] data) {
+	public static Double mode(final Double[] data) {
 		List<Double> list = Arrays.asList(data);
 		Collections.sort(list);
 
@@ -485,10 +489,10 @@ public class Statistics {
 	/**
 	 * 配列の中央値を計算します
 	 * 
-	 * @param data
-	 * @return
+	 * @param data 配列
+	 * @return 中央値
 	 */
-	public static Double median(Double[] data) {
+	public static Double median(final Double[] data) {
 		int n = data.length;
 		int midIndex;
 		Double median;
@@ -511,11 +515,11 @@ public class Statistics {
 	 * 
 	 * ExcelのPERCENTILE関数。 PERCENTILE関数は指定した配列の中で百分率で指定した率に位置する値を返します。
 	 * 
-	 * @param percent
-	 * @param data
-	 * @return
+	 * @param percent パーセント
+	 * @param data 配列
+	 * @return パーセンタイル値
 	 */
-	public static Double percentile(Double percent, Double[] data) {
+	public static Double percentile(final Double percent, final Double[] data) {
 		List<Double> list = Arrays.asList(data);
 		Collections.sort(list);
 
@@ -548,9 +552,10 @@ public class Statistics {
 	}
 
 	/**
-	 * 配列の四分位を計算します。
+	 * 配列の四分位を計算します.
 	 * 
-	 * quartに0、1、2、3、4の数値以外を指定するとNull
+	 * quartに0、1、2、3、4の数値を指定。
+	 * デフォルトは「1」
 	 * ExcelのQUARTILE関数。 QUARTILE関数はデータから四分位数を抽出します。
 	 * 
 	 * 戻り値	戻り値を0から4の数値で指定
@@ -560,11 +565,11 @@ public class Statistics {
 	 * 3	第3四分位数(75%)
 	 * 4	最大値
 	 * 
-	 * @param percent
-	 * @param data
-	 * @return
+	 * @param quart quart
+	 * @param data 配列
+	 * @return 四分位
 	 */
-	public static double quartile(int quart, Double[] data) {
+	public static double quartile(final int quart, final Double[] data) {
 		switch (quart) {
 			case 0:
 				return min(data);
@@ -577,7 +582,7 @@ public class Statistics {
 			case 4:
 				return max(data);
 			default:
-				return MISSG;
+				return min(data);
 		}
 	}
 }

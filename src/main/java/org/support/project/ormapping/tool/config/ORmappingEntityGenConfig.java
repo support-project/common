@@ -1,14 +1,21 @@
 package org.support.project.ormapping.tool.config;
 
+import java.io.Serializable;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.support.project.common.serialize.Serialize;
 import org.support.project.common.serialize.SerializerValue;
 
-
-@Serialize(value=SerializerValue.Jaxb)
+/**
+ * OR Mapping ToolのEntity自動生成の設定
+ * @author Koda
+ */
+@Serialize(value = SerializerValue.Jaxb)
 @XmlRootElement
-public class ORmappingEntityGenConfig {
+public class ORmappingEntityGenConfig implements Serializable {
+	/** シリアルバージョン */
+	private static final long serialVersionUID = 1L;
 	/** エンティティを出力するディレクトリ */
 	private String entityOutDir;
 	/** エンティティのパッケージ名 */

@@ -10,11 +10,13 @@ import org.support.project.common.log.Log;
 import org.support.project.common.log.LogFactory;
 import org.support.project.common.util.StringUtils;
 import org.support.project.ormapping.common.NameConvertor;
-import org.support.project.ormapping.config.ORMappingParameter;
-import org.support.project.ormapping.connection.ConnectionManager;
 import org.support.project.ormapping.entity.ColumnDefinition;
 import org.support.project.ormapping.tool.DaoGenConfig;
 
+/**
+ * Daoの中のInsertMethodを生成する
+ * @author Koda
+ */
 public class DefaultTableInsertMethodCreator {
 	/** ログ */
 	private static Log log = LogFactory
@@ -219,19 +221,6 @@ public class DefaultTableInsertMethodCreator {
 			
 			List<String> primaryKeyName = new ArrayList<>();
 			for (ColumnDefinition column : primaryKeys) {
-				if (!keygen) {
-					pw.print("\t\t\t");
-					if (count > 0) {
-						pw.print(", ");
-					}
-					pw.print("entity.");
-					String feildName = nameConvertor.colmnNameToFeildName(column
-							.getColumn_name());
-					pw.print(helper.feildNameToGetter(feildName));
-					pw.println("()");
-					count++;
-				}
-				
 				primaryKeyName.add(column.getColumn_name());
 			}
 			

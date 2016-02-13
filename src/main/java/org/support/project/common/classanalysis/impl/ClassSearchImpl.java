@@ -141,12 +141,15 @@ public class ClassSearchImpl implements ClassSearch {
 	private List<Class<?>> findClassesWithFile(String packageName, File dir) throws Exception {
 		List<Class<?>> classes = new ArrayList<Class<?>>();
 		if (dir != null) {
-			for (String path : dir.list()) {
-				File entry = new File(dir, path);
-				if (entry.isFile() && isClassFile(entry.getName())) {
-					classes.add(classLoader.loadClass(packageName + "." + fileNameToClassName(entry.getName())));
-				} else if (entry.isDirectory()) {
-					classes.addAll(findClassesWithFile(packageName + "." + entry.getName(), entry));
+			String[] children = dir.list();
+			if (children != null) {
+				for (String path : children) {
+					File entry = new File(dir, path);
+					if (entry.isFile() && isClassFile(entry.getName())) {
+						classes.add(classLoader.loadClass(packageName + "." + fileNameToClassName(entry.getName())));
+					} else if (entry.isDirectory()) {
+						classes.addAll(findClassesWithFile(packageName + "." + entry.getName(), entry));
+					}
 				}
 			}
 		}

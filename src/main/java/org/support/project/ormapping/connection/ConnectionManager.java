@@ -27,7 +27,7 @@ import org.support.project.ormapping.transaction.TransactionManager;
 /**
  * コネクションを管理するクラス
  */
-@DI(instance=Instance.Singleton)
+@DI(instance = Instance.Singleton)
 public final class ConnectionManager {
 	/** ログ */
 	private static Log logger = LogFactory.getLog(ConnectionManager.class);
@@ -65,7 +65,7 @@ public final class ConnectionManager {
 	 * @throws ORMappingException
 	 *             ORMappingException
 	 */
-	public static ConnectionManager getInstance() throws ORMappingException {
+	public static synchronized ConnectionManager getInstance() throws ORMappingException {
 		if (connectionManager == null) {
 			connectionManager = new ConnectionManager();
 		}
@@ -322,11 +322,13 @@ public final class ConnectionManager {
 		super.finalize();
 	}
 	
-	
+	/**
+	 * destroy
+	 */
 	public void destroy() {
 		// JDBC ドライバの参照を解除
 		Enumeration<Driver> drivers = DriverManager.getDrivers();
-		while( drivers.hasMoreElements() ){
+		while (drivers.hasMoreElements()) {
 			Driver driver = drivers.nextElement();
 			try {
 				DriverManager.deregisterDriver(driver);

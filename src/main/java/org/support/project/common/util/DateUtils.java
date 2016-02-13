@@ -19,20 +19,45 @@ import org.support.project.common.log.LogFactory;
 public class DateUtils {
 	/** 通信で利用する日付のフォーマット文字列 */
 	public static final String TRANSFER_DATETIME_FORMAT = "yyyyMMddHHmmssSSS";
-	/** 通信で利用する日付のフォーマット */
-	public static final DateFormat TRANSFER_DATETIME = new SimpleDateFormat(TRANSFER_DATETIME_FORMAT);
-	/** DateFormat */
-	public static final DateFormat DATE_FORMAT = DateFormat.getDateInstance(DateFormat.LONG);
+	/** 
+	 * 通信で利用する日付のフォーマット
+	 * @return 通信で利用する日付のフォーマット
+	 */
+	public static DateFormat getTransferDateFormat() {
+		return new SimpleDateFormat(TRANSFER_DATETIME_FORMAT);
+	}
+	/** 
+	 * DateFormat を取得
+	 * @return Dateformat
+	 */
+	public static final DateFormat getDateFormat() {
+		return DateFormat.getDateInstance(DateFormat.LONG);
+	}
 
-	/** 日付のみを表示するフォーマット(ロケールで切り替えない際に利用) */
-	public static final DateFormat DAY_FORMAT = new SimpleDateFormat("yyyy/MM/dd");
-	
-	public static final DateFormat SHORT_DAY_FORMAT = new SimpleDateFormat("yyyyMMdd");
+	/** 
+	 * 日付のみを表示するフォーマット(ロケールで切り替えない際に利用)
+	 * @return 日付のみを表示するフォーマット
+	 */
+	public static final DateFormat gateDayFormat() {
+		return new SimpleDateFormat("yyyy/MM/dd");
+	}
+	/**
+	 * 短い形式のDateformatを取得
+	 * @return 短い形式のDateformat
+	 */
+	public static final DateFormat getShortDayFormat() {
+		return new SimpleDateFormat("yyyyMMdd");
+	}
 
-	/** 通信で利用する日付のフォーマット文字列 */
+	/** 区切りの無い日付フォーマット */
 	public static final String SECOND_FORMAT_STR = "yyyyMMddHHmmss";
-	/** 通信で利用する日付のフォーマット */
-	public static final DateFormat SECOND_FORMAT = new SimpleDateFormat(SECOND_FORMAT_STR);
+	/** 
+	 * 区切りの無い日付フォーマットを取得
+	 * @return 区切りの無い日付フォーマット
+	 */
+	public static final DateFormat getSimpleFormat() {
+		return new SimpleDateFormat(SECOND_FORMAT_STR);
+	}
 	
 	/** ログ */
 	private static Log LOG = LogFactory.getLog(DateUtils.class);
@@ -44,7 +69,7 @@ public class DateUtils {
 	 * @return
 	 */
 	public static String formatTransferDateTime(Date d) {
-		return TRANSFER_DATETIME.format(d);
+		return getTransferDateFormat().format(d);
 	}
 
 	/**
@@ -55,7 +80,7 @@ public class DateUtils {
 	 * @throws ParseException
 	 */
 	public static Date parseTransferDateTime(String d) throws ParseException {
-		return TRANSFER_DATETIME.parse(d);
+		return getTransferDateFormat().parse(d);
 	}
 
 	/**
@@ -91,8 +116,8 @@ public class DateUtils {
 		if (LOG.isDebugEnabled()) {
 			StringBuilder builder = new StringBuilder();
 			builder.append("********* 日付の差分計算のインプット ********");
-			builder.append("\n\t入力１ : " + TRANSFER_DATETIME.format(date1));
-			builder.append("\n\t入力２ : " + TRANSFER_DATETIME.format(date2));
+			builder.append("\n\t入力１ : " + getTransferDateFormat().format(date1));
+			builder.append("\n\t入力２ : " + getTransferDateFormat().format(date2));
 			LOG.debug(builder.toString());
 		}
 		
@@ -109,8 +134,8 @@ public class DateUtils {
 		if (LOG.isDebugEnabled()) {
 			StringBuilder builder = new StringBuilder();
 			builder.append("********* 日付の差分計算 ********");
-			builder.append("\n\t計算値１ : " + TRANSFER_DATETIME.format(date1));
-			builder.append("\n\t計算値２ : " + TRANSFER_DATETIME.format(date2));
+			builder.append("\n\t計算値１ : " + getTransferDateFormat().format(date1));
+			builder.append("\n\t計算値２ : " + getTransferDateFormat().format(date2));
 			builder.append("\n\t差分   : " + diff);
 			builder.append("\n\t一日のミリ秒   : " + one_date_time);
 			builder.append("\n\t日付の差分   : " + diffDays);
@@ -150,8 +175,8 @@ public class DateUtils {
 		if (LOG.isDebugEnabled()) {
 			StringBuilder builder = new StringBuilder();
 			builder.append("********* 日付の丸めの処理 ********");
-			builder.append("\n\t入力 : " + TRANSFER_DATETIME.format(date));
-			builder.append("\n\t出力 : " + TRANSFER_DATETIME.format(calendar1.getTime()));
+			builder.append("\n\t入力 : " + getTransferDateFormat().format(date));
+			builder.append("\n\t出力 : " + getTransferDateFormat().format(calendar1.getTime()));
 			LOG.debug(builder.toString());
 		}
 		

@@ -1,5 +1,6 @@
 package org.support.project.ormapping.tool.config;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -7,9 +8,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.support.project.common.serialize.Serialize;
 import org.support.project.common.serialize.SerializerValue;
 
-@Serialize(value=SerializerValue.Jaxb)
+/**
+ * OR Mapping ToolのDao自動生成の設定
+ * @author Koda
+ */
+@Serialize(value = SerializerValue.Jaxb)
 @XmlRootElement
-public class ORmappingDaoGenConfig {
+public class ORmappingDaoGenConfig implements Serializable {
+	/** シリアルバージョン */
+	private static final long serialVersionUID = 1L;
 
 	/** 出力するディレクトリ */
 	private String daoOutDir;

@@ -49,7 +49,7 @@ public class BlobTableDaoTest {
 		//entity.setContents("1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 		entity.setBlob(this.getClass().getResourceAsStream("/ddl.sql"));
 		
-		FileOutputStream file = new FileOutputStream(new File("/data/test.txt"));
+		//FileOutputStream file = new FileOutputStream(new File("/data/test.txt"));
 		//FileUtil.copy(entity.getBlob(), file);
 		
 		entity = dao.insert(entity);
