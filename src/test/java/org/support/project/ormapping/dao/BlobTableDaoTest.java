@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -28,6 +29,10 @@ public class BlobTableDaoTest {
 		dao.dropAllTable();
 		// Webのデータベース登録
 		dao.initializeDatabase("/ddl.sql");
+	}
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
+		H2DBServerLogic.get().stop();
 	}
 	
 

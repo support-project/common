@@ -4,8 +4,10 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.support.project.common.logic.H2DBServerLogic;
 import org.support.project.di.Container;
 import org.support.project.ormapping.gen.dao.CampanyDao;
 import org.support.project.ormapping.gen.entity.CampanyEntity;
@@ -17,11 +19,16 @@ public class CampanyDaoTest {
 	
 	@BeforeClass
 	public static void checkDb() {
+		H2DBServerLogic.get().start();
 		InitializeDao dao = InitializeDao.get();
 		//全テーブル削除
 		dao.dropAllTable();
 		// Webのデータベース登録
 		dao.initializeDatabase("/ddl.sql");
+	}
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
+		H2DBServerLogic.get().stop();
 	}
 	
 	
