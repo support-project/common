@@ -35,7 +35,8 @@ public class ResourcesTest {
 
 	@Test
 	public void testGetString() {
-		String str = Resources.getInstance().getResource("errors.invalid", "1");
+		Locale locale = Locale.JAPANESE;
+		String str = Resources.getInstance(locale).getResource("errors.invalid", "1");
 		logger.info(str);
 		assertEquals("1が不正です。", str);
 		
