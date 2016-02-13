@@ -40,7 +40,7 @@ public class ResourcesTest {
 		logger.info(str);
 		assertEquals("1が不正です。", str);
 		
-		str = Resources.getInstance(CommonBaseParameter.COMMON_RESOURCE).getResource("errors.common.notimpl");
+		str = Resources.getInstance(CommonBaseParameter.COMMON_RESOURCE, locale).getResource("errors.common.notimpl");
 		logger.info(str);
 		assertEquals("未実装です。", str);
 		
