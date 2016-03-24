@@ -60,6 +60,9 @@ public class SystemUtils {
      * @return
      */
     public static String getenv(String envKey) {
+        if (StringUtils.isEmpty(envKey)) {
+            return "";
+        }
         String envValue = System.getenv(envKey);
         if (StringUtils.isEmpty(envValue)) {
             envValue = System.getProperty(envKey, "");
