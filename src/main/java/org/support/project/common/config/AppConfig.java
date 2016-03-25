@@ -20,15 +20,14 @@ import org.xml.sax.SAXException;
  * @author Koda
  */
 public class AppConfig {
-    /** ログ */
-    private static final Log LOG = LogFactory.getLog(AppConfig.class);
-
     /** 設定ファイルのパス */
     public static final String APP_CONFIG = "/appconfig.xml";
+    /** インスタンス */
+    private static AppConfig appConfig = null;
+    
     /** インスタンス取得 */
     public static AppConfig get() {
         if (appConfig == null) {
-            LOG.info("Load App Congfig");
             appConfig = ConfigLoader.load(AppConfig.APP_CONFIG, AppConfig.class);
         }
         return appConfig;
@@ -37,10 +36,8 @@ public class AppConfig {
      * コンストラクタ
      */
     public AppConfig() {
-        LOG.info("AppConfig()");
         if (StringUtils.isEmpty(AppConfig.envKey) && !initialize) {
             // 初回の一回目だけ、AppConfig上のenvKeyを読み込む
-            LOG.info("Load envKey if exists.");
             try {
                 Document document = DocumentBuilderFactory
                         .newInstance()
@@ -50,23 +47,20 @@ public class AppConfig {
                 if (envs.getLength() > 0) {
                     Node env = envs.item(0);
                     String envKey = env.getFirstChild().getNodeValue();
-                    LOG.info("env key: " + envKey);
                     if (StringUtils.isNotEmpty(envKey)) {
                         AppConfig.initEnvKey(envKey);
                     }
                 }
             } catch (SAXException | IOException | ParserConfigurationException e) {
-                LOG.error("initialize error.", e);
+                System.err.println(e);
             }
             initialize = true;
         }
     }
+    
     /** 初期化したか */
-    private static boolean initialize = false;
+    private boolean initialize = false;
     
-    
-    /** インスタンス */
-    private static AppConfig appConfig = null;
     /** システム名 */
     private String systemName;
     /** タイムゾーン */
@@ -95,7 +89,7 @@ public class AppConfig {
     /** 環境変数のキー文字列を設定 */
     public static void initEnvKey(String envKey) {
         if (StringUtils.isNotEmpty(AppConfig.envKey)) {
-            LOG.warn("envKey was already exists. [old]" + AppConfig.envKey + " [new]" + envKey);
+            System.out.println("envKey was already exists. [old]" + AppConfig.envKey + " [new]" + envKey);
         }
         AppConfig.envKey = envKey;
     }
@@ -176,12 +170,14 @@ public class AppConfig {
             String path = basePath;
             if (StringUtils.isNotEmpty(envKey)) {
                 String envValue = SystemUtils.getenv(envKey);
-                if (StringUtils.isNotEmpty(envValue)) {
-                    path = envValue;
-                    if (!dispEnvInfo) {
+                if (!dispEnvInfo) {
+                    if (StringUtils.isNotEmpty(envValue)) {
+                        path = envValue;
                         System.out.println("Env [" + envKey + "] was loaded. value is [" + envValue + "].");
-                        dispEnvInfo = true;
+                    } else {
+                        System.out.println("Env [" + envKey + "] was not found.");
                     }
+                    dispEnvInfo = true;
                 }
             }
             this.basePath = convPath(path);
