@@ -170,9 +170,11 @@ public class AppConfig {
             String path = basePath;
             if (StringUtils.isNotEmpty(envKey)) {
                 String envValue = SystemUtils.getenv(envKey);
+                if (StringUtils.isNotEmpty(envValue)) {
+                    path = envValue;
+                }
                 if (!dispEnvInfo) {
                     if (StringUtils.isNotEmpty(envValue)) {
-                        path = envValue;
                         System.out.println("Env [" + envKey + "] was loaded. value is [" + envValue + "].");
                     } else {
                         System.out.println("Env [" + envKey + "] was not found.");
