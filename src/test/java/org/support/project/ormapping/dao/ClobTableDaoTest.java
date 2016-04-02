@@ -12,64 +12,75 @@ import org.support.project.common.logic.H2DBServerLogic;
 import org.support.project.common.util.StringUtils;
 import org.support.project.ormapping.gen.dao.ClobTableDao;
 import org.support.project.ormapping.gen.entity.ClobTableEntity;
-import org.support.project.ormapping.tool.dao.InitializeDao;
 
+/**
+ * test for ClobTableDao
+ * @author Koda
+ *
+ */
 public class ClobTableDaoTest {
 
-	/** ログ */
-	private static Log log = LogFactory.getLog(ClobTableDaoTest.class);
+    /** ログ */
+    private static Log log = LogFactory.getLog(ClobTableDaoTest.class);
 
-	@BeforeClass
-	public static void checkDb() {
-		H2DBServerLogic.get().start();
-		InitializeDao dao = InitializeDao.get();
-		//全テーブル削除
-		dao.dropAllTable();
-		// Webのデータベース登録
-		dao.initializeDatabase("/ddl.sql");
-	}
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-		H2DBServerLogic.get().stop();
-	}
+    /**
+     * setUpBeforeClass
+     * @throws Exception
+     */
+    @BeforeClass
+    public static void setUpBeforeClass() throws Exception {
+        DatabaseInitialization.setUp();
+    }
 
-	@Test
-	public void testDao() {
-		ClobTableDao dao = ClobTableDao.get();
-		
-		ClobTableEntity entity = new ClobTableEntity();
-		//entity.setContents("1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-		entity.setContents(StringUtils.randamGen(1024 * 1024));
-		log.debug(entity);
-		
-		entity = dao.insert(entity);
-		log.debug(entity);
-		
-		Assert.assertNotNull(entity.getNo());
-		
-		ClobTableEntity find = dao.selectOnKey(entity.getNo());
-		org.junit.Assert.assertEquals(entity.getContents(), find.getContents());
-		
-		
-	}
+    /**
+     * tearDownAfterClass
+     * @throws Exception
+     */
+    @AfterClass
+    public static void tearDownAfterClass() throws Exception {
+        H2DBServerLogic.get().stop();
+    }
+    /**
+     * test
+     */
+    @Test
+    public void testDao() {
+        ClobTableDao dao = ClobTableDao.get();
 
-	@Test
-	public void testSearch() {
-		ClobTableDao dao = ClobTableDao.get();
-		
-		ClobTableEntity entity = new ClobTableEntity();
-		entity.setContents("1234567890ABCDEFGH hoge  IJKLMNOPQRSTUVWXYZ");
-		log.info(entity);
-		entity = dao.insert(entity);
-		log.info(entity);
-		Assert.assertNotNull(entity.getNo());
-		
-		List<ClobTableEntity> finds = dao.searchContent("%hoge%");
-		log.info(finds);
-		org.junit.Assert.assertFalse(finds.isEmpty());
-		
-		//少なくともH2 Databaseではtextのカラムを検索出来るようだ
-		
-	}
-	
+        ClobTableEntity entity = new ClobTableEntity();
+        // entity.setContents("1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+        entity.setContents(StringUtils.randamGen(1024 * 1024));
+        log.debug(entity);
+
+        entity = dao.insert(entity);
+        log.debug(entity);
+
+        Assert.assertNotNull(entity.getNo());
+
+        ClobTableEntity find = dao.selectOnKey(entity.getNo());
+        org.junit.Assert.assertEquals(entity.getContents(), find.getContents());
+
+    }
+    /**
+     * test
+     */
+    @Test
+    public void testSearch() {
+        ClobTableDao dao = ClobTableDao.get();
+
+        ClobTableEntity entity = new ClobTableEntity();
+        entity.setContents("1234567890ABCDEFGH hoge  IJKLMNOPQRSTUVWXYZ");
+        log.info(entity);
+        entity = dao.insert(entity);
+        log.info(entity);
+        Assert.assertNotNull(entity.getNo());
+
+        List<ClobTableEntity> finds = dao.searchContent("%hoge%");
+        log.info(finds);
+        org.junit.Assert.assertFalse(finds.isEmpty());
+
+        // 少なくともH2 Databaseではtextのカラムを検索出来るようだ
+
+    }
+
 }

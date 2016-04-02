@@ -2,7 +2,6 @@
 
 <app>
     <time_zone>Asia/Tokyo</time_zone>
-    <envKey>APP_HOME</envKey>
     <basePath>{user.home}/.common</basePath>
     <databasePath>{base.path}/db/</databasePath>
     <logsPath>{base.path}/logs/</logsPath>
