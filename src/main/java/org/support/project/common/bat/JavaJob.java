@@ -10,186 +10,203 @@ import java.util.Map;
 import org.support.project.common.log.Log;
 import org.support.project.common.log.LogFactory;
 import org.support.project.di.Container;
+import org.support.project.di.DI;
+import org.support.project.di.Instance;
 
 /**
  * Javaのプログラムをバッチで実行(別プロセスでjavaを起動する)
- * 
  * @author koda
- *
  */
+@DI(instance = Instance.Prototype)
 public class JavaJob implements Job {
-	/** ログ */
-	private static final Log LOG = LogFactory.getLog(JavaJob.class);
+    /** ログ */
+    private static final Log LOG = LogFactory.getLog(JavaJob.class);
 
-	public static JavaJob get() {
-		return Container.getComp(JavaJob.class);
-	}
-	
-	/** Jarが格納されているディレクトリ */
-	private List<File> jarDirs = new ArrayList<>();
-	/** クラスパスのディレクトリ */
-	private List<File> classPathDirs = new ArrayList<>();
-	
-	/** 実行するメインクラス */
-	private String mainClass;
-	/** メイン関数に渡す引数 */
-	private List<String> params = new ArrayList<>();
-	/** カレントディレクトリ */
-	private File currentDirectory = null;
+    /**
+     * インスタンス取得
+     * @return
+     */
+    public static JavaJob get() {
+        return Container.getComp(JavaJob.class);
+    }
 
-	/** 環境変数 */
-	private Map<String, String> environment = new LinkedHashMap<>();
-	
-	/** javaコマンドで -jar で実行するかどうか */
-	private boolean jarOption;
+    /** Jarが格納されているディレクトリ */
+    private List<File> jarDirs = new ArrayList<>();
+    /** クラスパスのディレクトリ */
+    private List<File> classPathDirs = new ArrayList<>();
 
-	/** コンソール出力を渡すリスナー */
-	private ConsoleListener consoleListener = null;
+    /** 実行するメインクラス */
+    private String mainClass;
+    /** メイン関数に渡す引数 */
+    private List<String> params = new ArrayList<>();
+    /** カレントディレクトリ */
+    private File currentDirectory = null;
 
-	/**
-	 * 実行するメインクラスを設定します。
-	 * 
-	 * @param mainClass
-	 *            実行するメインクラス
-	 */
-	public JavaJob setMainClass(String mainClass) {
-		this.mainClass = mainClass;
-		return this;
-	}
-	
-	/**
-	 * クラスパスのディレクトリを追加
-	 * 
-	 * @param dir
-	 * @return
-	 */
-	public JavaJob addClassPathDir(File dir) {
-		this.classPathDirs.add(dir);
-		return this;
-	}
+    /** 環境変数 */
+    private Map<String, String> environment = new LinkedHashMap<>();
 
-	/**
-	 * クラスパスのディレクトリを追加
-	 * 
-	 * @param dir
-	 * @return
-	 */
-	public JavaJob addjarDir(File dir) {
-		this.jarDirs.add(dir);
-		return this;
-	}
+    /** javaコマンドで -jar で実行するかどうか */
+    private boolean jarOption;
 
-	/**
-	 * 引数追加
-	 * 
-	 * @param param
-	 * @return
-	 */
-	public JavaJob addParam(String param) {
-		this.params.add(param);
-		return this;
-	}
+    /** コンソール出力を渡すリスナー */
+    private ConsoleListener consoleListener = null;
 
-	/**
-	 * 環境変数に値を追加
-	 * @param key
-	 * @param value
-	 */
-	public JavaJob addEnvironment(String key, String value) {
-		this.environment.put(key, value);
-		return this;
-	}
-	
-	
-	@Override
-	public JobResult execute() throws Exception {
-		BatJob batJob = new BatJob();
-		if (currentDirectory != null) {
-			batJob.setCurrentDirectory(currentDirectory);
-		}
+    /**
+     * 実行するメインクラスを設定します。
+     * 
+     * @param mainClass
+     *            実行するメインクラス
+     */
+    public JavaJob setMainClass(String mainClass) {
+        this.mainClass = mainClass;
+        return this;
+    }
 
-		batJob.addCommand("java");
-		if (!jarDirs.isEmpty() || !classPathDirs.isEmpty()) {
-			batJob.addCommand("-classpath");
-			batJob.addCommand(makeClassPath());
-		}
-		if (jarOption) {
-			batJob.addCommand("-jar");
-		}
-		batJob.addCommand(mainClass);
-		
-		if (consoleListener != null) {
-			batJob.setConsoleListener(consoleListener);
-		}
-		
-		if (!environment.isEmpty()) {
-			Iterator<String> iterator = environment.keySet().iterator();
-			while (iterator.hasNext()) {
-				String key = (String) iterator.next();
-				batJob.addEnvironment(key, environment.get(key));
-			}
-		}
-		
-		return batJob.execute();
-	}
+    /**
+     * クラスパスのディレクトリを追加
+     * 
+     * @param dir
+     * @return
+     */
+    public JavaJob addClassPathDir(File dir) {
+        this.classPathDirs.add(dir);
+        return this;
+    }
 
-	/**
-	 * クラスパスの生成
-	 * 
-	 * @param string
-	 * @return
-	 */
-	private String makeClassPath() {
-		StringBuilder builder = new StringBuilder();
-		int count = 0;
-		for (File dir : jarDirs) {
-			if (count > 0) {
-				builder.append(File.pathSeparator);
-			}
-			appendLibPath(builder, dir);
-			count++;
-		}
-		for (File dir : classPathDirs) {
-			String path = dir.getPath();
-			builder.append(File.pathSeparator);
-			builder.append(path);
-		}
-		return builder.toString();
-	}
+    /**
+     * クラスパスのディレクトリを追加
+     * 
+     * @param dir
+     * @return
+     */
+    public JavaJob addjarDir(File dir) {
+        this.jarDirs.add(dir);
+        return this;
+    }
 
-	/**
-	 * 再帰的にクラスパスを取得
-	 * 
-	 * @param builder
-	 * @param dir
-	 */
-	private void appendLibPath(StringBuilder builder, File dir) {
-		LOG.trace(dir);
-		String path = dir.getPath() + File.separator + "*";
-		builder.append(path);
+    /**
+     * 引数追加
+     * 
+     * @param param
+     * @return
+     */
+    public JavaJob addParam(String param) {
+        this.params.add(param);
+        return this;
+    }
 
-		File[] files = dir.listFiles();
-		if (files != null) {
-			for (File child : files) {
-				if (child.isDirectory()) {
-					appendLibPath(builder, child);
-				}
-			}
-		}
-	}
+    /**
+     * 環境変数に値を追加
+     * 
+     * @param key
+     * @param value
+     */
+    public JavaJob addEnvironment(String key, String value) {
+        this.environment.put(key, value);
+        return this;
+    }
 
-	public void setCurrentDirectory(File currentDirectory) {
-		this.currentDirectory = currentDirectory;
-	}
+    @Override
+    public JobResult execute() throws Exception {
+        BatJob batJob = new BatJob();
+        if (currentDirectory != null) {
+            batJob.setCurrentDirectory(currentDirectory);
+        }
 
-	public void setJarOption(boolean jarOption) {
-		this.jarOption = jarOption;
-	}
-	/**
-	 * @param consoleListener the consoleListener to set
-	 */
-	public void setConsoleListener(ConsoleListener consoleListener) {
-		this.consoleListener = consoleListener;
-	}
+        batJob.addCommand("java");
+        if (!jarDirs.isEmpty() || !classPathDirs.isEmpty()) {
+            batJob.addCommand("-classpath");
+            batJob.addCommand(makeClassPath());
+        }
+        if (jarOption) {
+            batJob.addCommand("-jar");
+        }
+        batJob.addCommand(mainClass);
+
+        if (consoleListener != null) {
+            batJob.setConsoleListener(consoleListener);
+        }
+
+        if (!environment.isEmpty()) {
+            Iterator<String> iterator = environment.keySet().iterator();
+            while (iterator.hasNext()) {
+                String key = (String) iterator.next();
+                batJob.addEnvironment(key, environment.get(key));
+            }
+        }
+
+        return batJob.execute();
+    }
+
+    /**
+     * クラスパスの生成
+     * 
+     * @param string
+     * @return
+     */
+    private String makeClassPath() {
+        StringBuilder builder = new StringBuilder();
+        int count = 0;
+        for (File dir : jarDirs) {
+            if (count > 0) {
+                builder.append(File.pathSeparator);
+            }
+            appendLibPath(builder, dir);
+            count++;
+        }
+        for (File dir : classPathDirs) {
+            String path = dir.getPath();
+            builder.append(File.pathSeparator);
+            builder.append(path);
+        }
+        return builder.toString();
+    }
+
+    /**
+     * 再帰的にクラスパスを取得
+     * 
+     * @param builder
+     * @param dir
+     */
+    private void appendLibPath(StringBuilder builder, File dir) {
+        LOG.trace(dir);
+        String path = dir.getPath() + File.separator + "*";
+        builder.append(path);
+
+        File[] files = dir.listFiles();
+        if (files != null) {
+            for (File child : files) {
+                if (child.isDirectory()) {
+                    appendLibPath(builder, child);
+                }
+            }
+        }
+    }
+
+    /**
+     * カレントディレクトリをセット
+     * 
+     * @param currentDirectory
+     */
+    public void setCurrentDirectory(File currentDirectory) {
+        this.currentDirectory = currentDirectory;
+    }
+
+    /**
+     * Jarのディレクトリをセット
+     * 
+     * @param jarOption
+     */
+    public void setJarOption(boolean jarOption) {
+        this.jarOption = jarOption;
+    }
+
+    /**
+     * @param consoleListener
+     *            the consoleListener to set
+     */
+    public void setConsoleListener(ConsoleListener consoleListener) {
+        this.consoleListener = consoleListener;
+    }
 
 }
