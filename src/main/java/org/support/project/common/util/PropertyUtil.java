@@ -34,8 +34,8 @@ public class PropertyUtil {
      * 直接値を持つクラス (equalsPropertyで利用)
      */
     public static final Class<?>[] VALUE_CLASSES = { byte.class, Byte.class, short.class, Short.class, int.class, Integer.class, long.class,
-            Long.class, char.class, Character.class, float.class, Float.class, double.class, Double.class, boolean.class, Boolean.class,
-            String.class };
+        Long.class, char.class, Character.class, float.class, Float.class, double.class, Double.class, boolean.class, Boolean.class,
+        String.class };
 
     /**
      * 本クラスで値を設定／取得ができるプロパティ名の一覧を取得

@@ -7,15 +7,16 @@ import org.support.project.di.Instance;
 
 /**
  * コネクションプールのインタフェース
+ * 
  * @author koda
  *
  */
-@DI(instance=Instance.Singleton)
+@DI(instance = Instance.Singleton)
 public interface ConnectionPool {
-	
-	Connection getConnection();
-	
-	void freeConnection(Connection con);
-	
-	void release();
+
+    Connection getConnection();
+
+    void freeConnection(Connection con);
+
+    void release();
 }
