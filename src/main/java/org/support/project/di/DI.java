@@ -15,25 +15,25 @@ public @interface DI {
 	
 	/**
 	 * 実装クラス
-	 * @return
+	 * @return class of implement
 	 */
 	Class<?> impl() default NoImpl.class;
 	
 	/**
 	 * インスタンス
-	 * @return
+	 * @return instance
 	 */
 	Instance instance() default Instance.Prototype;
 	
 	
 	/**
 	 * キーでインスタンスのクラスを振り分ける場合のキー
-	 * @return
+	 * @return keys
 	 */
 	String[] keys() default {};
 	/**
 	 * キーでインスタンスのクラスを振り分ける場合のクラス(キーと同じ個数の配列にすること)
-	 * @return
+	 * @return classes of implement
 	 */
 	Class<?>[] impls() default {};
 	

@@ -9,10 +9,18 @@ import org.support.project.common.log.Log;
 import org.support.project.common.log.LogFactory;
 import org.support.project.di.Container;
 
+/**
+ * Async Job
+ * @author Koda
+ */
 public class AsyncJob extends BatJob implements Runnable {
 	/** ログ */
 	private static final Log LOG = LogFactory.getLog(AsyncJob.class);
 	
+	/**
+	 * get instance
+	 * @return instance
+	 */
 	public static AsyncJob get() {
 		return Container.getComp(AsyncJob.class);
 	}
@@ -58,7 +66,7 @@ public class AsyncJob extends BatJob implements Runnable {
 	
 	/**
 	 * リスナー追加
-	 * @param listener
+	 * @param listener listener
 	 */
 	public void addListener(BatListener listener) {
 		if (!batListeners.contains(listener)) {
@@ -66,13 +74,14 @@ public class AsyncJob extends BatJob implements Runnable {
 		}
 	}
 	
+	/**
+	 * remove listener
+	 * @param listener listener
+	 */
 	public void removeListener(BatListener listener) {
 		if (batListeners.contains(listener)) {
 			batListeners.remove(listener);
 		}
-	}
-	
-	
-	
+    }
 
 }

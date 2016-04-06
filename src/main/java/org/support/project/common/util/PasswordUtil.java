@@ -20,109 +20,130 @@ import javax.crypto.spec.SecretKeySpec;
  *
  */
 public class PasswordUtil {
+    /** ALGORITHM */
+    private static final String CIPHER_ALGORITHM = "AES";
 
-	private static final String CIPHER_ALGORITHM = "AES";
+    // private static final String CIPHER_TRANSFORMATION = CIPHER_ALGORITHM + "/CBC/PKCS5Padding";
+    
+    /**
+     * generat secret bytes key.
+     * @param key key
+     * @return secretKey
+     * @throws NoSuchAlgorithmException NoSuchAlgorithmException
+     */
+    private static byte[] generatSecretKey(String key) throws NoSuchAlgorithmException {
+        MessageDigest digest = MessageDigest.getInstance("MD5");
+        byte[] hash = digest.digest(key.getBytes());
+        return hash;
+    }
+    /**
+     * hash on sha 256.
+     * @param key key
+     * @return hash
+     * @throws NoSuchAlgorithmException NoSuchAlgorithmException
+     */
+    private static byte[] sha256(String key) throws NoSuchAlgorithmException {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] hash = digest.digest(key.getBytes());
+        return hash;
+    }
+    /**
+     * generat secret key.
+     * @param secretKey secretKey
+     * @return Key
+     */
+    private static Key makeKey(byte[] secretKey) {
+        return new SecretKeySpec(secretKey, CIPHER_ALGORITHM);
+    }
 
-	// private static final String CIPHER_TRANSFORMATION = CIPHER_ALGORITHM + "/CBC/PKCS5Padding";
+    /**
+     * encrypt
+     * 
+     * @param string secretKey
+     * @param key key
+     * @return encrypted string
+     * @throws NoSuchAlgorithmException NoSuchAlgorithmException
+     * @throws NoSuchPaddingException NoSuchPaddingException
+     * @throws InvalidKeyException InvalidKeyException
+     * @throws IllegalBlockSizeException IllegalBlockSizeException
+     * @throws BadPaddingException BadPaddingException
+     */
+    public static final String encrypt(String string, String key)
+            throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+        if (string == null) {
+            return null;
+        }
+        Key secretKey = makeKey(generatSecretKey(key));
 
-	private static byte[] generatSecretKey(String key) throws NoSuchAlgorithmException {
-		MessageDigest digest = MessageDigest.getInstance("MD5");
-		byte[] hash = digest.digest(key.getBytes());
-		return hash;
-	}
-	private static byte[] sha256(String key) throws NoSuchAlgorithmException {
-		MessageDigest digest = MessageDigest.getInstance("SHA-256");
-		byte[] hash = digest.digest(key.getBytes());
-		return hash;
-	}
+        Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
+        cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+        byte[] bytes = cipher.doFinal(string.getBytes());
 
-	private static Key makeKey(byte[] secret_key) {
-		return new SecretKeySpec(secret_key, CIPHER_ALGORITHM);
-	}
+        return Base64Utils.toBase64(bytes);
+    }
 
-	/**
-	 * 暗号化
-	 * 
-	 * @param string
-	 * @param key
-	 * @return
-	 * @throws NoSuchAlgorithmException
-	 * @throws NoSuchPaddingException
-	 * @throws InvalidKeyException
-	 * @throws IllegalBlockSizeException
-	 * @throws BadPaddingException
-	 */
-	public static final String encrypt(String string, String key) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
-			IllegalBlockSizeException, BadPaddingException {
-		if (string == null) {
-			return null;
-		}
-		Key secretKey = makeKey(generatSecretKey(key));
+    /**
+     * decrypt
+     * 
+     * @param string string
+     * @param key key
+     * @return decrypt string
+     * @throws NoSuchAlgorithmException NoSuchAlgorithmException
+     * @throws NoSuchPaddingException NoSuchPaddingException
+     * @throws InvalidKeyException InvalidKeyException
+     * @throws IllegalBlockSizeException IllegalBlockSizeException
+     * @throws BadPaddingException BadPaddingException
+     */
+    public static final String decrypt(String string, String key)
+            throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+        if (string == null) {
+            return null;
+        }
+        Key secretKey = makeKey(generatSecretKey(key));
 
-		Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
-		cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-		byte[] bytes = cipher.doFinal(string.getBytes());
+        Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
+        cipher.init(Cipher.DECRYPT_MODE, secretKey);
 
-		return Base64Utils.toBase64(bytes);
-	}
+        byte[] bytes = Base64Utils.fromBase64(string);
+        byte[] dec = cipher.doFinal(bytes);
+        return new String(dec);
+    }
 
-	/**
-	 * 複合化
-	 * 
-	 * @param string
-	 * @param key
-	 * @return
-	 * @throws NoSuchAlgorithmException
-	 * @throws NoSuchPaddingException
-	 * @throws InvalidKeyException
-	 * @throws IllegalBlockSizeException
-	 * @throws BadPaddingException
-	 */
-	public static final String decrypt(String string, String key) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
-			IllegalBlockSizeException, BadPaddingException {
-		if (string == null) {
-			return null;
-		}
-		Key secretKey = makeKey(generatSecretKey(key));
+    /**
+     * 文字列をハッシュ文字列にする
+     * 
+     * @param string
+     * @return
+     * @throws NoSuchAlgorithmException
+     */
+    private static String hash(String string) throws NoSuchAlgorithmException {
+        byte[] bytes = sha256(string);
+        return Base64Utils.toBase64(bytes);
+    }
+    
+    /**
+     * generate salt
+     * @return salt
+     */
+    public static String getSalt() {
+        String randam = RandomUtil.randamGen(254);
+        return randam;
+    }
 
-		Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
-		cipher.init(Cipher.DECRYPT_MODE, secretKey);
-
-		byte[] bytes = Base64Utils.fromBase64(string);
-		byte[] dec = cipher.doFinal(bytes);
-		return new String(dec);
-	}
-
-	/**
-	 * 文字列をハッシュ文字列にする
-	 * 
-	 * @param string
-	 * @return
-	 * @throws NoSuchAlgorithmException
-	 */
-	private static String hash(String string) throws NoSuchAlgorithmException {
-		byte[] bytes = sha256(string);
-		return Base64Utils.toBase64(bytes);
-	}
-
-	public static String getSalt() {
-		String randam = RandomUtil.randamGen(254);
-		return randam;
-	}
-	
-	/**
-	 * パスワード用のハッシュを生成
-	 * @param password
-	 * @param salt
-	 * @param hashIterations
-	 * @return
-	 * @throws NoSuchAlgorithmException
-	 */
-	public static String getStretchedPassword(String password, String salt, int hashIterations) throws NoSuchAlgorithmException {
-		String hash = "";
-		for (int i = 0; i < hashIterations; i++) {
-			hash = hash(hash + salt + password);
-		}
-		return hash;
-	}
+    /**
+     * パスワード用のハッシュを生成
+     * 
+     * @param password password
+     * @param salt salt
+     * @param hashIterations hashIterations
+     * @return hash
+     * @throws NoSuchAlgorithmException NoSuchAlgorithmException
+     */
+    public static String getStretchedPassword(String password, String salt, int hashIterations) throws NoSuchAlgorithmException {
+        String hash = "";
+        for (int i = 0; i < hashIterations; i++) {
+            hash = hash(hash + salt + password);
+        }
+        return hash;
+    }
 }
