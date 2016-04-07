@@ -23,6 +23,8 @@ public class SystemUtils {
      * 空き物理メモリーの容量をバイト単位で返します。 long getFreeSwapSpaceSize() 空きスワップ空間の容量をバイト単位で返します。 double getProcessCpuLoad() Java 仮想マシンプロセスの「最近の CPU 使用率」を返します。 long
      * getProcessCpuTime() Java 仮想マシンが実行されているプロセスで使用される CPU 時間をナノ秒単位で返します。 double getSystemCpuLoad() システム全体の「最新の CPU 使用率」を返します。 long
      * getTotalPhysicalMemorySize() 物理メモリーの合計容量をバイト単位で返します。 long getTotalSwapSpaceSize() スワップ空間の合計容量をバイト単位
+     * 
+     * @return system info
      */
     public static String systemInfo() {
         StringBuilder info = new StringBuilder();
@@ -56,8 +58,8 @@ public class SystemUtils {
      * 
      * 存在しない場合、「カラ文字」を返す
      * 
-     * @param envKey
-     * @return
+     * @param envKey env key
+     * @return env value
      */
     public static String getenv(String envKey) {
         if (StringUtils.isEmpty(envKey)) {

@@ -5,8 +5,6 @@ import java.io.IOException;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.support.project.common.log.Log;
-import org.support.project.common.log.LogFactory;
 import org.support.project.common.util.StringUtils;
 import org.support.project.common.util.SystemUtils;
 import org.w3c.dom.Document;
@@ -25,7 +23,10 @@ public class AppConfig {
     /** インスタンス */
     private static AppConfig appConfig = null;
     
-    /** インスタンス取得 */
+    /** 
+     * インスタンス取得
+     * @return instance
+     */
     public static AppConfig get() {
         if (appConfig == null) {
             appConfig = ConfigLoader.load(AppConfig.APP_CONFIG, AppConfig.class);
@@ -86,14 +87,20 @@ public class AppConfig {
     /** ユーザのホームディレクトリ(BasePath)を指定する環境変数のキー */
     private static String envKey = "";
     
-    /** 環境変数のキー文字列を設定 */
+    /** 
+     * 環境変数のキー文字列を設定
+     * @param envKey env key
+     */
     public static void initEnvKey(String envKey) {
         if (StringUtils.isNotEmpty(AppConfig.envKey)) {
             System.out.println("envKey was already exists. [old]" + AppConfig.envKey + " [new]" + envKey);
         }
         AppConfig.envKey = envKey;
     }
-    /** 環境変数のキー文字列を取得 */
+    /**
+     * 環境変数のキー文字列を取得
+     * @return env key
+     */
     public static String getEnvKey() {
         return envKey;
     }
@@ -101,8 +108,8 @@ public class AppConfig {
     /**
      * パスの中に含まれる予約語を置換
      * 
-     * @param path
-     * @return
+     * @param path path
+     * @return convert string
      */
     public String convPath(String path) {
         if (path.indexOf("{user.home}") != -1) {
@@ -122,6 +129,7 @@ public class AppConfig {
     }
 
     /**
+     * get timezone
      * @return the time_zone
      */
     public String getTime_zone() {
@@ -129,16 +137,17 @@ public class AppConfig {
     }
 
     /**
-     * @param time_zone
+     * set timezone
+     * @param timezone
      *            the time_zone to set
      */
-    public void setTime_zone(String time_zone) {
-        this.time_zone = time_zone;
+    public void setTime_zone(String timezone) {
+        this.time_zone = timezone;
     }
     
     /**
      * 組み込み用データベースのパスを取得
-     * @return
+     * @return databasePath
      */
     public String getDatabasePath() {
         if (StringUtils.isEmpty(databasePath)) {
@@ -153,13 +162,14 @@ public class AppConfig {
     }
     /**
      * 組み込み用データベースのパスをセット
-     * @param databasePath
+     * @param databasePath databasePath
      */
     public void setDatabasePath(String databasePath) {
         this.databasePath = databasePath;
     }
 
     /**
+     * get base path
      * @return the basePath
      */
     public String getBasePath() {
@@ -189,6 +199,7 @@ public class AppConfig {
     }
 
     /**
+     * set base path
      * @param basePath
      *            the basePath to set
      */
@@ -197,6 +208,7 @@ public class AppConfig {
     }
 
     /**
+     * get system name
      * @return the systemName
      */
     public String getSystemName() {
@@ -204,6 +216,7 @@ public class AppConfig {
     }
 
     /**
+     * set system name
      * @param systemName
      *            the systemName to set
      */
@@ -212,6 +225,7 @@ public class AppConfig {
     }
 
     /**
+     * get logs path
      * @return the logsPath
      */
     public String getLogsPath() {
@@ -227,6 +241,7 @@ public class AppConfig {
     }
 
     /**
+     * set logs path
      * @param logsPath
      *            the logsPath to set
      */

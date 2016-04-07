@@ -9,11 +9,18 @@ import org.support.project.common.log.Log;
 import org.support.project.common.log.LogFactory;
 import org.support.project.di.Container;
 
+/**
+ * Java job on async
+ * @author Koda
+ */
 public class AsyncJavaJob extends JavaJob implements Runnable {
 
 	/** ログ */
 	private static final Log LOG = LogFactory.getLog(AsyncJavaJob.class);
-	
+	/**
+	 * get instance
+	 * @return instance
+	 */
 	public static AsyncJavaJob get() {
 		return Container.getComp(AsyncJavaJob.class);
 	}
@@ -59,14 +66,17 @@ public class AsyncJavaJob extends JavaJob implements Runnable {
 	
 	/**
 	 * リスナー追加
-	 * @param listener
+	 * @param listener listener
 	 */
 	public void addListener(BatListener listener) {
 		if (!batListeners.contains(listener)) {
 			batListeners.add(listener);
 		}
 	}
-	
+	/**
+	 * remove listener
+	 * @param listener listener
+	 */
 	public void removeListener(BatListener listener) {
 		if (batListeners.contains(listener)) {
 			batListeners.remove(listener);

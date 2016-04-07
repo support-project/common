@@ -22,236 +22,228 @@ import org.support.project.ormapping.exception.ORMappingException;
 
 public class CreatorHelper {
 
-	private NameConvertor nameConvertor = new NameConvertor();
-	
-	
-	public PrintWriter getPrintWriter(File file) {
-		try {
-			FileOutputStream outputStream = new FileOutputStream(file);
-			OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream, Charset.forName("UTF-8"));
-			BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
-			return new PrintWriter(bufferedWriter);
-		} catch (FileNotFoundException e) {
-			throw new ORMappingException(e);
-		}
-	}
+    private NameConvertor nameConvertor = new NameConvertor();
 
-	public String getColmnTypeImport(List<ColumnDefinition> columnDefinitions) {
-		StringBuilder builder = new StringBuilder();
-		List<Short> types = new ArrayList<>();
-		for (ColumnDefinition columnDefinition : columnDefinitions) {
-			short type = columnDefinition.getData_type();
-			if (!types.contains(type)) {
-				if (Types.BLOB == type) {
-					//builder.append("import ").append(Blob.class.getName()).append(";\n");
-					builder.append("import ").append(InputStream.class.getName()).append(";\n");
-				} else if (Types.VARBINARY == type) {
-					builder.append("import ").append(InputStream.class.getName()).append(";\n");
-				} else if (Types.LONGVARBINARY == type) {
-					builder.append("import ").append(InputStream.class.getName()).append(";\n");
-				} else if (Types.BOOLEAN == type) {
-//					builder.append("import ").append(Boolean.class.getName()).append(";\n");
-				} else if (Types.CHAR == type) {
-//					builder.append("import ").append(Character.class.getName()).append(";\n");
-				} else if (Types.CLOB == type) {
-//					builder.append("import ").append(Clob.class.getName()).append(";\n");
-				} else if (Types.DATE == type) {
-					builder.append("import ").append(Date.class.getName()).append(";\n");
-				} else if (Types.DECIMAL == type) {
-					builder.append("import ").append(BigDecimal.class.getName()).append(";\n");
-				} else if (Types.DOUBLE == type) {
-//					builder.append("import ").append(Double.class.getName()).append(";\n");
-				} else if (Types.FLOAT == type) {
-//					builder.append("import ").append(Float.class.getName()).append(";\n");
-				} else if (Types.INTEGER == type) {
-//					builder.append("import ").append(Integer.class.getName()).append(";\n");
-				} else if (Types.TIME == type) {
-					builder.append("import ").append(Time.class.getName()).append(";\n");
-				} else if (Types.TIMESTAMP == type) {
-					builder.append("import ").append(Timestamp.class.getName()).append(";\n");
-				} else if (Types.VARCHAR == type) {
-//					builder.append("import ").append(String.class.getName()).append(";\n");
-				}
-				types.add(type);
-			}
-		}
-		return builder.toString();
-	}
+    public PrintWriter getPrintWriter(File file) {
+        try {
+            FileOutputStream outputStream = new FileOutputStream(file);
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream, Charset.forName("UTF-8"));
+            BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
+            return new PrintWriter(bufferedWriter);
+        } catch (FileNotFoundException e) {
+            throw new ORMappingException(e);
+        }
+    }
 
-	public String getColumnClass(ColumnDefinition columnDefinition) {
-		short type = columnDefinition.getData_type();
-//		if (Types.BIGINT == type) {
-//			return BigDecimal.class.getSimpleName();
-//		} else if (Types.BIT == type) {
-//			return Boolean.class.getSimpleName();
-//		} else if (Types.BINARY == type) {
-//			return Blob.class.getSimpleName();
-//		} else 
-		if (Types.BOOLEAN == type) {
-			return Boolean.class.getSimpleName();
-		} else if (Types.CHAR == type) {
-			return Character.class.getSimpleName();
-//		} else if (Types.CLOB == type) {
-//			return Clob.class.getSimpleName();
-		} else if (Types.DATE == type) {
-			return Date.class.getSimpleName();
-		} else if (Types.DECIMAL == type) {
-			return BigDecimal.class.getSimpleName();
-		} else if (Types.DOUBLE == type) {
-			return Double.class.getSimpleName();
-		} else if (Types.FLOAT == type) {
-			return Float.class.getSimpleName();
-		} else if (Types.INTEGER == type) {
-			return Integer.class.getSimpleName();
-//		} else if (Types.LONGNVARCHAR == type) {
-//			return Clob.class.getSimpleName();
-//		} else if (Types.LONGVARBINARY == type) {
-//			return Blob.class.getSimpleName();
-//		} else if (Types.SMALLINT == type) {
-//			return Integer.class.getSimpleName();
-		} else if (Types.TIME == type) {
-			return Time.class.getSimpleName();
-		} else if (Types.TIMESTAMP == type) {
-			return Timestamp.class.getSimpleName();
-		} else if (Types.VARCHAR == type) {
-			return String.class.getSimpleName();
-			
-		} else if (Types.BIGINT == type) {
-			return Long.class.getSimpleName();
-		} else if (Types.CLOB == type) {
-			return String.class.getSimpleName();
-		} else if (Types.BLOB == type) {
-			return InputStream.class.getSimpleName();
-		} else if (Types.VARBINARY == type) {
-			return InputStream.class.getSimpleName();
-		} else if (Types.LONGVARBINARY == type) {
-			return InputStream.class.getSimpleName();
-		}
-		
-		throw new ORMappingException("この型は未対応 : " + type);
-	}
-	
-	
-	public String colmnNameToGetterMethod(ColumnDefinition columnDefinition) {
-		String feildName = nameConvertor.colmnNameToFeildName(columnDefinition.getColumn_name());
-		StringBuilder builder = new StringBuilder();
-		//コメント
-		builder.append("\t/**").append("\n");
-		builder.append("\t * " + columnDefinition.getRemarks() + " を取得する").append("\n");
-		builder.append("\t */\n");
-		//1行目
-		builder.append("\tpublic ");
-		builder.append(getColumnClass(columnDefinition)).append(" ");
-		
-		builder.append(feildNameToGetter(feildName));
-		builder.append("()");
-		builder.append(" {\n");
-		//2行目
-		builder.append("\t\treturn this.").append(feildName).append(";").append("\n");
-		//3行目
-		builder.append("\t}");
-		
-		return builder.toString();
-	}
-	
-	public String feildNameToGetter(String feildName) {
-		StringBuilder builder = new StringBuilder();
-		builder.append("get");
-		for (int i = 0; i < feildName.length(); i++) {
-			char c = feildName.charAt(i);
-			if (i == 0) {
-				builder.append(Character.toUpperCase(c));
-			} else {
-				builder.append(c);
-			}
-		}
-		return builder.toString();
-	}
-	
-	
-	protected String colmnNameToSetterMethod(String genEntityClassName, ColumnDefinition columnDefinition) {
-		String feildName = nameConvertor.colmnNameToFeildName(columnDefinition.getColumn_name());
-		StringBuilder builder = new StringBuilder();
-		//コメント
-		builder.append("\t/**\n");
-		builder.append("\t * " + columnDefinition.getRemarks() + " を設定する\n");
-		builder.append("\t * @param " + feildName + " " + columnDefinition.getRemarks()).append("\n");
-		builder.append("\t */\n");
-		//1行目
-		builder.append("\tpublic ").append(genEntityClassName).append(" ");
-		builder.append(feildNameToSetter(feildName));
-		
-		builder.append("(");
-		builder.append(getColumnClass(columnDefinition)).append(" ");
-		builder.append(feildName);
-		builder.append(") {\n");
-		//2行目
-		builder.append("\t\tthis.").append(feildName).append(" = ").append(feildName).append(";").append("\n");
-		//3行目
-		builder.append("\t\treturn this;\n");
-		//4行目
-		builder.append("\t}");
-		
-		return builder.toString();
-	}
+    public String getColmnTypeImport(List<ColumnDefinition> columnDefinitions) {
+        StringBuilder builder = new StringBuilder();
+        List<Short> types = new ArrayList<>();
+        for (ColumnDefinition columnDefinition : columnDefinitions) {
+            short type = columnDefinition.getData_type();
+            if (!types.contains(type)) {
+                if (Types.BLOB == type) {
+                    // builder.append("import ").append(Blob.class.getName()).append(";\n");
+                    builder.append("import ").append(InputStream.class.getName()).append(";\n");
+                } else if (Types.VARBINARY == type) {
+                    builder.append("import ").append(InputStream.class.getName()).append(";\n");
+                } else if (Types.LONGVARBINARY == type) {
+                    builder.append("import ").append(InputStream.class.getName()).append(";\n");
+                } else if (Types.BOOLEAN == type) {
+                    // builder.append("import ").append(Boolean.class.getName()).append(";\n");
+                } else if (Types.CHAR == type) {
+                    // builder.append("import ").append(Character.class.getName()).append(";\n");
+                } else if (Types.CLOB == type) {
+                    // builder.append("import ").append(Clob.class.getName()).append(";\n");
+                } else if (Types.DATE == type) {
+                    builder.append("import ").append(Date.class.getName()).append(";\n");
+                } else if (Types.DECIMAL == type) {
+                    builder.append("import ").append(BigDecimal.class.getName()).append(";\n");
+                } else if (Types.DOUBLE == type) {
+                    // builder.append("import ").append(Double.class.getName()).append(";\n");
+                } else if (Types.FLOAT == type) {
+                    // builder.append("import ").append(Float.class.getName()).append(";\n");
+                } else if (Types.INTEGER == type) {
+                    // builder.append("import ").append(Integer.class.getName()).append(";\n");
+                } else if (Types.TIME == type) {
+                    builder.append("import ").append(Time.class.getName()).append(";\n");
+                } else if (Types.TIMESTAMP == type) {
+                    builder.append("import ").append(Timestamp.class.getName()).append(";\n");
+                } else if (Types.VARCHAR == type) {
+                    // builder.append("import ").append(String.class.getName()).append(";\n");
+                }
+                types.add(type);
+            }
+        }
+        return builder.toString();
+    }
 
-	public String feildNameToSetter(String feildName) {
-		StringBuilder builder = new StringBuilder();
-		builder.append("set");
-		for (int i = 0; i < feildName.length(); i++) {
-			char c = feildName.charAt(i);
-			if (i == 0) {
-				builder.append(Character.toUpperCase(c));
-			} else {
-				builder.append(c);
-			}
-		}
-		return builder.toString();
-	}
+    public String getColumnClass(ColumnDefinition columnDefinition) {
+        short type = columnDefinition.getData_type();
+        // if (Types.BIGINT == type) {
+        // return BigDecimal.class.getSimpleName();
+        // } else if (Types.BIT == type) {
+        // return Boolean.class.getSimpleName();
+        // } else if (Types.BINARY == type) {
+        // return Blob.class.getSimpleName();
+        // } else
+        if (Types.BOOLEAN == type) {
+            return Boolean.class.getSimpleName();
+        } else if (Types.CHAR == type) {
+            return Character.class.getSimpleName();
+            // } else if (Types.CLOB == type) {
+            // return Clob.class.getSimpleName();
+        } else if (Types.DATE == type) {
+            return Date.class.getSimpleName();
+        } else if (Types.DECIMAL == type) {
+            return BigDecimal.class.getSimpleName();
+        } else if (Types.DOUBLE == type) {
+            return Double.class.getSimpleName();
+        } else if (Types.FLOAT == type) {
+            return Float.class.getSimpleName();
+        } else if (Types.INTEGER == type) {
+            return Integer.class.getSimpleName();
+            // } else if (Types.LONGNVARCHAR == type) {
+            // return Clob.class.getSimpleName();
+            // } else if (Types.LONGVARBINARY == type) {
+            // return Blob.class.getSimpleName();
+            // } else if (Types.SMALLINT == type) {
+            // return Integer.class.getSimpleName();
+        } else if (Types.TIME == type) {
+            return Time.class.getSimpleName();
+        } else if (Types.TIMESTAMP == type) {
+            return Timestamp.class.getSimpleName();
+        } else if (Types.VARCHAR == type) {
+            return String.class.getSimpleName();
 
-	
-	
-	public String makeInstanceMethod(String className) {
-		StringBuilder builder = new StringBuilder();
-		builder.append("\t/**\n");
-		builder.append("\t * インスタンス取得\n");
-		builder.append("\t * AOPに対応\n");
-		builder.append("\t * @return インスタンス\n");
-		builder.append("\t */\n");
-		builder.append("\tpublic static ").append(className).append(" get() {\n");
-		builder.append("\t\treturn Container.getComp(").append(className).append(".class);\n");
-		builder.append("\t}\n");
-		return builder.toString();
-	}
+        } else if (Types.BIGINT == type) {
+            return Long.class.getSimpleName();
+        } else if (Types.CLOB == type) {
+            return String.class.getSimpleName();
+        } else if (Types.BLOB == type) {
+            return InputStream.class.getSimpleName();
+        } else if (Types.VARBINARY == type) {
+            return InputStream.class.getSimpleName();
+        } else if (Types.LONGVARBINARY == type) {
+            return InputStream.class.getSimpleName();
+        }
 
-	public String makeConstractor(String className) {
-		StringBuilder builder = new StringBuilder();
-		builder.append("\t/**\n");
-		builder.append("\t * コンストラクタ\n");
-		builder.append("\t */\n");
-		
-		builder.append("\tpublic " + className + "() {\n");
-		builder.append("\t\tsuper();\n");
-		builder.append("\t}\n");
-		
-		return builder.toString();
-	}
-	
-	
-	
-	public boolean is(String able) {
-		if (able != null) {
-			return able.toString().toLowerCase().equals("yes");
-		}
-		return false;
-	}
-	public boolean isnot(String able) {
-		if (able != null) {
-			return able.toString().toLowerCase().equals("no");
-		}
-		return false;
-	}
-	
-	
-	
+        throw new ORMappingException("この型は未対応 : " + type);
+    }
+
+    public String colmnNameToGetterMethod(ColumnDefinition columnDefinition) {
+        String feildName = nameConvertor.colmnNameToFeildName(columnDefinition.getColumn_name());
+        StringBuilder builder = new StringBuilder();
+        // コメント
+        builder.append("\t/**").append("\n");
+        builder.append("\t * " + columnDefinition.getRemarks() + " を取得する").append("\n");
+        builder.append("\t */\n");
+        // 1行目
+        builder.append("\tpublic ");
+        builder.append(getColumnClass(columnDefinition)).append(" ");
+
+        builder.append(feildNameToGetter(feildName));
+        builder.append("()");
+        builder.append(" {\n");
+        // 2行目
+        builder.append("\t\treturn this.").append(feildName).append(";").append("\n");
+        // 3行目
+        builder.append("\t}");
+
+        return builder.toString();
+    }
+
+    public String feildNameToGetter(String feildName) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("get");
+        for (int i = 0; i < feildName.length(); i++) {
+            char c = feildName.charAt(i);
+            if (i == 0) {
+                builder.append(Character.toUpperCase(c));
+            } else {
+                builder.append(c);
+            }
+        }
+        return builder.toString();
+    }
+
+    protected String colmnNameToSetterMethod(String genEntityClassName, ColumnDefinition columnDefinition) {
+        String feildName = nameConvertor.colmnNameToFeildName(columnDefinition.getColumn_name());
+        StringBuilder builder = new StringBuilder();
+        // コメント
+        builder.append("\t/**\n");
+        builder.append("\t * " + columnDefinition.getRemarks() + " を設定する\n");
+        builder.append("\t * @param " + feildName + " " + columnDefinition.getRemarks()).append("\n");
+        builder.append("\t */\n");
+        // 1行目
+        builder.append("\tpublic ").append(genEntityClassName).append(" ");
+        builder.append(feildNameToSetter(feildName));
+
+        builder.append("(");
+        builder.append(getColumnClass(columnDefinition)).append(" ");
+        builder.append(feildName);
+        builder.append(") {\n");
+        // 2行目
+        builder.append("\t\tthis.").append(feildName).append(" = ").append(feildName).append(";").append("\n");
+        // 3行目
+        builder.append("\t\treturn this;\n");
+        // 4行目
+        builder.append("\t}");
+
+        return builder.toString();
+    }
+
+    public String feildNameToSetter(String feildName) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("set");
+        for (int i = 0; i < feildName.length(); i++) {
+            char c = feildName.charAt(i);
+            if (i == 0) {
+                builder.append(Character.toUpperCase(c));
+            } else {
+                builder.append(c);
+            }
+        }
+        return builder.toString();
+    }
+
+    public String makeInstanceMethod(String className) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("\t/**\n");
+        builder.append("\t * インスタンス取得\n");
+        builder.append("\t * AOPに対応\n");
+        builder.append("\t * @return インスタンス\n");
+        builder.append("\t */\n");
+        builder.append("\tpublic static ").append(className).append(" get() {\n");
+        builder.append("\t\treturn Container.getComp(").append(className).append(".class);\n");
+        builder.append("\t}\n");
+        return builder.toString();
+    }
+
+    public String makeConstractor(String className) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("\t/**\n");
+        builder.append("\t * コンストラクタ\n");
+        builder.append("\t */\n");
+
+        builder.append("\tpublic " + className + "() {\n");
+        builder.append("\t\tsuper();\n");
+        builder.append("\t}\n");
+
+        return builder.toString();
+    }
+
+    public boolean is(String able) {
+        if (able != null) {
+            return able.toString().toLowerCase().equals("yes");
+        }
+        return false;
+    }
+
+    public boolean isnot(String able) {
+        if (able != null) {
+            return able.toString().toLowerCase().equals("no");
+        }
+        return false;
+    }
+
 }

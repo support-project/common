@@ -15,6 +15,7 @@ import org.support.project.di.Instance;
 
 /**
  * Javaのプログラムをバッチで実行(別プロセスでjavaを起動する)
+ * 
  * @author koda
  */
 @DI(instance = Instance.Prototype)
@@ -24,7 +25,8 @@ public class JavaJob implements Job {
 
     /**
      * インスタンス取得
-     * @return
+     * 
+     * @return instance
      */
     public static JavaJob get() {
         return Container.getComp(JavaJob.class);
@@ -56,6 +58,7 @@ public class JavaJob implements Job {
      * 
      * @param mainClass
      *            実行するメインクラス
+     * @return JavaJob
      */
     public JavaJob setMainClass(String mainClass) {
         this.mainClass = mainClass;
@@ -66,7 +69,8 @@ public class JavaJob implements Job {
      * クラスパスのディレクトリを追加
      * 
      * @param dir
-     * @return
+     *            JavaJob
+     * @return JavaJob
      */
     public JavaJob addClassPathDir(File dir) {
         this.classPathDirs.add(dir);
@@ -77,7 +81,8 @@ public class JavaJob implements Job {
      * クラスパスのディレクトリを追加
      * 
      * @param dir
-     * @return
+     *            dir
+     * @return JavaJob
      */
     public JavaJob addjarDir(File dir) {
         this.jarDirs.add(dir);
@@ -88,7 +93,8 @@ public class JavaJob implements Job {
      * 引数追加
      * 
      * @param param
-     * @return
+     *            param
+     * @return JavaJob
      */
     public JavaJob addParam(String param) {
         this.params.add(param);
@@ -99,7 +105,10 @@ public class JavaJob implements Job {
      * 環境変数に値を追加
      * 
      * @param key
+     *            key
      * @param value
+     *            value
+     * @return JavaJob
      */
     public JavaJob addEnvironment(String key, String value) {
         this.environment.put(key, value);
@@ -141,8 +150,7 @@ public class JavaJob implements Job {
     /**
      * クラスパスの生成
      * 
-     * @param string
-     * @return
+     * @return classpath string
      */
     private String makeClassPath() {
         StringBuilder builder = new StringBuilder();
@@ -166,7 +174,9 @@ public class JavaJob implements Job {
      * 再帰的にクラスパスを取得
      * 
      * @param builder
+     *            StringBuilder
      * @param dir
+     *            directory
      */
     private void appendLibPath(StringBuilder builder, File dir) {
         LOG.trace(dir);
@@ -187,6 +197,7 @@ public class JavaJob implements Job {
      * カレントディレクトリをセット
      * 
      * @param currentDirectory
+     *            currentDirectory
      */
     public void setCurrentDirectory(File currentDirectory) {
         this.currentDirectory = currentDirectory;
@@ -196,12 +207,15 @@ public class JavaJob implements Job {
      * Jarのディレクトリをセット
      * 
      * @param jarOption
+     *            jarOption
      */
     public void setJarOption(boolean jarOption) {
         this.jarOption = jarOption;
     }
 
     /**
+     * set console listener
+     * 
      * @param consoleListener
      *            the consoleListener to set
      */
