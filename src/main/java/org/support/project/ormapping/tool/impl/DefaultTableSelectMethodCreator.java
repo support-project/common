@@ -12,7 +12,7 @@ import org.support.project.ormapping.tool.DaoGenConfig;
 
 public class DefaultTableSelectMethodCreator {
     /** ログ */
-    private static Log log = LogFactory.getLog(DefaultTableSelectMethodCreator.class);
+    private static final Log LOG = LogFactory.getLog(DefaultTableSelectMethodCreator.class);
 
     private CreatorHelper helper = new CreatorHelper();
     private NameConvertor nameConvertor = new NameConvertor();
@@ -21,6 +21,7 @@ public class DefaultTableSelectMethodCreator {
     private DefaultTableSQLCreator sqlCreator;
 
     public void writeSelectMethod(DaoGenConfig config, PrintWriter pw) {
+        LOG.debug("write metheds of select");
         this.config = config;
         this.sqlCreator = new DefaultTableSQLCreator(config);
 
@@ -32,7 +33,6 @@ public class DefaultTableSelectMethodCreator {
 
         writeSelectOn(pw);
         writePhysicalSelectOn(pw);
-
     }
 
     /**
@@ -58,14 +58,19 @@ public class DefaultTableSelectMethodCreator {
     }
 
     private void writePhysicalSelectOn(PrintWriter pw, ColumnDefinition primary, String fileName) {
-        pw.println("\t/**");
-        pw.print("\t * ");
+        pw.println("    /**");
+        pw.print("     * Select data on ");
         pw.print(primary.getColumn_name());
-        pw.println(" でリストを取得");
-        pw.println("\t */");
+        pw.println(" column.");
+        pw.print("     * @param");
+        pw.print(" " + nameConvertor.colmnNameToFeildName(primary.getColumn_name()));
+        pw.print(" " + nameConvertor.colmnNameToFeildName(primary.getColumn_name()));
+        pw.println("");
+        pw.println("     * @return list");
+        pw.println("     */");
 
         // メソッド定義
-        pw.print("\tpublic List<");
+        pw.print("    public List<");
         pw.print(config.getEntityClassName());
         pw.print("> physicalSelectOn");
         pw.print(nameConvertor.colmnNameToFeildName(primary.getColumn_name(), true));
@@ -75,19 +80,19 @@ public class DefaultTableSelectMethodCreator {
         pw.println(") {");
 
         // SQLの取得
-        pw.print("\t\tString sql = SQLManager.getInstance().getSql(\"");
+        pw.print("        String sql = SQLManager.getInstance().getSql(\"");
         pw.print(config.getSqlPackagePath());
         pw.print("/");
         pw.print(fileName);
         pw.println("\");");
 
         // SQLの実行
-        pw.print("\t\treturn executeQueryList(sql, ");
+        pw.print("        return executeQueryList(sql, ");
         pw.print(config.getEntityClassName() + ".class, ");
         pw.print(nameConvertor.colmnNameToFeildName(primary.getColumn_name()));
         pw.println(");");
 
-        pw.println("\t}");
+        pw.println("    }");
     }
 
     /**
@@ -118,14 +123,19 @@ public class DefaultTableSelectMethodCreator {
      * @param fileName
      */
     private void writeSelectOn(PrintWriter pw, ColumnDefinition primary, String fileName) {
-        pw.println("\t/**");
-        pw.print("\t * ");
+        pw.println("    /**");
+        pw.print("     * Select data that not deleted on ");
         pw.print(primary.getColumn_name());
-        pw.println(" でリストを取得");
-        pw.println("\t */");
+        pw.println(" column.");
+        pw.print("     * @param");
+        pw.print(" " + nameConvertor.colmnNameToFeildName(primary.getColumn_name()));
+        pw.print(" " + nameConvertor.colmnNameToFeildName(primary.getColumn_name()));
+        pw.println("");
+        pw.println("     * @return list");
+        pw.println("     */");
 
         // メソッド定義
-        pw.print("\tpublic List<");
+        pw.print("    public List<");
         pw.print(config.getEntityClassName());
         pw.print("> selectOn");
         pw.print(nameConvertor.colmnNameToFeildName(primary.getColumn_name(), true));
@@ -135,164 +145,192 @@ public class DefaultTableSelectMethodCreator {
         pw.println(") {");
 
         // SQLの取得
-        pw.print("\t\tString sql = SQLManager.getInstance().getSql(\"");
+        pw.print("        String sql = SQLManager.getInstance().getSql(\"");
         pw.print(config.getSqlPackagePath());
         pw.print("/");
         pw.print(fileName);
         pw.println("\");");
 
         // SQLの実行
-        pw.print("\t\treturn executeQueryList(sql, ");
+        pw.print("        return executeQueryList(sql, ");
         pw.print(config.getEntityClassName() + ".class, ");
         pw.print(nameConvertor.colmnNameToFeildName(primary.getColumn_name()));
         pw.println(");");
 
-        pw.println("\t}");
+        pw.println("    }");
 
     }
 
     private void writeSelectOnKey(PrintWriter pw) {
         // コメント
-        pw.println("\t/**");
-        pw.println("\t * キーで1件取得 ");
-        pw.println("\t */");
+        pw.println("    /**");
+        pw.println("     * Select data that not deleted on key.");
+        helper.writeKeyParamOnJavadoc(pw, config); // キーのJavadocを出力
+        pw.println("     * @return data");
+        pw.println("     */");
 
         // メソッド定義
-        pw.print("\tpublic ");
+        pw.print("    public ");
         pw.print(config.getEntityClassName());
         pw.print(" selectOnKey(");
-        List<ColumnDefinition> columnDefinitions = config.getTableDefinition().getColumns();
-        Collection<ColumnDefinition> primaryKeys = config.getPrimaryKeys(columnDefinitions);
-        int count = 0;
-        for (ColumnDefinition columnDefinition : primaryKeys) {
-            if (count > 0) {
-                pw.print(", ");
-            }
-            pw.print(helper.getColumnClass(columnDefinition));
-            pw.print(" " + nameConvertor.colmnNameToFeildName(columnDefinition.getColumn_name()));
-            count++;
-        }
+        helper.writeKeyParam(pw, config); // キーをメソッドに渡す部分を出力
         pw.println(") {");
 
         // SQLの取得
-        pw.print("\t\tString sql = SQLManager.getInstance().getSql(\"");
+        pw.print("        String sql = SQLManager.getInstance().getSql(\"");
         pw.print(config.getSqlPackagePath());
         pw.print("/");
         pw.print(sqlCreator.getSelectOnKeySqlFileName());
         pw.println("\");");
 
         // SQLの実行
-        pw.print("\t\treturn executeQuerySingle(sql, ");
+        pw.print("        return executeQuerySingle(sql, ");
         pw.print(config.getEntityClassName() + ".class, ");
-        count = 0;
-        for (ColumnDefinition columnDefinition : primaryKeys) {
-            if (count > 0) {
-                pw.print(", ");
-            }
-            pw.print(nameConvertor.colmnNameToFeildName(columnDefinition.getColumn_name()));
-            count++;
-        }
+        helper.writeKeyParamOnExecute(pw, config); // 実行部分でキーを実行するメソッドに設定する部分を出力
         pw.println(");");
 
-        pw.println("\t}");
+        pw.println("    }");
     }
 
     private void writePhysicalSelectOnKey(PrintWriter pw) {
         // コメント
-        pw.println("\t/**");
-        pw.println("\t * キーで1件取得(削除フラグを無視して取得) ");
-        pw.println("\t */");
+        pw.println("    /**");
+        pw.println("     * Select data on key.");
+        helper.writeKeyParamOnJavadoc(pw, config); // キーのJavadocを出力
+        pw.println("     * @return data");
+        pw.println("     */");
 
         // メソッド定義
-        pw.print("\tpublic ");
+        pw.print("    public ");
         pw.print(config.getEntityClassName());
         pw.print(" physicalSelectOnKey(");
-        List<ColumnDefinition> columnDefinitions = config.getTableDefinition().getColumns();
-        Collection<ColumnDefinition> primaryKeys = config.getPrimaryKeys(columnDefinitions);
-        int count = 0;
-        for (ColumnDefinition columnDefinition : primaryKeys) {
-            if (count > 0) {
-                pw.print(", ");
-            }
-            pw.print(helper.getColumnClass(columnDefinition));
-            pw.print(" " + nameConvertor.colmnNameToFeildName(columnDefinition.getColumn_name()));
-            count++;
-        }
+        helper.writeKeyParam(pw, config); // キーをメソッドに渡す部分を出力
         pw.println(") {");
 
         // SQLの取得
-        pw.print("\t\tString sql = SQLManager.getInstance().getSql(\"");
+        pw.print("        String sql = SQLManager.getInstance().getSql(\"");
         pw.print(config.getSqlPackagePath());
         pw.print("/");
         pw.print(sqlCreator.getPhysicalSelectOnKeySqlFileName());
         pw.println("\");");
 
         // SQLの実行
-        pw.print("\t\treturn executeQuerySingle(sql, ");
+        pw.print("        return executeQuerySingle(sql, ");
         pw.print(config.getEntityClassName() + ".class, ");
-        count = 0;
-        for (ColumnDefinition columnDefinition : primaryKeys) {
-            if (count > 0) {
-                pw.print(", ");
-            }
-            pw.print(nameConvertor.colmnNameToFeildName(columnDefinition.getColumn_name()));
-            count++;
-        }
+        helper.writeKeyParamOnExecute(pw, config); // 実行部分でキーを実行するメソッドに設定する部分を出力
         pw.println(");");
 
-        pw.println("\t}");
+        pw.println("    }");
     }
 
     private void writeSelectAll(PrintWriter pw) {
         // コメント
-        pw.println("\t/**");
-        pw.println("\t * 全て取得 ");
-        pw.println("\t */");
+        pw.println("    /**");
+        pw.println("     * Select all data that not deleted.");
+        pw.println("     * @return all data");
+        pw.println("     */");
 
         // メソッド定義
-        pw.print("\tpublic List<");
+        pw.print("    public List<");
         pw.print(config.getEntityClassName());
         pw.print("> selectAll() { ");
         pw.println();
 
         // SQLの取得
-        pw.print("\t\tString sql = SQLManager.getInstance().getSql(\"");
+        pw.print("        String sql = SQLManager.getInstance().getSql(\"");
         pw.print(config.getSqlPackagePath());
         pw.print("/");
         pw.print(sqlCreator.getSelectAllSqlFileName());
         pw.println("\");");
 
         // SQLの実行
-        pw.print("\t\treturn executeQueryList(sql, ");
+        pw.print("        return executeQueryList(sql, ");
         pw.println(config.getEntityClassName() + ".class);");
 
-        pw.println("\t}");
+        pw.println("    }");
+        
+        
+        // コメント
+        pw.println("    /**");
+        pw.println("     * Select all data that not deleted with pager.");
+        pw.println("     * @param limit limit");
+        pw.println("     * @param offset offset");
+        pw.println("     * @return all data");
+        pw.println("     */");
+
+        // メソッド定義
+        pw.print("    public List<");
+        pw.print(config.getEntityClassName());
+        pw.print("> selectAllWidthPager(int limit, int offset) { ");
+        pw.println();
+
+        // SQLの取得
+        pw.print("        String sql = SQLManager.getInstance().getSql(\"");
+        pw.print(config.getSqlPackagePath());
+        pw.print("/");
+        pw.print(sqlCreator.getSelectAllWithPagerSqlFileName());
+        pw.println("\");");
+
+        // SQLの実行
+        pw.print("        return executeQueryList(sql, ");
+        pw.println(config.getEntityClassName() + ".class, limit, offset);");
+
+        pw.println("    }");
     }
 
     private void writePhysicalSelectAll(PrintWriter pw) {
         // コメント
-        pw.println("\t/**");
-        pw.println("\t * 全て取得(削除フラグを無視して取得) ");
-        pw.println("\t */");
+        pw.println("    /**");
+        pw.println("     * Select all data.");
+        pw.println("     * @return all data");
+        pw.println("     */");
 
         // メソッド定義
-        pw.print("\tpublic List<");
+        pw.print("    public List<");
         pw.print(config.getEntityClassName());
         pw.print("> physicalSelectAll() { ");
         pw.println();
 
         // SQLの取得
-        pw.print("\t\tString sql = SQLManager.getInstance().getSql(\"");
+        pw.print("        String sql = SQLManager.getInstance().getSql(\"");
         pw.print(config.getSqlPackagePath());
         pw.print("/");
         pw.print(sqlCreator.getPhysicalSelectAllSqlFileName());
         pw.println("\");");
 
         // SQLの実行
-        pw.print("\t\treturn executeQueryList(sql, ");
+        pw.print("        return executeQueryList(sql, ");
         pw.println(config.getEntityClassName() + ".class);");
 
-        pw.println("\t}");
+        pw.println("    }");
+        
+        
+        // コメント
+        pw.println("    /**");
+        pw.println("     * Select all data with pager.");
+        pw.println("     * @param limit limit");
+        pw.println("     * @param offset offset");
+        pw.println("     * @return all data on limit and offset");
+        pw.println("     */");
+
+        // メソッド定義
+        pw.print("    public List<");
+        pw.print(config.getEntityClassName());
+        pw.print("> physicalSelectAllWithPager(int limit, int offset) { ");
+        pw.println();
+
+        // SQLの取得
+        pw.print("        String sql = SQLManager.getInstance().getSql(\"");
+        pw.print(config.getSqlPackagePath());
+        pw.print("/");
+        pw.print(sqlCreator.getPhysicalSelectAllWithPagerSqlFileName());
+        pw.println("\");");
+
+        // SQLの実行
+        pw.print("        return executeQueryList(sql, ");
+        pw.println(config.getEntityClassName() + ".class, limit, offset);");
+
+        pw.println("    }");
     }
 
 }
