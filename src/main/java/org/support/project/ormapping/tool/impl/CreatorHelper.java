@@ -138,6 +138,7 @@ public class CreatorHelper {
         // コメント
         builder.append("    /**").append("\n");
         builder.append("     * Get " + columnDefinition.getRemarks() + ".").append("\n");
+        builder.append("     * @return " + columnDefinition.getRemarks()).append("\n");
         builder.append("     */\n");
         // 1行目
         builder.append("    public ");
@@ -175,6 +176,7 @@ public class CreatorHelper {
         builder.append("    /**\n");
         builder.append("     * Set " + columnDefinition.getRemarks() + ".\n");
         builder.append("     * @param " + feildName + " " + columnDefinition.getRemarks()).append("\n");
+        builder.append("     * @return this object");
         builder.append("     */\n");
         // 1行目
         builder.append("    public ").append(genEntityClassName).append(" ");
