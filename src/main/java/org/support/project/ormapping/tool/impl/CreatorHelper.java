@@ -14,11 +14,13 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.support.project.ormapping.common.NameConvertor;
 import org.support.project.ormapping.entity.ColumnDefinition;
 import org.support.project.ormapping.exception.ORMappingException;
+import org.support.project.ormapping.tool.DaoGenConfig;
 
 public class CreatorHelper {
 
@@ -134,20 +136,21 @@ public class CreatorHelper {
         String feildName = nameConvertor.colmnNameToFeildName(columnDefinition.getColumn_name());
         StringBuilder builder = new StringBuilder();
         // コメント
-        builder.append("\t/**").append("\n");
-        builder.append("\t * " + columnDefinition.getRemarks() + " を取得する").append("\n");
-        builder.append("\t */\n");
+        builder.append("    /**").append("\n");
+        builder.append("     * Get " + columnDefinition.getRemarks() + ".").append("\n");
+        builder.append("     * @return " + columnDefinition.getRemarks()).append("\n");
+        builder.append("     */\n");
         // 1行目
-        builder.append("\tpublic ");
+        builder.append("    public ");
         builder.append(getColumnClass(columnDefinition)).append(" ");
 
         builder.append(feildNameToGetter(feildName));
         builder.append("()");
         builder.append(" {\n");
         // 2行目
-        builder.append("\t\treturn this.").append(feildName).append(";").append("\n");
+        builder.append("        return this.").append(feildName).append(";").append("\n");
         // 3行目
-        builder.append("\t}");
+        builder.append("    }");
 
         return builder.toString();
     }
@@ -170,12 +173,13 @@ public class CreatorHelper {
         String feildName = nameConvertor.colmnNameToFeildName(columnDefinition.getColumn_name());
         StringBuilder builder = new StringBuilder();
         // コメント
-        builder.append("\t/**\n");
-        builder.append("\t * " + columnDefinition.getRemarks() + " を設定する\n");
-        builder.append("\t * @param " + feildName + " " + columnDefinition.getRemarks()).append("\n");
-        builder.append("\t */\n");
+        builder.append("    /**\n");
+        builder.append("     * Set " + columnDefinition.getRemarks() + ".\n");
+        builder.append("     * @param " + feildName + " " + columnDefinition.getRemarks()).append("\n");
+        builder.append("     * @return this object");
+        builder.append("     */\n");
         // 1行目
-        builder.append("\tpublic ").append(genEntityClassName).append(" ");
+        builder.append("    public ").append(genEntityClassName).append(" ");
         builder.append(feildNameToSetter(feildName));
 
         builder.append("(");
@@ -183,11 +187,11 @@ public class CreatorHelper {
         builder.append(feildName);
         builder.append(") {\n");
         // 2行目
-        builder.append("\t\tthis.").append(feildName).append(" = ").append(feildName).append(";").append("\n");
+        builder.append("        this.").append(feildName).append(" = ").append(feildName).append(";").append("\n");
         // 3行目
-        builder.append("\t\treturn this;\n");
+        builder.append("        return this;\n");
         // 4行目
-        builder.append("\t}");
+        builder.append("    }");
 
         return builder.toString();
     }
@@ -208,26 +212,25 @@ public class CreatorHelper {
 
     public String makeInstanceMethod(String className) {
         StringBuilder builder = new StringBuilder();
-        builder.append("\t/**\n");
-        builder.append("\t * インスタンス取得\n");
-        builder.append("\t * AOPに対応\n");
-        builder.append("\t * @return インスタンス\n");
-        builder.append("\t */\n");
-        builder.append("\tpublic static ").append(className).append(" get() {\n");
-        builder.append("\t\treturn Container.getComp(").append(className).append(".class);\n");
-        builder.append("\t}\n");
+        builder.append("    /**\n");
+        builder.append("     * Get instance from DI container.\n");
+        builder.append("     * @return instance\n");
+        builder.append("     */\n");
+        builder.append("    public static ").append(className).append(" get() {\n");
+        builder.append("        return Container.getComp(").append(className).append(".class);\n");
+        builder.append("    }\n");
         return builder.toString();
     }
 
     public String makeConstractor(String className) {
         StringBuilder builder = new StringBuilder();
-        builder.append("\t/**\n");
-        builder.append("\t * コンストラクタ\n");
-        builder.append("\t */\n");
+        builder.append("    /**\n");
+        builder.append("     * Constructor.\n");
+        builder.append("     */\n");
 
-        builder.append("\tpublic " + className + "() {\n");
-        builder.append("\t\tsuper();\n");
-        builder.append("\t}\n");
+        builder.append("    public " + className + "() {\n");
+        builder.append("        super();\n");
+        builder.append("    }\n");
 
         return builder.toString();
     }
@@ -244,6 +247,59 @@ public class CreatorHelper {
             return able.toString().toLowerCase().equals("no");
         }
         return false;
+    }
+
+    
+    
+    /**
+     * キー項目のJavadocを出力
+     * @param pw PrintWriter
+     * @param config DaoGenConfig
+     */
+    public void writeKeyParamOnJavadoc(PrintWriter pw, DaoGenConfig config) {
+        List<ColumnDefinition> columnDefinitions = config.getTableDefinition().getColumns();
+        Collection<ColumnDefinition> primaryKeys = config.getPrimaryKeys(columnDefinitions);
+        for (ColumnDefinition columnDefinition : primaryKeys) {
+            pw.print("     * @param ");
+            pw.print(" " + nameConvertor.colmnNameToFeildName(columnDefinition.getColumn_name()));
+            pw.print(" " + nameConvertor.colmnNameToFeildName(columnDefinition.getColumn_name()));
+            pw.println("");
+        }
+    }
+    /**
+     * キーをメソッドに渡す部分を出力
+     * @param pw PrintWriter
+     * @param config DaoGenConfig
+     */
+    public void writeKeyParam(PrintWriter pw, DaoGenConfig config) {
+        List<ColumnDefinition> columnDefinitions = config.getTableDefinition().getColumns();
+        Collection<ColumnDefinition> primaryKeys = config.getPrimaryKeys(columnDefinitions);
+        int count = 0;
+        for (ColumnDefinition columnDefinition : primaryKeys) {
+            if (count > 0) {
+                pw.print(", ");
+            }
+            pw.print(this.getColumnClass(columnDefinition));
+            pw.print(" " + nameConvertor.colmnNameToFeildName(columnDefinition.getColumn_name()));
+            count++;
+        }
+    }
+    /**
+     * 実行部分でキーを実行するメソッドに設定する部分を出力
+     * @param pw PrintWriter
+     * @param config DaoGenConfig
+     */
+    public void writeKeyParamOnExecute(PrintWriter pw, DaoGenConfig config) {
+        int count = 0;
+        List<ColumnDefinition> columnDefinitions = config.getTableDefinition().getColumns();
+        Collection<ColumnDefinition> primaryKeys = config.getPrimaryKeys(columnDefinitions);
+        for (ColumnDefinition columnDefinition : primaryKeys) {
+            if (count > 0) {
+                pw.print(", ");
+            }
+            pw.print(nameConvertor.colmnNameToFeildName(columnDefinition.getColumn_name()));
+            count++;
+        }
     }
 
 }

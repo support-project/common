@@ -30,13 +30,16 @@ public class DefaultTableSaveMethodCreator {
 
     private void writeSave(PrintWriter pw) {
         // コメント
-        pw.println("\t/**");
-        pw.println("\t * 保存(存在しなければ登録、存在すれば更新) ");
-        pw.println("\t */");
+        pw.println("    /**");
+        pw.println("     * Save. ");
+        pw.println("     * if same key data is exists, the data is update. otherwise the data is insert.");
+        pw.println("     * @param entity entity");
+        pw.println("     * @return saved entity");
+        pw.println("     */");
 
-        pw.println("\t@Aspect(advice=org.support.project.ormapping.transaction.Transaction.class)");
+        pw.println("    @Aspect(advice = org.support.project.ormapping.transaction.Transaction.class)");
         // メソッド定義
-        pw.print("\tpublic ");
+        pw.print("    public ");
         pw.print(config.getEntityClassName());
         pw.print(" save(");
         pw.print(config.getEntityClassName());
@@ -44,7 +47,7 @@ public class DefaultTableSaveMethodCreator {
 
         // DBの存在チェック
         List<ColumnDefinition> columnDefinitions = config.getTableDefinition().getColumns();
-        pw.print("\t\t");
+        pw.print("        ");
         pw.print(config.getEntityClassName());
         pw.print(" db = selectOnKey(");
         Collection<ColumnDefinition> primaryKeys = config.getPrimaryKeys(columnDefinitions);
@@ -61,24 +64,29 @@ public class DefaultTableSaveMethodCreator {
         }
         pw.println(");");
 
-        pw.println("\t\tif (db == null) {");
-        pw.println("\t\t\treturn insert(entity);");
-        pw.println("\t\t} else {");
-        pw.println("\t\t\treturn update(entity);");
-        pw.println("\t\t}");
+        pw.println("        if (db == null) {");
+        pw.println("            return insert(entity);");
+        pw.println("        } else {");
+        pw.println("            return update(entity);");
+        pw.println("        }");
 
-        pw.println("\t}");
+        pw.println("    }");
     }
 
     private void writeSaveOnUser(PrintWriter pw) {
         // コメント
-        pw.println("\t/**");
-        pw.println("\t * 保存(ユーザを指定) ");
-        pw.println("\t */");
+        pw.println("    /**");
+        pw.println("     * Save. ");
+        pw.println("     * if same key data is exists, the data is update. otherwise the data is insert.");
+        pw.println("     * set saved user id.");
+        pw.println("     * @param user saved userid");
+        pw.println("     * @param entity entity");
+        pw.println("     * @return saved entity");
+        pw.println("     */");
 
-        pw.println("\t@Aspect(advice=org.support.project.ormapping.transaction.Transaction.class)");
+        pw.println("    @Aspect(advice = org.support.project.ormapping.transaction.Transaction.class)");
         // メソッド定義
-        pw.print("\tpublic ");
+        pw.print("    public ");
         pw.print(config.getEntityClassName());
         pw.print(" save(");
         pw.print(config.getCommonUseridType());
@@ -88,7 +96,7 @@ public class DefaultTableSaveMethodCreator {
 
         // DBの存在チェック
         List<ColumnDefinition> columnDefinitions = config.getTableDefinition().getColumns();
-        pw.print("\t\t");
+        pw.print("        ");
         pw.print(config.getEntityClassName());
         pw.print(" db = selectOnKey(");
         Collection<ColumnDefinition> primaryKeys = config.getPrimaryKeys(columnDefinitions);
@@ -105,13 +113,13 @@ public class DefaultTableSaveMethodCreator {
         }
         pw.println(");");
 
-        pw.println("\t\tif (db == null) {");
-        pw.println("\t\t\treturn insert(user, entity);");
-        pw.println("\t\t} else {");
-        pw.println("\t\t\treturn update(user, entity);");
-        pw.println("\t\t}");
+        pw.println("        if (db == null) {");
+        pw.println("            return insert(user, entity);");
+        pw.println("        } else {");
+        pw.println("            return update(user, entity);");
+        pw.println("        }");
 
-        pw.println("\t}");
+        pw.println("    }");
 
     }
 

@@ -96,11 +96,11 @@ public class DefaultEntityCteatorImpl implements EntityClassCreator {
             pw.println(" * " + tableDefinition.getRemarks());
             pw.println(" */");
 
-            pw.println("@DI(instance=Instance.Prototype)");
+            pw.println("@DI(instance = Instance.Prototype)");
             pw.println("public class " + entityClassName + " extends " + genEntityClassName + " {");
             pw.println();
-            pw.println("\t/** SerialVersion */");
-            pw.println("\tprivate static final long serialVersionUID = 1L;");
+            pw.println("    /** SerialVersion */");
+            pw.println("    private static final long serialVersionUID = 1L;");
             pw.println();
 
             // インスタンス取得
@@ -113,7 +113,7 @@ public class DefaultEntityCteatorImpl implements EntityClassCreator {
             pw.println(makeKeyConstractorComment(columnDefinitions));
             Collection<ColumnDefinition> primaryKeys = getPrimaryKeys(columnDefinitions);
             int count = 0;
-            pw.print("\tpublic " + entityClassName + "(");
+            pw.print("    public " + entityClassName + "(");
             count = 0;
             for (ColumnDefinition columnDefinition : primaryKeys) {
                 if (count > 0) {
@@ -124,7 +124,7 @@ public class DefaultEntityCteatorImpl implements EntityClassCreator {
                 count++;
             }
             pw.println(") {");
-            pw.print("\t\tsuper(");
+            pw.print("        super(");
             count = 0;
             for (ColumnDefinition columnDefinition : primaryKeys) {
                 if (count > 0) {
@@ -134,17 +134,17 @@ public class DefaultEntityCteatorImpl implements EntityClassCreator {
                 count++;
             }
             pw.println(");");
-            pw.println("\t}");
+            pw.println("    }");
 
             // staticメソッドでの提供を辞める
-            // pw.println("\t/**");
-            // pw.println("\t * validate ");
-            // pw.println("\t */");
-            // pw.println("\tpublic static List<ValidateError> validate(Map<String, String> values) {");
-            // pw.print("\t\treturn ");
+            // pw.println("    /**");
+            // pw.println("     * validate ");
+            // pw.println("     */");
+            // pw.println("    public static List<ValidateError> validate(Map<String, String> values) {");
+            // pw.print("        return ");
             // pw.print(genEntityClassName);
             // pw.println(".validate(values);");
-            // pw.println("\t}");
+            // pw.println("    }");
 
             pw.println();
             pw.println("}");
@@ -192,11 +192,11 @@ public class DefaultEntityCteatorImpl implements EntityClassCreator {
             pw.println(" * " + tableDefinition.getRemarks());
             pw.println(" */");
 
-            pw.println("@DI(instance=Instance.Prototype)");
+            pw.println("@DI(instance = Instance.Prototype)");
             pw.println("public class " + genEntityClassName + " implements Serializable {");
             pw.println();
-            pw.println("\t/** SerialVersion */");
-            pw.println("\tprivate static final long serialVersionUID = 1L;");
+            pw.println("    /** SerialVersion */");
+            pw.println("    private static final long serialVersionUID = 1L;");
             pw.println();
 
             // インスタンス取得
@@ -247,13 +247,15 @@ public class DefaultEntityCteatorImpl implements EntityClassCreator {
      * @param pw
      */
     private void writeToLabelName(List<ColumnDefinition> columnDefinitions, PrintWriter pw) {
-        pw.println("\t/**");
-        pw.println("\t * 表示用の名称を変換 ");
-        pw.println("\t */");
+        pw.println("    /**");
+        pw.println("     * Convert label to display ");
+        pw.println("     * @param label label");
+        pw.println("     * @return convert label ");
+        pw.println("     */");
 
-        pw.println("\tprotected String convLabelName(String label) {");
-        pw.println("\t\treturn label;");
-        pw.println("\t}");
+        pw.println("    protected String convLabelName(String label) {");
+        pw.println("        return label;");
+        pw.println("    }");
     }
 
     /**
@@ -263,13 +265,13 @@ public class DefaultEntityCteatorImpl implements EntityClassCreator {
      */
     private String makeKeyConstractorComment(List<ColumnDefinition> columnDefinitions) {
         StringBuilder builder = new StringBuilder();
-        builder.append("\t/**\n");
-        builder.append("\t * コンストラクタ\n");
+        builder.append("    /**\n");
+        builder.append("     * Constructor\n");
 
         Collection<ColumnDefinition> primaryKeys = getPrimaryKeys(columnDefinitions);
         for (ColumnDefinition columnDefinition : primaryKeys) {
             String feildName = nameConvertor.colmnNameToFeildName(columnDefinition.getColumn_name());
-            builder.append("\t * @param " + feildName + " " + columnDefinition.getRemarks());
+            builder.append("     * @param " + feildName + " " + columnDefinition.getRemarks());
             // builder.append(" ");
             // builder.append(columnDefinition.getType_name());
             // builder.append("[");
@@ -278,22 +280,23 @@ public class DefaultEntityCteatorImpl implements EntityClassCreator {
             builder.append("\n");
         }
 
-        builder.append("\t */\n");
+        builder.append("     */\n");
         return builder.toString();
     }
 
     private void writeToString(List<ColumnDefinition> columnDefinitions, PrintWriter pw) {
         Collection<ColumnDefinition> primaryKeys = getPrimaryKeys(columnDefinitions);
 
-        pw.println("\t/**");
-        pw.println("\t * ToString ");
-        pw.println("\t */");
+        pw.println("    /**");
+        pw.println("     * ToString ");
+        pw.println("     * @return string ");
+        pw.println("     */");
 
-        pw.println("\tpublic String toString() {");
+        pw.println("    public String toString() {");
 
-        pw.println("\t\tStringBuilder builder = new StringBuilder();");
+        pw.println("        StringBuilder builder = new StringBuilder();");
         for (ColumnDefinition columnDefinition : primaryKeys) {
-            pw.print("\t\tbuilder.append(\"");
+            pw.print("        builder.append(\"");
             pw.print(nameConvertor.colmnNameToFeildName(columnDefinition.getColumn_name()));
             pw.print(" = \").append(");
             pw.print(nameConvertor.colmnNameToFeildName(columnDefinition.getColumn_name()));
@@ -302,7 +305,7 @@ public class DefaultEntityCteatorImpl implements EntityClassCreator {
 
         for (ColumnDefinition columnDefinition : columnDefinitions) {
             if (!primaryKeys.contains(columnDefinition)) {
-                pw.print("\t\tbuilder.append(\"");
+                pw.print("        builder.append(\"");
                 pw.print(nameConvertor.colmnNameToFeildName(columnDefinition.getColumn_name()));
                 pw.print(" = \").append(");
                 pw.print(nameConvertor.colmnNameToFeildName(columnDefinition.getColumn_name()));
@@ -310,9 +313,9 @@ public class DefaultEntityCteatorImpl implements EntityClassCreator {
             }
         }
 
-        pw.println("\t\treturn builder.toString();");
+        pw.println("        return builder.toString();");
 
-        pw.println("\t}");
+        pw.println("    }");
     }
 
     private void writeKeyConstracter(List<ColumnDefinition> columnDefinitions, PrintWriter pw, String genEntityClassName) {
@@ -320,7 +323,7 @@ public class DefaultEntityCteatorImpl implements EntityClassCreator {
 
         // setter
         int count = 0;
-        pw.print("\tpublic " + genEntityClassName + "(");
+        pw.print("    public " + genEntityClassName + "(");
         count = 0;
         for (ColumnDefinition columnDefinition : primaryKeys) {
             if (count > 0) {
@@ -331,22 +334,22 @@ public class DefaultEntityCteatorImpl implements EntityClassCreator {
             count++;
         }
         pw.println(") {");
-        pw.println("\t\tsuper();");
+        pw.println("        super();");
         for (ColumnDefinition columnDefinition : primaryKeys) {
-            pw.print("\t\tthis.");
+            pw.print("        this.");
             pw.print(nameConvertor.colmnNameToFeildName(columnDefinition.getColumn_name()));
             pw.print(" = ");
             pw.print(nameConvertor.colmnNameToFeildName(columnDefinition.getColumn_name()));
             pw.println(";");
         }
-        pw.println("\t}");
+        pw.println("    }");
 
     }
 
     private void writeColumns(String genEntityClassName, List<ColumnDefinition> columnDefinitions, PrintWriter pw) {
         for (ColumnDefinition columnDefinition : columnDefinitions) {
-            pw.println("\t" + makeColumnComment(columnDefinition));
-            pw.println("\tprivate " + helper.getColumnClass(columnDefinition) + " "
+            pw.println("    " + makeColumnComment(columnDefinition));
+            pw.println("    private " + helper.getColumnClass(columnDefinition) + " "
                     + nameConvertor.colmnNameToFeildName(columnDefinition.getColumn_name()) + ";");
         }
         pw.println();
@@ -379,38 +382,39 @@ public class DefaultEntityCteatorImpl implements EntityClassCreator {
         Collection<ColumnDefinition> primaryKeys = getPrimaryKeys(columnDefinitions);
 
         // getter
-        pw.println("\t/**");
-        pw.println("\t * キーの値を取得 ");
-        pw.println("\t */");
+        pw.println("    /**");
+        pw.println("     * Get key values ");
+        pw.println("     * @return values ");
+        pw.println("     */");
 
-        pw.println("\tpublic Object[] getKeyValues() {");
+        pw.println("    public Object[] getKeyValues() {");
 
-        pw.print("\t\tObject[] keyValues = new Object[");
+        pw.print("        Object[] keyValues = new Object[");
         pw.print(primaryKeys.size());
         pw.println("];");
 
         int count = 0;
         for (ColumnDefinition columnDefinition : primaryKeys) {
-            pw.print("\t\tkeyValues[");
+            pw.print("        keyValues[");
             pw.print(count);
             pw.print("] = this.");
             pw.print(nameConvertor.colmnNameToFeildName(columnDefinition.getColumn_name()));
             pw.println(";");
             count++;
         }
-        pw.println("\t\treturn keyValues;");
+        pw.println("        return keyValues;");
 
-        pw.println("\t}");
+        pw.println("    }");
 
         // setter
-        pw.println("\t/**");
-        pw.println("\t * キーの値を設定 ");
+        pw.println("    /**");
+        pw.println("     * Set key values ");
         for (ColumnDefinition columnDefinition : primaryKeys) {
             String feildName = nameConvertor.colmnNameToFeildName(columnDefinition.getColumn_name());
-            pw.println("\t * @param " + feildName + " " + columnDefinition.getRemarks());
+            pw.println("     * @param " + feildName + " " + columnDefinition.getRemarks());
         }
-        pw.println("\t */");
-        pw.print("\tpublic void setKeyValues(");
+        pw.println("     */");
+        pw.print("    public void setKeyValues(");
         count = 0;
         for (ColumnDefinition columnDefinition : primaryKeys) {
             if (count > 0) {
@@ -422,48 +426,50 @@ public class DefaultEntityCteatorImpl implements EntityClassCreator {
         }
         pw.println(") {");
         for (ColumnDefinition columnDefinition : primaryKeys) {
-            pw.print("\t\tthis.");
+            pw.print("        this.");
             pw.print(nameConvertor.colmnNameToFeildName(columnDefinition.getColumn_name()));
             pw.print(" = ");
             pw.print(nameConvertor.colmnNameToFeildName(columnDefinition.getColumn_name()));
             pw.println(";");
         }
-        pw.println("\t}");
+        pw.println("    }");
     }
 
     private void writeEqualsOnKey(String genEntityClassName, List<ColumnDefinition> columnDefinitions, PrintWriter pw) {
-        pw.println("\t/**");
-        pw.println("\t * キーで比較 ");
-        pw.println("\t */");
+        pw.println("    /**");
+        pw.println("     * compare on key ");
+        pw.println("     * @param entity entity ");
+        pw.println("     * @return result ");
+        pw.println("     */");
 
-        pw.print("\tpublic boolean equalsOnKey(");
+        pw.print("    public boolean equalsOnKey(");
         pw.print(genEntityClassName);
         pw.println(" entity) {");
 
-        pw.println("\t\tObject[] keyValues1 = getKeyValues();");
-        pw.println("\t\tObject[] keyValues2 = entity.getKeyValues();");
+        pw.println("        Object[] keyValues1 = getKeyValues();");
+        pw.println("        Object[] keyValues2 = entity.getKeyValues();");
 
-        pw.println("\t\tfor (int i = 0; i < keyValues1.length; i++) {");
-        pw.println("\t\t\tObject val1 = keyValues1[i];");
-        pw.println("\t\t\tObject val2 = keyValues2[i];");
-        pw.println("\t\t\tif (val1 == null && val2 != null) {");
-        pw.println("\t\t\t\treturn false;");
-        pw.println("\t\t\t}");
-        pw.println("\t\t\tif (val1 != null && val2 == null) {");
-        pw.println("\t\t\t\treturn false;");
-        pw.println("\t\t\t}");
-        pw.println("\t\t\tif (val1 != null && val2 != null) {");
-        pw.println("\t\t\t\tif (!val1.equals(val2)) {");
-        pw.println("\t\t\t\t\treturn false;");
-        pw.println("\t\t\t\t}");
-        pw.println("\t\t\t}");
+        pw.println("        for (int i = 0; i < keyValues1.length; i++) {");
+        pw.println("            Object val1 = keyValues1[i];");
+        pw.println("            Object val2 = keyValues2[i];");
+        pw.println("            if (val1 == null && val2 != null) {");
+        pw.println("                return false;");
+        pw.println("            }");
+        pw.println("            if (val1 != null && val2 == null) {");
+        pw.println("                return false;");
+        pw.println("            }");
+        pw.println("            if (val1 != null && val2 != null) {");
+        pw.println("                if (!val1.equals(val2)) {");
+        pw.println("                    return false;");
+        pw.println("                }");
+        pw.println("            }");
 
-        pw.println("\t\t\t");
+        pw.println("            ");
 
-        pw.println("\t\t}");
+        pw.println("        }");
 
-        pw.println("\t\treturn true;");
-        pw.println("\t}");
+        pw.println("        return true;");
+        pw.println("    }");
     }
 
     private Collection<ColumnDefinition> getPrimaryKeys(List<ColumnDefinition> columnDefinitions) {

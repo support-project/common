@@ -41,42 +41,49 @@ public class DefaultTableInsertMethodCreator {
 
     private void writeInsert(PrintWriter pw) {
         // コメント
-        pw.println("\t/**");
-        pw.println("\t * 登録");
-        pw.println("\t */");
+        pw.println("    /**");
+        pw.println("     * Insert.");
+        pw.println("     * saved user id is auto set.");
+        pw.println("     * @param entity entity");
+        pw.println("     * @return saved entity");
+        pw.println("     */");
 
-        pw.println("\t@Aspect(advice=org.support.project.ormapping.transaction.Transaction.class)");
+        pw.println("    @Aspect(advice = org.support.project.ormapping.transaction.Transaction.class)");
 
         // メソッド定義
-        pw.print("\tpublic ");
+        pw.print("    public ");
         pw.print(config.getEntityClassName());
         pw.print(" insert(");
         pw.print(config.getEntityClassName());
         pw.println(" entity) {");
         if (StringUtils.isEmpty(config.getCommonInsertUserName())) {
-            pw.println("\t\treturn physicalInsert(entity);");
+            pw.println("        return physicalInsert(entity);");
         } else {
-            pw.println("\t\tDBUserPool pool = Container.getComp(DBUserPool.class);");
-            pw.print("\t\t");
+            pw.println("        DBUserPool pool = Container.getComp(DBUserPool.class);");
+            pw.print("        ");
             pw.print(config.getCommonUseridType());
             pw.print(" userId = (");
             pw.print(config.getCommonUseridType());
             pw.println(") pool.getUser();");
-            pw.println("\t\treturn insert(userId, entity);");
+            pw.println("        return insert(userId, entity);");
         }
-        pw.println("\t}");
+        pw.println("    }");
     }
 
     private void writeInsertOnUser(PrintWriter pw) {
         // コメント
-        pw.println("\t/**");
-        pw.println("\t * 登録(登録ユーザを指定) ");
-        pw.println("\t */");
+        pw.println("    /**");
+        pw.println("     * Insert.");
+        pw.println("     * set saved user id.");
+        pw.println("     * @param user saved userid");
+        pw.println("     * @param entity entity");
+        pw.println("     * @return saved entity");
+        pw.println("     */");
 
-        pw.println("\t@Aspect(advice=org.support.project.ormapping.transaction.Transaction.class)");
+        pw.println("    @Aspect(advice = org.support.project.ormapping.transaction.Transaction.class)");
 
         // メソッド定義
-        pw.print("\tpublic ");
+        pw.print("    public ");
         pw.print(config.getEntityClassName());
         pw.print(" insert(");
         pw.print(config.getCommonUseridType());
@@ -110,14 +117,14 @@ public class DefaultTableInsertMethodCreator {
             if (userColumn != null) {
                 // 登録ユーザをセット
                 String feildName = nameConvertor.colmnNameToFeildName(userColumn.getColumn_name());
-                pw.print("\t\tentity.");
+                pw.print("        entity.");
                 pw.print(helper.feildNameToSetter(feildName));
                 pw.println("(user);");
             }
             if (datetimeColumn != null) {
                 // 登録ユーザをセット
                 String feildName = nameConvertor.colmnNameToFeildName(datetimeColumn.getColumn_name());
-                pw.print("\t\tentity.");
+                pw.print("        entity.");
                 pw.print(helper.feildNameToSetter(feildName));
                 pw.println("(new Timestamp(new java.util.Date().getTime()));");
             }
@@ -125,14 +132,14 @@ public class DefaultTableInsertMethodCreator {
             if (updateUserColumn != null) {
                 // 登録ユーザをセット
                 String feildName = nameConvertor.colmnNameToFeildName(updateUserColumn.getColumn_name());
-                pw.print("\t\tentity.");
+                pw.print("        entity.");
                 pw.print(helper.feildNameToSetter(feildName));
                 pw.println("(user);");
             }
             if (updateDatetimeColumn != null) {
                 // 登録ユーザをセット
                 String feildName = nameConvertor.colmnNameToFeildName(updateDatetimeColumn.getColumn_name());
-                pw.print("\t\tentity.");
+                pw.print("        entity.");
                 pw.print(helper.feildNameToSetter(feildName));
                 pw.println("(new Timestamp(new java.util.Date().getTime()));");
             }
@@ -142,7 +149,7 @@ public class DefaultTableInsertMethodCreator {
         if (StringUtils.isNotEmpty(config.getCommonDeleteFlag())) {
             // 削除フラグをセット
             String feildName = nameConvertor.colmnNameToFeildName(config.getCommonDeleteFlag());
-            pw.print("\t\tentity.");
+            pw.print("        entity.");
             pw.print(helper.feildNameToSetter(feildName));
             pw.print("(");
             pw.print(INT_FLAG.OFF.getValue());
@@ -150,39 +157,42 @@ public class DefaultTableInsertMethodCreator {
         }
 
         if (StringUtils.isNotEmpty(config.getRowIdColumn())) {
-            pw.print("\t\tentity.");
+            pw.print("        entity.");
             String f = nameConvertor.colmnNameToFeildName(config.getRowIdColumn());
             pw.print(helper.feildNameToSetter(f));
             pw.println("(createRowId());");
         }
 
-        pw.println("\t\treturn physicalInsert(entity);");
-        pw.println("\t}");
+        pw.println("        return physicalInsert(entity);");
+        pw.println("    }");
     }
 
     private void writePhysicalInsert(PrintWriter pw) {
         // コメント
-        pw.println("\t/**");
-        pw.println("\t * 登録(データを生で操作) ");
-        pw.println("\t */");
+        pw.println("    /**");
+        pw.println("     * Physical Insert.");
+        pw.println("     * if key column have sequence, key value create by database.");
+        pw.println("     * @param entity entity");
+        pw.println("     * @return saved entity");
+        pw.println("     */");
 
-        pw.println("\t@Aspect(advice=org.support.project.ormapping.transaction.Transaction.class)");
+        pw.println("    @Aspect(advice = org.support.project.ormapping.transaction.Transaction.class)");
 
         // メソッド定義
-        pw.print("\tpublic ");
+        pw.print("    public ");
         pw.print(config.getEntityClassName());
         pw.print(" physicalInsert(");
         pw.print(config.getEntityClassName());
         pw.println(" entity) {");
 
         // SQLの取得
-        pw.print("\t\tString sql = SQLManager.getInstance().getSql(\"");
+        pw.print("        String sql = SQLManager.getInstance().getSql(\"");
         pw.print(config.getSqlPackagePath());
         pw.print("/");
         pw.print(sqlCreator.getInsertSqlFileName());
         pw.println("\");");
 
-        pw.print("\t\t");
+        pw.print("        ");
 
         // プライマリキーが自動生成であるかチェック
         List<ColumnDefinition> columnDefinitions = config.getTableDefinition().getColumns();
@@ -204,7 +214,7 @@ public class DefaultTableInsertMethodCreator {
         if (keygen) {
             pw.println(
                     "Class<?> type = PropertyUtil.getPropertyType(entity, \"" + nameConvertor.colmnNameToFeildName(keycol.getColumn_name()) + "\");");
-            pw.println("\t\tObject key = executeInsert(sql, type, ");
+            pw.println("        Object key = executeInsert(sql, type, ");
             int count = 0;
 
             List<String> primaryKeyName = new ArrayList<>();
@@ -214,35 +224,35 @@ public class DefaultTableInsertMethodCreator {
 
             for (ColumnDefinition column : columnDefinitions) {
                 if (!primaryKeyName.contains(column.getColumn_name())) {
-                    pw.print("\t\t\t");
                     if (count > 0) {
-                        pw.print(", ");
+                        pw.println(", ");
                     }
+                    pw.print("            ");
                     pw.print("entity.");
                     String feildName = nameConvertor.colmnNameToFeildName(column.getColumn_name());
                     pw.print(helper.feildNameToGetter(feildName));
-                    pw.println("()");
+                    pw.print("()");
                     count++;
                 }
             }
-            pw.print("\t\t");
             pw.println(");");
             // 採番したキーをセット
-            pw.println("\t\tPropertyUtil.setPropertyValue(entity, \"" + nameConvertor.colmnNameToFeildName(keycol.getColumn_name()) + "\", key);");
+            pw.println("        PropertyUtil.setPropertyValue(entity, \""
+                    + nameConvertor.colmnNameToFeildName(keycol.getColumn_name()) + "\", key);");
         } else {
             pw.println("executeUpdate(sql, ");
             int count = 0;
 
             List<String> primaryKeyName = new ArrayList<>();
             for (ColumnDefinition column : primaryKeys) {
-                pw.print("\t\t\t");
                 if (count > 0) {
-                    pw.print(", ");
+                    pw.println(", ");
                 }
+                pw.print("            ");
                 pw.print("entity.");
                 String feildName = nameConvertor.colmnNameToFeildName(column.getColumn_name());
                 pw.print(helper.feildNameToGetter(feildName));
-                pw.println("()");
+                pw.print("()");
                 count++;
 
                 primaryKeyName.add(column.getColumn_name());
@@ -250,52 +260,53 @@ public class DefaultTableInsertMethodCreator {
 
             for (ColumnDefinition column : columnDefinitions) {
                 if (!primaryKeyName.contains(column.getColumn_name())) {
-                    pw.print("\t\t\t");
                     if (count > 0) {
-                        pw.print(", ");
+                        pw.println(", ");
                     }
+                    pw.print("            ");
                     pw.print("entity.");
                     String feildName = nameConvertor.colmnNameToFeildName(column.getColumn_name());
                     pw.print(helper.feildNameToGetter(feildName));
-                    pw.println("()");
+                    pw.print("()");
                     count++;
                 }
             }
-            pw.print("\t\t");
             pw.println(");");
         }
-
-        pw.print("\t\t");
+        pw.print("        ");
         pw.println("return entity;");
 
-        pw.println("\t}");
+        pw.println("    }");
     }
-
+    
+    
     private void writeRawPhysicalInsert(PrintWriter pw) {
         // コメント
-        pw.println("\t/**");
-        pw.println("\t * 登録(データを生で操作/DBの採番機能のカラムも自分でセット) ");
-        pw.println("\t */");
+        pw.println("    /**");
+        pw.println("     * Physical Insert.");
+        pw.println("     * it is not create key on database sequence.");
+        pw.println("     * @param entity entity");
+        pw.println("     * @return saved entity");
+        pw.println("     */");
 
-        pw.println("\t@Aspect(advice=org.support.project.ormapping.transaction.Transaction.class)");
+        pw.println("    @Aspect(advice = org.support.project.ormapping.transaction.Transaction.class)");
 
         // メソッド定義
-        pw.print("\tpublic ");
+        pw.print("    public ");
         pw.print(config.getEntityClassName());
         pw.print(" rawPhysicalInsert(");
         pw.print(config.getEntityClassName());
         pw.println(" entity) {");
 
         // SQLの取得
-        pw.print("\t\tString sql = SQLManager.getInstance().getSql(\"");
+        pw.print("        String sql = SQLManager.getInstance().getSql(\"");
         pw.print(config.getSqlPackagePath());
         pw.print("/");
         pw.print(sqlCreator.getRawInsertSqlFileName());
         pw.println("\");");
 
-        pw.print("\t\t");
+        pw.print("        ");
 
-        // プライマリキーが自動生成であるかチェック
         List<ColumnDefinition> columnDefinitions = config.getTableDefinition().getColumns();
         Collection<ColumnDefinition> primaryKeys = config.getPrimaryKeys(columnDefinitions);
 
@@ -304,33 +315,31 @@ public class DefaultTableInsertMethodCreator {
 
         List<String> primaryKeyName = new ArrayList<>();
         for (ColumnDefinition column : primaryKeys) {
-            pw.print("\t\t\t");
             if (count > 0) {
-                pw.print(", ");
+                pw.println(", ");
             }
+            pw.print("            ");
             pw.print("entity.");
             String feildName = nameConvertor.colmnNameToFeildName(column.getColumn_name());
             pw.print(helper.feildNameToGetter(feildName));
-            pw.println("()");
+            pw.print("()");
             count++;
-
             primaryKeyName.add(column.getColumn_name());
         }
 
         for (ColumnDefinition column : columnDefinitions) {
             if (!primaryKeyName.contains(column.getColumn_name())) {
-                pw.print("\t\t\t");
                 if (count > 0) {
-                    pw.print(", ");
+                    pw.println(", ");
                 }
+                pw.print("            ");
                 pw.print("entity.");
                 String feildName = nameConvertor.colmnNameToFeildName(column.getColumn_name());
                 pw.print(helper.feildNameToGetter(feildName));
-                pw.println("()");
+                pw.print("()");
                 count++;
             }
         }
-        pw.print("\t\t");
         pw.println(");");
 
         boolean keygen = false;
@@ -354,18 +363,18 @@ public class DefaultTableInsertMethodCreator {
             String seq = tableName + "_" + primary + "_" + "seq";
             String sql = "\"select setval('" + seq + "', (select max(" + primary + ") from " + tableName + "));\"";
 
-            pw.println("\t\tString driverClass = ConnectionManager.getInstance().getDriverClass(getConnectionName());");
-            pw.println("\t\tif (ORMappingParameter.DRIVER_NAME_POSTGRESQL.equals(driverClass)) {");
-            // pw.println("\t\t\tString setValSql = \"select setval('likes_no_seq',(select max(no) from likes));\";");
-            pw.println("\t\t\tString setValSql = " + sql + ";");
-            pw.println("\t\t\texecuteQuerySingle(setValSql, Long.class);");
-            pw.println("\t\t}");
+            pw.println("        String driverClass = ConnectionManager.getInstance().getDriverClass(getConnectionName());");
+            pw.println("        if (ORMappingParameter.DRIVER_NAME_POSTGRESQL.equals(driverClass)) {");
+            // pw.println("            String setValSql = \"select setval('likes_no_seq',(select max(no) from likes));\";");
+            pw.println("            String setValSql = " + sql + ";");
+            pw.println("            executeQuerySingle(setValSql, Long.class);");
+            pw.println("        }");
         }
 
-        pw.print("\t\t");
+        pw.print("        ");
         pw.println("return entity;");
 
-        pw.println("\t}");
+        pw.println("    }");
 
     }
 
@@ -374,18 +383,19 @@ public class DefaultTableInsertMethodCreator {
             return;
         }
 
-        pw.println("\t/**");
-        pw.println("\t * 行を一意に特定するIDを生成");
-        pw.println("\t */");
+        pw.println("    /**");
+        pw.println("     * Create row id.");
+        pw.println("     * @return row id");
+        pw.println("     */");
 
         // メソッド定義
-        pw.print("\tprotected String");
+        pw.print("    protected String");
         pw.print(" createRowId(");
         pw.println(") {");
-        pw.print("\t\treturn IDGen.get().gen(\"");
+        pw.print("        return IDGen.get().gen(\"");
         pw.print(config.getTableDefinition().getTable_name());
         pw.println("\");");
-        pw.println("\t}");
+        pw.println("    }");
     }
 
 }

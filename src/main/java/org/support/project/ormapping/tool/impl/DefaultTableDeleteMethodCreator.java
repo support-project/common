@@ -45,19 +45,21 @@ public class DefaultTableDeleteMethodCreator {
     }
 
     private void writeAtivationEntity(PrintWriter pw) {
-        pw.println("\t/**");
-        pw.println("\t * 復元(論理削除されていたものを有効化) ");
-        pw.println("\t */");
+        pw.println("    /**");
+        pw.println("     * Ativation.");
+        pw.println("     * if delete flag is exists and delete flag is true, delete flug is false to activate.");
+        pw.println("     * @param entity entity");
+        pw.println("     */");
 
-        pw.println("\t@Aspect(advice=org.support.project.ormapping.transaction.Transaction.class)");
+        pw.println("    @Aspect(advice = org.support.project.ormapping.transaction.Transaction.class)");
         // メソッド定義
-        pw.print("\tpublic ");
+        pw.print("    public ");
         pw.print("void");
         pw.print(" activation(");
         pw.print(config.getEntityClassName());
         pw.println(" entity) {");
 
-        pw.print("\t\tactivation(");
+        pw.print("        activation(");
         List<ColumnDefinition> columnDefinitions = config.getTableDefinition().getColumns();
         Collection<ColumnDefinition> primaryKeys = config.getPrimaryKeys(columnDefinitions);
         int count = 0;
@@ -73,17 +75,21 @@ public class DefaultTableDeleteMethodCreator {
         pw.println(");");
         pw.println();
 
-        pw.println("\t}");
+        pw.println("    }");
     }
 
     private void writeAtivationEntityOnUser(PrintWriter pw) {
-        pw.println("\t/**");
-        pw.println("\t * 復元(論理削除されていたものを有効化) ");
-        pw.println("\t */");
+        pw.println("    /**");
+        pw.println("     * Ativation.");
+        pw.println("     * if delete flag is exists and delete flag is true, delete flug is false to activate.");
+        pw.println("     * set saved user id.");
+        pw.println("     * @param user saved userid");
+        pw.println("     * @param entity entity");
+        pw.println("     */");
 
-        pw.println("\t@Aspect(advice=org.support.project.ormapping.transaction.Transaction.class)");
+        pw.println("    @Aspect(advice = org.support.project.ormapping.transaction.Transaction.class)");
         // メソッド定義
-        pw.print("\tpublic ");
+        pw.print("    public ");
         pw.print("void");
         pw.print(" activation(");
         pw.print(config.getCommonUseridType());
@@ -91,7 +97,7 @@ public class DefaultTableDeleteMethodCreator {
         pw.print(config.getEntityClassName());
         pw.println(" entity) {");
 
-        pw.print("\t\tactivation(user, ");
+        pw.print("        activation(user, ");
         List<ColumnDefinition> columnDefinitions = config.getTableDefinition().getColumns();
         Collection<ColumnDefinition> primaryKeys = config.getPrimaryKeys(columnDefinitions);
         int count = 0;
@@ -107,17 +113,19 @@ public class DefaultTableDeleteMethodCreator {
         pw.println(");");
         pw.println();
 
-        pw.println("\t}");
+        pw.println("    }");
     }
 
     private void writeAtivation(PrintWriter pw) {
-        pw.println("\t/**");
-        pw.println("\t * 復元(論理削除されていたものを有効化) ");
-        pw.println("\t */");
+        pw.println("    /**");
+        pw.println("     * Ativation.");
+        pw.println("     * if delete flag is exists and delete flag is true, delete flug is false to activate.");
+        helper.writeKeyParamOnJavadoc(pw, config); // キーのJavadocを出力
+        pw.println("     */");
 
-        pw.println("\t@Aspect(advice=org.support.project.ormapping.transaction.Transaction.class)");
+        pw.println("    @Aspect(advice = org.support.project.ormapping.transaction.Transaction.class)");
         // メソッド定義
-        pw.print("\tpublic void");
+        pw.print("    public void");
         pw.print(" activation(");
         List<ColumnDefinition> columnDefinitions = config.getTableDefinition().getColumns();
         Collection<ColumnDefinition> primaryKeys = config.getPrimaryKeys(columnDefinitions);
@@ -132,14 +140,14 @@ public class DefaultTableDeleteMethodCreator {
         }
         pw.println(") {");
 
-        pw.println("\t\tDBUserPool pool = Container.getComp(DBUserPool.class);");
-        pw.print("\t\t");
+        pw.println("        DBUserPool pool = Container.getComp(DBUserPool.class);");
+        pw.print("        ");
         pw.print(config.getCommonUseridType());
         pw.print(" user = (");
         pw.print(config.getCommonUseridType());
         pw.println(") pool.getUser();");
 
-        pw.print("\t\tactivation(user, ");
+        pw.print("        activation(user, ");
         count = 0;
         for (ColumnDefinition columnDefinition : primaryKeys) {
             if (count > 0) {
@@ -150,18 +158,22 @@ public class DefaultTableDeleteMethodCreator {
         }
         pw.println(");");
 
-        pw.println("\t}");
+        pw.println("    }");
     }
 
     private void writeaAtivationOnUser(PrintWriter pw) {
         // コメント
-        pw.println("\t/**");
-        pw.println("\t 復元(論理削除されていたものを有効化) ");
-        pw.println("\t */");
+        pw.println("    /**");
+        pw.println("     * Ativation.");
+        pw.println("     * if delete flag is exists and delete flag is true, delete flug is false to activate.");
+        pw.println("     * set saved user id.");
+        pw.println("     * @param user saved userid");
+        helper.writeKeyParamOnJavadoc(pw, config); // キーのJavadocを出力
+        pw.println("     */");
 
-        pw.println("\t@Aspect(advice=org.support.project.ormapping.transaction.Transaction.class)");
+        pw.println("    @Aspect(advice = org.support.project.ormapping.transaction.Transaction.class)");
         // メソッド定義
-        pw.print("\tpublic void");
+        pw.print("    public void");
         pw.print(" activation(");
         pw.print(config.getCommonUseridType());
         pw.print(" user, ");
@@ -180,9 +192,9 @@ public class DefaultTableDeleteMethodCreator {
 
         if (StringUtils.isEmpty(config.getCommonDeleteFlag())) {
             // 削除フラグが存在しないので、実行できない
-            pw.println("\t\tthrow new ORMappingException(\"delete flag is not exists.\");");
+            pw.println("        throw new ORMappingException(\"delete flag is not exists.\");");
         } else {
-            pw.print("\t\t");
+            pw.print("        ");
             pw.print(config.getEntityClassName());
             pw.print(" db = physicalSelectOnKey(");
             count = 0;
@@ -196,13 +208,13 @@ public class DefaultTableDeleteMethodCreator {
             pw.println(");");
 
             String feildName = nameConvertor.colmnNameToFeildName(config.getCommonDeleteFlag());
-            pw.print("\t\tdb.");
+            pw.print("        db.");
             pw.print(helper.feildNameToSetter(feildName));
             pw.print("(");
             pw.print(INT_FLAG.OFF.getValue());
             pw.println(");");
 
-            // pw.println("\t\tupdate(user, db);");
+            // pw.println("        update(user, db);");
 
             ColumnDefinition userColumn = null;
             ColumnDefinition datetimeColumn = null;
@@ -218,37 +230,40 @@ public class DefaultTableDeleteMethodCreator {
             if (userColumn != null) {
                 // 更新ユーザをセット
                 feildName = nameConvertor.colmnNameToFeildName(userColumn.getColumn_name());
-                pw.print("\t\tdb.");
+                pw.print("        db.");
                 pw.print(helper.feildNameToSetter(feildName));
                 pw.println("(user);");
             }
             if (datetimeColumn != null) {
                 // 更新ユーザをセット
                 feildName = nameConvertor.colmnNameToFeildName(datetimeColumn.getColumn_name());
-                pw.print("\t\tdb.");
+                pw.print("        db.");
                 pw.print(helper.feildNameToSetter(feildName));
                 pw.println("(new Timestamp(new java.util.Date().getTime()));");
             }
-            pw.println("\t\tphysicalUpdate(db);");
+            pw.println("        physicalUpdate(db);");
         }
 
-        pw.println("\t}");
+        pw.println("    }");
     }
 
     private void writeDeleteEntity(PrintWriter pw) {
-        pw.println("\t/**");
-        pw.println("\t * 削除(論理削除があれば論理削除) ");
-        pw.println("\t */");
+        pw.println("    /**");
+        pw.println("     * Delete.");
+        pw.println("     * if delete flag is exists, the data is logical delete.");
+        pw.println("     * set saved user id.");
+        pw.println("     * @param entity entity");
+        pw.println("     */");
 
-        pw.println("\t@Aspect(advice=org.support.project.ormapping.transaction.Transaction.class)");
+        pw.println("    @Aspect(advice = org.support.project.ormapping.transaction.Transaction.class)");
         // メソッド定義
-        pw.print("\tpublic ");
+        pw.print("    public ");
         pw.print("void");
         pw.print(" delete(");
         pw.print(config.getEntityClassName());
         pw.println(" entity) {");
 
-        pw.print("\t\tdelete(");
+        pw.print("        delete(");
         List<ColumnDefinition> columnDefinitions = config.getTableDefinition().getColumns();
         Collection<ColumnDefinition> primaryKeys = config.getPrimaryKeys(columnDefinitions);
         int count = 0;
@@ -264,17 +279,21 @@ public class DefaultTableDeleteMethodCreator {
         pw.println(");");
         pw.println();
 
-        pw.println("\t}");
+        pw.println("    }");
     }
 
     private void writeDeleteEntityOnUser(PrintWriter pw) {
-        pw.println("\t/**");
-        pw.println("\t * 削除(削除ユーザを指定／論理削除があれば論理削除) ");
-        pw.println("\t */");
+        pw.println("    /**");
+        pw.println("     * Delete.");
+        pw.println("     * if delete flag is exists, the data is logical delete.");
+        pw.println("     * set saved user id.");
+        pw.println("     * @param user saved userid");
+        pw.println("     * @param entity entity");
+        pw.println("     */");
 
-        pw.println("\t@Aspect(advice=org.support.project.ormapping.transaction.Transaction.class)");
+        pw.println("    @Aspect(advice = org.support.project.ormapping.transaction.Transaction.class)");
         // メソッド定義
-        pw.print("\tpublic ");
+        pw.print("    public ");
         pw.print("void");
         pw.print(" delete(");
         pw.print(config.getCommonUseridType());
@@ -282,7 +301,7 @@ public class DefaultTableDeleteMethodCreator {
         pw.print(config.getEntityClassName());
         pw.println(" entity) {");
 
-        pw.print("\t\tdelete(user, ");
+        pw.print("        delete(user, ");
         List<ColumnDefinition> columnDefinitions = config.getTableDefinition().getColumns();
         Collection<ColumnDefinition> primaryKeys = config.getPrimaryKeys(columnDefinitions);
         int count = 0;
@@ -298,17 +317,19 @@ public class DefaultTableDeleteMethodCreator {
         pw.println(");");
         pw.println();
 
-        pw.println("\t}");
+        pw.println("    }");
     }
 
     private void writeDelete(PrintWriter pw) {
-        pw.println("\t/**");
-        pw.println("\t * 削除(論理削除があれば論理削除) ");
-        pw.println("\t */");
+        pw.println("    /**");
+        pw.println("     * Delete.");
+        pw.println("     * if delete flag is exists, the data is logical delete.");
+        helper.writeKeyParamOnJavadoc(pw, config); // キーのJavadocを出力
+        pw.println("     */");
 
-        pw.println("\t@Aspect(advice=org.support.project.ormapping.transaction.Transaction.class)");
+        pw.println("    @Aspect(advice = org.support.project.ormapping.transaction.Transaction.class)");
         // メソッド定義
-        pw.print("\tpublic void");
+        pw.print("    public void");
         pw.print(" delete(");
         List<ColumnDefinition> columnDefinitions = config.getTableDefinition().getColumns();
         Collection<ColumnDefinition> primaryKeys = config.getPrimaryKeys(columnDefinitions);
@@ -323,14 +344,14 @@ public class DefaultTableDeleteMethodCreator {
         }
         pw.println(") {");
 
-        pw.println("\t\tDBUserPool pool = Container.getComp(DBUserPool.class);");
-        pw.print("\t\t");
+        pw.println("        DBUserPool pool = Container.getComp(DBUserPool.class);");
+        pw.print("        ");
         pw.print(config.getCommonUseridType());
         pw.print(" user = (");
         pw.print(config.getCommonUseridType());
         pw.println(") pool.getUser();");
 
-        pw.print("\t\tdelete(user, ");
+        pw.print("        delete(user, ");
         count = 0;
         for (ColumnDefinition columnDefinition : primaryKeys) {
             if (count > 0) {
@@ -341,18 +362,22 @@ public class DefaultTableDeleteMethodCreator {
         }
         pw.println(");");
 
-        pw.println("\t}");
+        pw.println("    }");
     }
 
     private void writeDeleteOnUser(PrintWriter pw) {
         // コメント
-        pw.println("\t/**");
-        pw.println("\t * 削除(削除ユーザを指定／論理削除があれば論理削除) ");
-        pw.println("\t */");
+        pw.println("    /**");
+        pw.println("     * Delete.");
+        pw.println("     * if delete flag is exists, the data is logical delete.");
+        pw.println("     * set saved user id.");
+        pw.println("     * @param user saved userid");
+        helper.writeKeyParamOnJavadoc(pw, config); // キーのJavadocを出力
+        pw.println("     */");
 
-        pw.println("\t@Aspect(advice=org.support.project.ormapping.transaction.Transaction.class)");
+        pw.println("    @Aspect(advice = org.support.project.ormapping.transaction.Transaction.class)");
         // メソッド定義
-        pw.print("\tpublic void");
+        pw.print("    public void");
         pw.print(" delete(");
         pw.print(config.getCommonUseridType());
         pw.print(" user, ");
@@ -371,7 +396,7 @@ public class DefaultTableDeleteMethodCreator {
 
         if (StringUtils.isEmpty(config.getCommonDeleteFlag())) {
             // 削除フラグが存在しないので、物理削除
-            pw.print("\t\tphysicalDelete(");
+            pw.print("        physicalDelete(");
             count = 0;
             for (ColumnDefinition columnDefinition : primaryKeys) {
                 if (count > 0) {
@@ -383,7 +408,7 @@ public class DefaultTableDeleteMethodCreator {
             pw.println(");");
 
         } else {
-            pw.print("\t\t");
+            pw.print("        ");
             pw.print(config.getEntityClassName());
             pw.print(" db = selectOnKey(");
             count = 0;
@@ -397,13 +422,13 @@ public class DefaultTableDeleteMethodCreator {
             pw.println(");");
 
             String feildName = nameConvertor.colmnNameToFeildName(config.getCommonDeleteFlag());
-            pw.print("\t\tdb.");
+            pw.print("        db.");
             pw.print(helper.feildNameToSetter(feildName));
             pw.print("(");
             pw.print(INT_FLAG.ON.getValue());
             pw.println(");");
 
-            // pw.println("\t\tupdate(user, db);");
+            // pw.println("        update(user, db);");
 
             ColumnDefinition userColumn = null;
             ColumnDefinition datetimeColumn = null;
@@ -419,37 +444,38 @@ public class DefaultTableDeleteMethodCreator {
             if (userColumn != null) {
                 // 更新ユーザをセット
                 feildName = nameConvertor.colmnNameToFeildName(userColumn.getColumn_name());
-                pw.print("\t\tdb.");
+                pw.print("        db.");
                 pw.print(helper.feildNameToSetter(feildName));
                 pw.println("(user);");
             }
             if (datetimeColumn != null) {
                 // 更新ユーザをセット
                 feildName = nameConvertor.colmnNameToFeildName(datetimeColumn.getColumn_name());
-                pw.print("\t\tdb.");
+                pw.print("        db.");
                 pw.print(helper.feildNameToSetter(feildName));
                 pw.println("(new Timestamp(new java.util.Date().getTime()));");
             }
-            pw.println("\t\tphysicalUpdate(db);");
+            pw.println("        physicalUpdate(db);");
         }
 
-        pw.println("\t}");
+        pw.println("    }");
     }
 
     private void writePhysicalDeleteEntity(PrintWriter pw) {
-        pw.println("\t/**");
-        pw.println("\t * 削除(データを生で操作/物理削除) ");
-        pw.println("\t */");
+        pw.println("    /**");
+        pw.println("     * Physical Delete.");
+        pw.println("     * @param entity entity");
+        pw.println("     */");
 
-        pw.println("\t@Aspect(advice=org.support.project.ormapping.transaction.Transaction.class)");
+        pw.println("    @Aspect(advice = org.support.project.ormapping.transaction.Transaction.class)");
         // メソッド定義
-        pw.print("\tpublic ");
+        pw.print("    public ");
         pw.print("void");
         pw.print(" physicalDelete(");
         pw.print(config.getEntityClassName());
         pw.println(" entity) {");
 
-        pw.print("\t\tphysicalDelete(");
+        pw.print("        physicalDelete(");
         List<ColumnDefinition> columnDefinitions = config.getTableDefinition().getColumns();
         Collection<ColumnDefinition> primaryKeys = config.getPrimaryKeys(columnDefinitions);
         int count = 0;
@@ -465,53 +491,37 @@ public class DefaultTableDeleteMethodCreator {
         pw.println(");");
         pw.println();
 
-        pw.println("\t}");
+        pw.println("    }");
     }
 
     private void writePhysicalDelete(PrintWriter pw) {
         // コメント
-        pw.println("\t/**");
-        pw.println("\t * 削除(データを生で操作/物理削除) ");
-        pw.println("\t */");
+        pw.println("    /**");
+        pw.println("     * Physical Delete.");
+        helper.writeKeyParamOnJavadoc(pw, config); // キーのJavadocを出力
+        pw.println("     */");
 
-        pw.println("\t@Aspect(advice=org.support.project.ormapping.transaction.Transaction.class)");
+        pw.println("    @Aspect(advice = org.support.project.ormapping.transaction.Transaction.class)");
         // メソッド定義
-        pw.print("\tpublic ");
+        pw.print("    public ");
         pw.print("void");
         pw.print(" physicalDelete(");
-        List<ColumnDefinition> columnDefinitions = config.getTableDefinition().getColumns();
-        Collection<ColumnDefinition> primaryKeys = config.getPrimaryKeys(columnDefinitions);
-        int count = 0;
-        for (ColumnDefinition columnDefinition : primaryKeys) {
-            if (count > 0) {
-                pw.print(", ");
-            }
-            pw.print(helper.getColumnClass(columnDefinition));
-            pw.print(" " + nameConvertor.colmnNameToFeildName(columnDefinition.getColumn_name()));
-            count++;
-        }
+        helper.writeKeyParam(pw, config); // キーをメソッドに渡す部分を出力
         pw.println(") {");
 
         // SQLの取得
-        pw.print("\t\tString sql = SQLManager.getInstance().getSql(\"");
+        pw.print("        String sql = SQLManager.getInstance().getSql(\"");
         pw.print(config.getSqlPackagePath());
         pw.print("/");
         pw.print(sqlCreator.getDeleteSqlFileName());
         pw.println("\");");
 
         // SQLの実行
-        pw.print("\t\texecuteUpdate(sql, ");
-        count = 0;
-        for (ColumnDefinition columnDefinition : primaryKeys) {
-            if (count > 0) {
-                pw.print(", ");
-            }
-            pw.print(nameConvertor.colmnNameToFeildName(columnDefinition.getColumn_name()));
-            count++;
-        }
+        pw.print("        executeUpdate(sql, ");
+        helper.writeKeyParamOnExecute(pw, config); // 実行部分でキーを実行するメソッドに設定する部分を出力
         pw.println(");");
 
-        pw.println("\t}");
+        pw.println("    }");
     }
 
 }

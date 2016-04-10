@@ -55,11 +55,11 @@ public class DefaultTableDaoClassCreator {
             pw.println(" * " + config.getTableDefinition().getRemarks());
             pw.println(" */");
 
-            pw.println("@DI(instance=Instance.Singleton)");
+            pw.println("@DI(instance = Instance.Singleton)");
             pw.println("public class " + config.getDaoClassName() + " extends " + config.getGenDaoClassName() + " {");
             pw.println();
-            pw.println("\t/** SerialVersion */");
-            pw.println("\tprivate static final long serialVersionUID = 1L;");
+            pw.println("    /** SerialVersion */");
+            pw.println("    private static final long serialVersionUID = 1L;");
 
             // インスタンス取得
             pw.println(helper.makeInstanceMethod(config.getDaoClassName()));
@@ -70,32 +70,32 @@ public class DefaultTableDaoClassCreator {
                 ColumnDefinition key = keys.iterator().next();
                 if (key.getData_type() == Types.INTEGER) {
                     pw.println();
-                    pw.println("\t/**");
-                    pw.println("\t * ID ");
-                    pw.println("\t */");
-                    pw.println("\tprivate int currentId = 0;");
+                    pw.println("    /**");
+                    pw.println("     * ID ");
+                    pw.println("     */");
+                    pw.println("    private int currentId = 0;");
                     pw.println();
 
-                    pw.println("\t/**");
-                    pw.println("\t * IDを採番 ");
-                    pw.println("\t * ※コミットしなくても次のIDを採番する為、保存しなければ欠番になる ");
-                    pw.println("\t */");
+                    pw.println("    /**");
+                    pw.println("     * IDを採番 ");
+                    pw.println("     * ※コミットしなくても次のIDを採番する為、保存しなければ欠番になる ");
+                    pw.println("     */");
 
-                    pw.println("\tpublic Integer getNextId() {");
-                    pw.print("\t\tString sql = \"SELECT MAX(");
+                    pw.println("    public Integer getNextId() {");
+                    pw.print("        String sql = \"SELECT MAX(");
                     pw.print(key.getColumn_name());
                     pw.print(") FROM ");
                     pw.print(config.getTableDefinition().getTable_name());
                     pw.println(";\";");
-                    pw.println("\t\tInteger integer = executeQuerySingle(sql, Integer.class);");
-                    pw.println("\t\tif (integer != null) {");
-                    pw.println("\t\t\tif (currentId < integer) {");
-                    pw.println("\t\t\t\tcurrentId = integer;");
-                    pw.println("\t\t\t}");
-                    pw.println("\t\t}");
-                    pw.println("\t\tcurrentId++;");
-                    pw.println("\t\treturn currentId;");
-                    pw.println("\t}");
+                    pw.println("        Integer integer = executeQuerySingle(sql, Integer.class);");
+                    pw.println("        if (integer != null) {");
+                    pw.println("            if (currentId < integer) {");
+                    pw.println("                currentId = integer;");
+                    pw.println("            }");
+                    pw.println("        }");
+                    pw.println("        currentId++;");
+                    pw.println("        return currentId;");
+                    pw.println("    }");
                 }
             }
 
@@ -154,14 +154,16 @@ public class DefaultTableDaoClassCreator {
 
             pw.println("/**");
             pw.println(" * " + config.getTableDefinition().getRemarks());
+            pw.println(" * this class is auto generate and not edit.");
+            pw.println(" * if modify dao method, you can edit " + config.getDaoClassName() + ".");
             pw.println(" */");
-
-            pw.println("@DI(instance=Instance.Singleton)");
+            
+            pw.println("@DI(instance = Instance.Singleton)");
             pw.println("public class " + config.getGenDaoClassName() + " extends AbstractDao {");
             pw.println();
 
-            pw.println("\t/** SerialVersion */");
-            pw.println("\tprivate static final long serialVersionUID = 1L;");
+            pw.println("    /** SerialVersion */");
+            pw.println("    private static final long serialVersionUID = 1L;");
             pw.println();
 
             // 各メソッドの出力
