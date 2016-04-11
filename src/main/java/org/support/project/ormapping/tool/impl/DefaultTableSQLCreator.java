@@ -70,6 +70,10 @@ public class DefaultTableSQLCreator {
     public String getSelectAllWithPagerSqlFileName() {
         return config.getDaoClassName() + "_select_all_with_pager.sql";
     }
+    
+    public String getSelectCountAllSqlFileName() {
+        return config.getDaoClassName() + "_select_count_all.sql";
+    }
 
     public String getPhysicalSelectOnKeySqlFileName() {
         return config.getDaoClassName() + "_physical_select_on_key.sql";
@@ -494,6 +498,29 @@ public class DefaultTableSQLCreator {
                 pw.close();
             }
         }
+        
+        sqlFileName = getSelectCountAllSqlFileName();
+        sqlFile = new File(config.getSqlDir(), sqlFileName);
+        log.info(sqlFile.getAbsolutePath() + "を作成します");
+        try {
+            pw = helper.getPrintWriter(sqlFile);
+            pw.println("SELECT COUNT(*) FROM " + config.getTableDefinition().getTable_name().toUpperCase() + "");
+            if (StringUtils.isNotEmpty(config.getCommonDeleteFlag())) {
+                pw.print("WHERE ");
+                pw.print(config.getCommonDeleteFlag());
+                pw.print(" = ");
+                pw.print(INT_FLAG.OFF.getValue());
+                pw.print(";\n");
+            }
+            pw.flush();
+        } finally {
+            if (pw != null) {
+                pw.close();
+            }
+        }
+        
+        
+        
     }
 
     /**

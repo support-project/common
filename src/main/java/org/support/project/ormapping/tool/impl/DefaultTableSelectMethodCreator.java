@@ -276,6 +276,31 @@ public class DefaultTableSelectMethodCreator {
         pw.println(config.getEntityClassName() + ".class, limit, offset);");
 
         pw.println("    }");
+        
+        
+        // コメント
+        pw.println("    /**");
+        pw.println("     * Select count that not deleted.");
+        pw.println("     * @return count");
+        pw.println("     */");
+
+        // メソッド定義
+        pw.print("    public Integer");
+        pw.print(" selectCountAll() { ");
+        pw.println();
+
+        // SQLの取得
+        pw.print("        String sql = SQLManager.getInstance().getSql(\"");
+        pw.print(config.getSqlPackagePath());
+        pw.print("/");
+        pw.print(sqlCreator.getSelectCountAllSqlFileName());
+        pw.println("\");");
+
+        // SQLの実行
+        pw.println("        return executeQuerySingle(sql, Integer.class);");
+
+        pw.println("    }");
+        
     }
 
     private void writePhysicalSelectAll(PrintWriter pw) {
