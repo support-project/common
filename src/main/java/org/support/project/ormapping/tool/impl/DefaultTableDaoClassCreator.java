@@ -77,8 +77,8 @@ public class DefaultTableDaoClassCreator {
                     pw.println();
 
                     pw.println("    /**");
-                    pw.println("     * IDを採番 ");
-                    pw.println("     * ※コミットしなくても次のIDを採番する為、保存しなければ欠番になる ");
+                    pw.println("     * Get Next id");
+                    pw.println("     * @return next id");
                     pw.println("     */");
 
                     pw.println("    public Integer getNextId() {");
