@@ -6,6 +6,7 @@ public class ExceptionHandler {
      * Search exception for root causes
      * @param e Throwable
      * @param type search type
+     * @param <T> type
      * @return exception
      */
     public static <T> T exceptionSearch(Throwable e, Class<? extends Exception> type) {
