@@ -479,7 +479,9 @@ public class DefaultTableSQLCreator {
                 pw.print(" = ");
                 pw.print(INT_FLAG.OFF.getValue());
             }
-            pw.println("ORDER BY " + datetimeColumn.getColumn_name() + " DESC");
+            if (datetimeColumn != null) {
+                pw.println("ORDER BY " + datetimeColumn.getColumn_name() + " DESC");
+            }
             pw.println(";");
             pw.flush();
         } finally {
@@ -501,7 +503,9 @@ public class DefaultTableSQLCreator {
                 pw.print(INT_FLAG.OFF.getValue());
                 pw.print("\n");
             }
-            pw.println("ORDER BY " + datetimeColumn.getColumn_name() + " DESC");
+            if (datetimeColumn != null) {
+                pw.println("ORDER BY " + datetimeColumn.getColumn_name() + " DESC");
+            }
             pw.println("LIMIT ? OFFSET ?;");
             pw.flush();
         } finally {
@@ -547,6 +551,7 @@ public class DefaultTableSQLCreator {
             }
         }
         
+        
         String sqlFileName = getPhysicalSelectAllSqlFileName();
         File sqlFile = new File(config.getSqlDir(), sqlFileName);
         log.info(sqlFile.getAbsolutePath() + "を作成します");
@@ -554,7 +559,10 @@ public class DefaultTableSQLCreator {
         try {
             pw = helper.getPrintWriter(sqlFile);
             pw.println("SELECT * FROM " + config.getTableDefinition().getTable_name().toUpperCase() + "");
-            pw.println("ORDER BY " + datetimeColumn.getColumn_name() + " DESC;");
+            if (datetimeColumn != null) {
+                pw.print("ORDER BY " + datetimeColumn.getColumn_name() + " DESC");
+            }
+            pw.println(";");
             pw.flush();
         } finally {
             if (pw != null) {
@@ -568,7 +576,9 @@ public class DefaultTableSQLCreator {
         try {
             pw = helper.getPrintWriter(sqlFile);
             pw.println("SELECT * FROM " + config.getTableDefinition().getTable_name().toUpperCase());
-            pw.println("ORDER BY " + datetimeColumn.getColumn_name() + " DESC");
+            if (datetimeColumn != null) {
+                pw.println("ORDER BY " + datetimeColumn.getColumn_name() + " DESC");
+            }
             pw.println("LIMIT ? OFFSET ?;");
             pw.flush();
         } finally {
