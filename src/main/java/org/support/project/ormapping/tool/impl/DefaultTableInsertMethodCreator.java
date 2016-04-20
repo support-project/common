@@ -152,7 +152,11 @@ public class DefaultTableInsertMethodCreator {
             pw.print("        entity.");
             pw.print(helper.feildNameToSetter(feildName));
             pw.print("(");
-            pw.print(INT_FLAG.OFF.getValue());
+            if (StringUtils.isNotEmpty(config.getDeleteFlagColumnType()) && "boolean".equals(config.getDeleteFlagColumnType().toLowerCase())) {
+                pw.print("Boolean.FALSE");
+            } else {
+                pw.print(INT_FLAG.OFF.getValue());
+            }
             pw.println(");");
         }
 

@@ -10,195 +10,211 @@ import org.support.project.common.serialize.SerializerValue;
 
 /**
  * OR Mapping ToolのDao自動生成の設定
+ * 
  * @author Koda
  */
 @Serialize(value = SerializerValue.Jaxb)
 @XmlRootElement
 public class ORmappingDaoGenConfig implements Serializable {
-	/** シリアルバージョン */
-	private static final long serialVersionUID = 1L;
+    /** シリアルバージョン */
+    private static final long serialVersionUID = 1L;
 
-	/** 出力するディレクトリ */
-	private String daoOutDir;
-	/** パッケージ名 */
-	private String daoPackage;
-	/** サフィックス */
-	private String daoSuffix;
-	
-	/** 登録ユーザIDを登録するカラム名 */
-	private String insertUserColumn;
-	/** 登録日時を登録するカラム名 */
-	private String insertDatetimeColumn;
-	/** 更新ユーザIDを登録するカラム名 */
-	private String updateUserColumn;
-	/** 更新日時を登録するカラム名 */
-	private String updateDatetimeColumn;
-	/** 削除フラグを登録するカラム名(論理削除がある場合) */
-	private String deleteFlagColumn;
-	/** 行ID */
-	private String rowIdColumn;
-	
+    /** 出力するディレクトリ */
+    private String daoOutDir;
+    /** パッケージ名 */
+    private String daoPackage;
+    /** サフィックス */
+    private String daoSuffix;
 
-	/** ユーザIDの型(String,Intなど) */
-	private String userColumnType;
-	
-	/** Daoを生成しないテーブルの名称のリスト */
-	private List<String> ignoreTables;
+    /** 登録ユーザIDを登録するカラム名 */
+    private String insertUserColumn;
+    /** 登録日時を登録するカラム名 */
+    private String insertDatetimeColumn;
+    /** 更新ユーザIDを登録するカラム名 */
+    private String updateUserColumn;
+    /** 更新日時を登録するカラム名 */
+    private String updateDatetimeColumn;
+    /** 削除フラグを登録するカラム名(論理削除がある場合) */
+    private String deleteFlagColumn;
+    /** 行ID */
+    private String rowIdColumn;
 
-	/**
-	 * @return daoOutDir
-	 */
-	public String getDaoOutDir() {
-		return daoOutDir;
-	}
+    private String deleteFlagColumnType;
 
-	/**
-	 * @param daoOutDir セットする daoOutDir
-	 */
-	public void setDaoOutDir(String daoOutDir) {
-		this.daoOutDir = daoOutDir;
-	}
+    /** ユーザIDの型(String,Intなど) */
+    private String userColumnType;
 
-	/**
-	 * @return daoPackage
-	 */
-	public String getDaoPackage() {
-		return daoPackage;
-	}
+    /** Daoを生成しないテーブルの名称のリスト */
+    private List<String> ignoreTables;
 
-	/**
-	 * @param daoPackage セットする daoPackage
-	 */
-	public void setDaoPackage(String daoPackage) {
-		this.daoPackage = daoPackage;
-	}
+    /**
+     * @return daoOutDir
+     */
+    public String getDaoOutDir() {
+        return daoOutDir;
+    }
 
-	/**
-	 * @return daoSuffix
-	 */
-	public String getDaoSuffix() {
-		return daoSuffix;
-	}
+    /**
+     * @param daoOutDir セットする daoOutDir
+     */
+    public void setDaoOutDir(String daoOutDir) {
+        this.daoOutDir = daoOutDir;
+    }
 
-	/**
-	 * @param daoSuffix セットする daoSuffix
-	 */
-	public void setDaoSuffix(String daoSuffix) {
-		this.daoSuffix = daoSuffix;
-	}
+    /**
+     * @return daoPackage
+     */
+    public String getDaoPackage() {
+        return daoPackage;
+    }
 
-	/**
-	 * @return insertUserColumn
-	 */
-	public String getInsertUserColumn() {
-		return insertUserColumn;
-	}
+    /**
+     * @param daoPackage セットする daoPackage
+     */
+    public void setDaoPackage(String daoPackage) {
+        this.daoPackage = daoPackage;
+    }
 
-	/**
-	 * @param insertUserColumn セットする insertUserColumn
-	 */
-	public void setInsertUserColumn(String insertUserColumn) {
-		this.insertUserColumn = insertUserColumn;
-	}
+    /**
+     * @return daoSuffix
+     */
+    public String getDaoSuffix() {
+        return daoSuffix;
+    }
 
-	/**
-	 * @return insertDatetimeColumn
-	 */
-	public String getInsertDatetimeColumn() {
-		return insertDatetimeColumn;
-	}
+    /**
+     * @param daoSuffix セットする daoSuffix
+     */
+    public void setDaoSuffix(String daoSuffix) {
+        this.daoSuffix = daoSuffix;
+    }
 
-	/**
-	 * @param insertDatetimeColumn セットする insertDatetimeColumn
-	 */
-	public void setInsertDatetimeColumn(String insertDatetimeColumn) {
-		this.insertDatetimeColumn = insertDatetimeColumn;
-	}
+    /**
+     * @return insertUserColumn
+     */
+    public String getInsertUserColumn() {
+        return insertUserColumn;
+    }
 
-	/**
-	 * @return updateUserColumn
-	 */
-	public String getUpdateUserColumn() {
-		return updateUserColumn;
-	}
+    /**
+     * @param insertUserColumn セットする insertUserColumn
+     */
+    public void setInsertUserColumn(String insertUserColumn) {
+        this.insertUserColumn = insertUserColumn;
+    }
 
-	/**
-	 * @param updateUserColumn セットする updateUserColumn
-	 */
-	public void setUpdateUserColumn(String updateUserColumn) {
-		this.updateUserColumn = updateUserColumn;
-	}
+    /**
+     * @return insertDatetimeColumn
+     */
+    public String getInsertDatetimeColumn() {
+        return insertDatetimeColumn;
+    }
 
-	/**
-	 * @return updateDatetimeColumn
-	 */
-	public String getUpdateDatetimeColumn() {
-		return updateDatetimeColumn;
-	}
+    /**
+     * @param insertDatetimeColumn セットする insertDatetimeColumn
+     */
+    public void setInsertDatetimeColumn(String insertDatetimeColumn) {
+        this.insertDatetimeColumn = insertDatetimeColumn;
+    }
 
-	/**
-	 * @param updateDatetimeColumn セットする updateDatetimeColumn
-	 */
-	public void setUpdateDatetimeColumn(String updateDatetimeColumn) {
-		this.updateDatetimeColumn = updateDatetimeColumn;
-	}
+    /**
+     * @return updateUserColumn
+     */
+    public String getUpdateUserColumn() {
+        return updateUserColumn;
+    }
 
-	/**
-	 * @return deleteFlagColumn
-	 */
-	public String getDeleteFlagColumn() {
-		return deleteFlagColumn;
-	}
+    /**
+     * @param updateUserColumn セットする updateUserColumn
+     */
+    public void setUpdateUserColumn(String updateUserColumn) {
+        this.updateUserColumn = updateUserColumn;
+    }
 
-	/**
-	 * @param deleteFlagColumn セットする deleteFlagColumn
-	 */
-	public void setDeleteFlagColumn(String deleteFlagColumn) {
-		this.deleteFlagColumn = deleteFlagColumn;
-	}
+    /**
+     * @return updateDatetimeColumn
+     */
+    public String getUpdateDatetimeColumn() {
+        return updateDatetimeColumn;
+    }
 
-	/**
-	 * @return userColumnType
-	 */
-	public String getUserColumnType() {
-		return userColumnType;
-	}
+    /**
+     * @param updateDatetimeColumn セットする updateDatetimeColumn
+     */
+    public void setUpdateDatetimeColumn(String updateDatetimeColumn) {
+        this.updateDatetimeColumn = updateDatetimeColumn;
+    }
 
-	/**
-	 * @param userColumnType セットする userColumnType
-	 */
-	public void setUserColumnType(String userColumnType) {
-		this.userColumnType = userColumnType;
-	}
+    /**
+     * @return deleteFlagColumn
+     */
+    public String getDeleteFlagColumn() {
+        return deleteFlagColumn;
+    }
 
-	/**
-	 * @return ignoreTables
-	 */
-	public List<String> getIgnoreTables() {
-		return ignoreTables;
-	}
+    /**
+     * @param deleteFlagColumn セットする deleteFlagColumn
+     */
+    public void setDeleteFlagColumn(String deleteFlagColumn) {
+        this.deleteFlagColumn = deleteFlagColumn;
+    }
 
-	/**
-	 * @param ignoreTables セットする ignoreTables
-	 */
-	public void setIgnoreTables(List<String> ignoreTables) {
-		this.ignoreTables = ignoreTables;
-	}
+    /**
+     * @return userColumnType
+     */
+    public String getUserColumnType() {
+        return userColumnType;
+    }
 
-	/**
-	 * @return rowIdColumn
-	 */
-	public String getRowIdColumn() {
-		return rowIdColumn;
-	}
+    /**
+     * @param userColumnType セットする userColumnType
+     */
+    public void setUserColumnType(String userColumnType) {
+        this.userColumnType = userColumnType;
+    }
 
-	/**
-	 * @param rowIdColumn セットする rowIdColumn
-	 */
-	public void setRowIdColumn(String rowIdColumn) {
-		this.rowIdColumn = rowIdColumn;
-	}
-	
-	
-	
+    /**
+     * @return ignoreTables
+     */
+    public List<String> getIgnoreTables() {
+        return ignoreTables;
+    }
+
+    /**
+     * @param ignoreTables セットする ignoreTables
+     */
+    public void setIgnoreTables(List<String> ignoreTables) {
+        this.ignoreTables = ignoreTables;
+    }
+
+    /**
+     * @return rowIdColumn
+     */
+    public String getRowIdColumn() {
+        return rowIdColumn;
+    }
+
+    /**
+     * @param rowIdColumn セットする rowIdColumn
+     */
+    public void setRowIdColumn(String rowIdColumn) {
+        this.rowIdColumn = rowIdColumn;
+    }
+
+    /**
+     * Get deleteFlagColumnType
+     * @return the deleteFlagColumnType
+     */
+    public String getDeleteFlagColumnType() {
+        return deleteFlagColumnType;
+    }
+
+    /**
+     * Set deleteFlagColumnType
+     * @param deleteFlagColumnType the deleteFlagColumnType to set
+     */
+    public void setDeleteFlagColumnType(String deleteFlagColumnType) {
+        this.deleteFlagColumnType = deleteFlagColumnType;
+    }
+
 }

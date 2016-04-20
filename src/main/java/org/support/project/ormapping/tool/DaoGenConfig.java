@@ -15,277 +15,276 @@ import org.support.project.ormapping.tool.config.ORmappingToolConfig;
 import org.support.project.ormapping.tool.impl.CreatorHelper;
 
 public class DaoGenConfig {
-	
-	private CreatorHelper helper = new CreatorHelper();
-	private NameConvertor nameConvertor = new NameConvertor();
-	
-	private String daoPackageName;
-	private String daoSuffix;
-	
-	private String entityDir;
-	private String entityPackageName;
-	private String entitySuffix;
 
-	private String commonInsertUserName;
-	private String commonInsertDateTime;
-	private String commonUpdateUserName;
-	private String commonUpdateDateTime;
-	private String[] commonIgnoreTables;
-	private String commonUseridType;
-	private String commonDeleteFlag;
-	private String rowIdColumn;
+    private CreatorHelper helper = new CreatorHelper();
+    private NameConvertor nameConvertor = new NameConvertor();
 
-	private File daoDir;
-	private File genDir;
-	private File sqlsDir;
-	
-	private String daoClassName;
-	private String genDaoClassName;
-	
-	private TableDefinition tableDefinition;
-	
-	private String entityClassName;
-	private File daoFile;
-	private File genDaoFile;
-	private String genPackage;
-	private File sqlDir;
-	private String sqlPackagePath;
+    private String daoPackageName;
+    private String daoSuffix;
 
-	private File sqlBaseDir;
-	
-	public void init(ORmappingToolConfig config) {
-		ORmappingDaoGenConfig daoGenConfig = config.getDaoGenConfig();
-		ORmappingEntityGenConfig entityGenConfig = config.getEntityGenConfig();
-		daoPackageName =  daoGenConfig.getDaoPackage();
-		
-		String dirName = daoGenConfig.getDaoOutDir();
-		
-		if (!dirName.endsWith("/")) {
-			dirName = dirName + "/";
-		}
-		String daoDirName = dirName + "java/" + daoPackageName.replaceAll("\\.", "/");
-		String sqlDirPath = dirName + "resources/" + daoPackageName.replaceAll("\\.", "/");
-		
-		//ディレクトリが存在しなければ作成
-		daoDir = new File(daoDirName);
-		if (!daoDir.exists()) {
-			daoDir.mkdirs();
-		}
-		
-		sqlBaseDir = new File(sqlDirPath);
-		if (!sqlBaseDir.exists()) {
-			sqlBaseDir.mkdirs();
-		}
-		
-		genDir = new File(daoDir, "gen");
-		if (!genDir.exists()) {
-			genDir.mkdirs();
-		}
-		sqlsDir = new File(sqlBaseDir, "sql");
-		if (!sqlsDir.exists()) {
-			sqlsDir.mkdirs();
-		}
-		
-		daoSuffix = daoGenConfig.getDaoSuffix();
-		
-		entityDir = entityGenConfig.getEntityOutDir();
-		entityPackageName =  entityGenConfig.getEntityPackage();
-		entitySuffix = entityGenConfig.getEntitySuffix();
+    private String entityDir;
+    private String entityPackageName;
+    private String entitySuffix;
 
-		commonInsertUserName = daoGenConfig.getInsertUserColumn();
-		commonInsertDateTime = daoGenConfig.getInsertDatetimeColumn();
-		commonUpdateUserName = daoGenConfig.getUpdateUserColumn();
-		commonUpdateDateTime = daoGenConfig.getUpdateDatetimeColumn();
-		rowIdColumn = daoGenConfig.getRowIdColumn();
-		
-		commonUseridType = daoGenConfig.getUserColumnType();
-		if (StringUtils.isEmpty(commonUseridType) || commonUseridType.equals("dao.common.userid.type")) {
-			commonUseridType = "String";
-		}
-		
-		commonDeleteFlag = daoGenConfig.getDeleteFlagColumn();
-		if (StringUtils.isEmpty(commonDeleteFlag) || commonDeleteFlag.equals("dao.common.delete.flag.column")) {
-			commonDeleteFlag = null;
-		}
-		
-		List<String> ignoreList = daoGenConfig.getIgnoreTables();
-		String[] ignores = new String[0];
-		if (ignoreList != null && !ignoreList.isEmpty()) {
-			ignores = ignoreList.toArray(new String[0]);
-		}
-		this.commonIgnoreTables = ignores;
-	}
-	
-	
-	
-	public void setTableDefinition(TableDefinition tableDefinition) {
-		this.tableDefinition = tableDefinition;
-		
-		daoClassName = nameConvertor.tableNameToClassName(tableDefinition.getTable_name()).concat(daoSuffix);
-		genDaoClassName = "Gen" + nameConvertor.tableNameToClassName(tableDefinition.getTable_name()).concat(daoSuffix);
-		
-		entityClassName = nameConvertor.tableNameToClassName(tableDefinition.getTable_name()).concat(entitySuffix);
-		
-		daoFile = new File(daoDir, daoClassName.concat(".java"));
-		genDaoFile = new File(genDir, genDaoClassName.concat(".java"));
-		
-		//String daoPackage = daoPackageName;
-		genPackage = daoPackageName.concat(".gen");
-		
-		
-		sqlDir = new File(sqlsDir, daoClassName);
-		if (!sqlDir.exists()) {
-			sqlDir.mkdirs();
-		}
-		sqlPackagePath = "/" + daoPackageName.replaceAll("\\.", "/") + "/sql/" + daoClassName;
-	}
+    private String commonInsertUserName;
+    private String commonInsertDateTime;
+    private String commonUpdateUserName;
+    private String commonUpdateDateTime;
+    private String[] commonIgnoreTables;
+    private String commonUseridType;
+    private String commonDeleteFlag;
+    private String rowIdColumn;
+    private String deleteFlagColumnType;
 
-	public Collection<ColumnDefinition> getColumns() {
-		return tableDefinition.getColumns();
-	}
-	
-	public Collection<ColumnDefinition> getPrimaryKeys() {
-		return getPrimaryKeys(tableDefinition.getColumns());
-	}
-	
-	
-	public Collection<ColumnDefinition> getPrimaryKeys(List<ColumnDefinition> columnDefinitions) {
-		TreeMap<Integer, ColumnDefinition> map = new TreeMap<>();
-		for (ColumnDefinition columnDefinition : columnDefinitions) {
-			if (columnDefinition.isPrimary()) {
-				map.put(columnDefinition.getPrimary_no(), columnDefinition);
-			}
-		}
-		return map.values();
-	}
+    private File daoDir;
+    private File genDir;
+    private File sqlsDir;
 
-	
+    private String daoClassName;
+    private String genDaoClassName;
 
-	public String getDaoPackageName() {
-		return daoPackageName;
-	}
+    private TableDefinition tableDefinition;
 
+    private String entityClassName;
+    private File daoFile;
+    private File genDaoFile;
+    private String genPackage;
+    private File sqlDir;
+    private String sqlPackagePath;
 
-	public String getDaoSuffix() {
-		return daoSuffix;
-	}
+    private File sqlBaseDir;
 
+    public void init(ORmappingToolConfig config) {
+        ORmappingDaoGenConfig daoGenConfig = config.getDaoGenConfig();
+        ORmappingEntityGenConfig entityGenConfig = config.getEntityGenConfig();
+        daoPackageName = daoGenConfig.getDaoPackage();
 
-	public String getEntityDir() {
-		return entityDir;
-	}
+        String dirName = daoGenConfig.getDaoOutDir();
 
+        if (!dirName.endsWith("/")) {
+            dirName = dirName + "/";
+        }
+        String daoDirName = dirName + "java/" + daoPackageName.replaceAll("\\.", "/");
+        String sqlDirPath = dirName + "resources/" + daoPackageName.replaceAll("\\.", "/");
 
-	public String getEntityPackageName() {
-		return entityPackageName;
-	}
+        // ディレクトリが存在しなければ作成
+        daoDir = new File(daoDirName);
+        if (!daoDir.exists()) {
+            daoDir.mkdirs();
+        }
 
+        sqlBaseDir = new File(sqlDirPath);
+        if (!sqlBaseDir.exists()) {
+            sqlBaseDir.mkdirs();
+        }
 
-	public String getEntitySuffix() {
-		return entitySuffix;
-	}
+        genDir = new File(daoDir, "gen");
+        if (!genDir.exists()) {
+            genDir.mkdirs();
+        }
+        sqlsDir = new File(sqlBaseDir, "sql");
+        if (!sqlsDir.exists()) {
+            sqlsDir.mkdirs();
+        }
 
+        daoSuffix = daoGenConfig.getDaoSuffix();
 
-	public String getCommonInsertUserName() {
-		return commonInsertUserName;
-	}
+        entityDir = entityGenConfig.getEntityOutDir();
+        entityPackageName = entityGenConfig.getEntityPackage();
+        entitySuffix = entityGenConfig.getEntitySuffix();
 
+        commonInsertUserName = daoGenConfig.getInsertUserColumn();
+        commonInsertDateTime = daoGenConfig.getInsertDatetimeColumn();
+        commonUpdateUserName = daoGenConfig.getUpdateUserColumn();
+        commonUpdateDateTime = daoGenConfig.getUpdateDatetimeColumn();
+        rowIdColumn = daoGenConfig.getRowIdColumn();
 
-	public String getCommonInsertDateTime() {
-		return commonInsertDateTime;
-	}
+        commonUseridType = daoGenConfig.getUserColumnType();
+        if (StringUtils.isEmpty(commonUseridType) || commonUseridType.equals("dao.common.userid.type")) {
+            commonUseridType = "String";
+        }
 
+        commonDeleteFlag = daoGenConfig.getDeleteFlagColumn();
+        if (StringUtils.isEmpty(commonDeleteFlag) || commonDeleteFlag.equals("dao.common.delete.flag.column")) {
+            commonDeleteFlag = null;
+        }
 
-	public String getCommonUpdateUserName() {
-		return commonUpdateUserName;
-	}
+        List<String> ignoreList = daoGenConfig.getIgnoreTables();
+        String[] ignores = new String[0];
+        if (ignoreList != null && !ignoreList.isEmpty()) {
+            ignores = ignoreList.toArray(new String[0]);
+        }
+        this.commonIgnoreTables = ignores;
 
+        this.deleteFlagColumnType = daoGenConfig.getDeleteFlagColumnType();
+    }
 
-	public String getCommonUpdateDateTime() {
-		return commonUpdateDateTime;
-	}
+    public void setTableDefinition(TableDefinition tableDefinition) {
+        this.tableDefinition = tableDefinition;
 
+        daoClassName = nameConvertor.tableNameToClassName(tableDefinition.getTable_name()).concat(daoSuffix);
+        genDaoClassName = "Gen" + nameConvertor.tableNameToClassName(tableDefinition.getTable_name()).concat(daoSuffix);
 
-	public String[] getCommonIgnoreTables() {
-		return commonIgnoreTables;
-	}
+        entityClassName = nameConvertor.tableNameToClassName(tableDefinition.getTable_name()).concat(entitySuffix);
 
+        daoFile = new File(daoDir, daoClassName.concat(".java"));
+        genDaoFile = new File(genDir, genDaoClassName.concat(".java"));
 
-	public String getCommonUseridType() {
-		return commonUseridType;
-	}
+        // String daoPackage = daoPackageName;
+        genPackage = daoPackageName.concat(".gen");
 
-	public File getDaoDir() {
-		return daoDir;
-	}
+        sqlDir = new File(sqlsDir, daoClassName);
+        if (!sqlDir.exists()) {
+            sqlDir.mkdirs();
+        }
+        sqlPackagePath = "/" + daoPackageName.replaceAll("\\.", "/") + "/sql/" + daoClassName;
+    }
 
-	public File getGenDir() {
-		return genDir;
-	}
+    public Collection<ColumnDefinition> getColumns() {
+        return tableDefinition.getColumns();
+    }
 
-	public File getSqlsDir() {
-		return sqlsDir;
-	}
+    public Collection<ColumnDefinition> getPrimaryKeys() {
+        return getPrimaryKeys(tableDefinition.getColumns());
+    }
 
-	public String getCommonDeleteFlag() {
-		return commonDeleteFlag;
-	}
+    public Collection<ColumnDefinition> getPrimaryKeys(List<ColumnDefinition> columnDefinitions) {
+        TreeMap<Integer, ColumnDefinition> map = new TreeMap<>();
+        for (ColumnDefinition columnDefinition : columnDefinitions) {
+            if (columnDefinition.isPrimary()) {
+                map.put(columnDefinition.getPrimary_no(), columnDefinition);
+            }
+        }
+        return map.values();
+    }
 
-	public CreatorHelper getHelper() {
-		return helper;
-	}
+    public String getDaoPackageName() {
+        return daoPackageName;
+    }
 
-	public NameConvertor getNameConvertor() {
-		return nameConvertor;
-	}
+    public String getDaoSuffix() {
+        return daoSuffix;
+    }
 
-	public String getDaoClassName() {
-		return daoClassName;
-	}
+    public String getEntityDir() {
+        return entityDir;
+    }
 
-	public String getGenDaoClassName() {
-		return genDaoClassName;
-	}
+    public String getEntityPackageName() {
+        return entityPackageName;
+    }
 
-	public TableDefinition getTableDefinition() {
-		return tableDefinition;
-	}
+    public String getEntitySuffix() {
+        return entitySuffix;
+    }
 
-	public String getEntityClassName() {
-		return entityClassName;
-	}
+    public String getCommonInsertUserName() {
+        return commonInsertUserName;
+    }
 
-	public File getDaoFile() {
-		return daoFile;
-	}
+    public String getCommonInsertDateTime() {
+        return commonInsertDateTime;
+    }
 
-	public File getGenDaoFile() {
-		return genDaoFile;
-	}
+    public String getCommonUpdateUserName() {
+        return commonUpdateUserName;
+    }
 
-	public String getGenPackage() {
-		return genPackage;
-	}
+    public String getCommonUpdateDateTime() {
+        return commonUpdateDateTime;
+    }
 
-	public File getSqlDir() {
-		return sqlDir;
-	}
+    public String[] getCommonIgnoreTables() {
+        return commonIgnoreTables;
+    }
 
-	public String getSqlPackagePath() {
-		return sqlPackagePath;
-	}
+    public String getCommonUseridType() {
+        return commonUseridType;
+    }
 
-	/**
-	 * @return rowIdColumn
-	 */
-	public String getRowIdColumn() {
-		return rowIdColumn;
-	}
+    public File getDaoDir() {
+        return daoDir;
+    }
 
+    public File getGenDir() {
+        return genDir;
+    }
 
+    public File getSqlsDir() {
+        return sqlsDir;
+    }
 
-	
-	
-	
-	
+    public String getCommonDeleteFlag() {
+        return commonDeleteFlag;
+    }
+
+    public CreatorHelper getHelper() {
+        return helper;
+    }
+
+    public NameConvertor getNameConvertor() {
+        return nameConvertor;
+    }
+
+    public String getDaoClassName() {
+        return daoClassName;
+    }
+
+    public String getGenDaoClassName() {
+        return genDaoClassName;
+    }
+
+    public TableDefinition getTableDefinition() {
+        return tableDefinition;
+    }
+
+    public String getEntityClassName() {
+        return entityClassName;
+    }
+
+    public File getDaoFile() {
+        return daoFile;
+    }
+
+    public File getGenDaoFile() {
+        return genDaoFile;
+    }
+
+    public String getGenPackage() {
+        return genPackage;
+    }
+
+    public File getSqlDir() {
+        return sqlDir;
+    }
+
+    public String getSqlPackagePath() {
+        return sqlPackagePath;
+    }
+
+    /**
+     * @return rowIdColumn
+     */
+    public String getRowIdColumn() {
+        return rowIdColumn;
+    }
+
+    /**
+     * Get deleteFlagColumnType
+     * 
+     * @return the deleteFlagColumnType
+     */
+    public String getDeleteFlagColumnType() {
+        return deleteFlagColumnType;
+    }
+
+    /**
+     * Set deleteFlagColumnType
+     * 
+     * @param deleteFlagColumnType the deleteFlagColumnType to set
+     */
+    public void setDeleteFlagColumnType(String deleteFlagColumnType) {
+        this.deleteFlagColumnType = deleteFlagColumnType;
+    }
+
 }

@@ -211,7 +211,11 @@ public class DefaultTableDeleteMethodCreator {
             pw.print("        db.");
             pw.print(helper.feildNameToSetter(feildName));
             pw.print("(");
-            pw.print(INT_FLAG.OFF.getValue());
+            if (StringUtils.isNotEmpty(config.getDeleteFlagColumnType()) && "boolean".equals(config.getDeleteFlagColumnType().toLowerCase())) {
+                pw.print("Boolean.FALSE");
+            } else {
+                pw.print(INT_FLAG.OFF.getValue());
+            }
             pw.println(");");
 
             // pw.println("        update(user, db);");
@@ -425,7 +429,11 @@ public class DefaultTableDeleteMethodCreator {
             pw.print("        db.");
             pw.print(helper.feildNameToSetter(feildName));
             pw.print("(");
-            pw.print(INT_FLAG.ON.getValue());
+            if (StringUtils.isNotEmpty(config.getDeleteFlagColumnType()) && "boolean".equals(config.getDeleteFlagColumnType().toLowerCase())) {
+                pw.print("Boolean.FALSE");
+            } else {
+                pw.print(INT_FLAG.OFF.getValue());
+            }
             pw.println(");");
 
             // pw.println("        update(user, db);");
