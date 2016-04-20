@@ -1,12 +1,8 @@
 package org.support.project.di.factory;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.support.project.aop.Advice;
-import org.support.project.aop.Aspect;
 import org.support.project.aop.GenericProxyFactory;
 import org.support.project.common.classanalysis.ClassAnalysisForDI;
 import org.support.project.common.classanalysis.ClassAnalysisForDIFactory;
@@ -45,20 +41,29 @@ public class InterfaceInstanceFactory {
         // Interfaceであった場合、Java標準の動的プロクシを利用する
         DI di = type.getAnnotation(DI.class);
         if (di == null) {
-            throw new DIException("errors.di.no.setting", type.getName());
+            return newInstanceOnClassName(key, type);
         }
         Class<?> impl = null;
 
         if (getKeyMap().containsKey(key)) {
             impl = getKeyMap().get(key);
         } else {
+            impl = di.impl();
+            Class<?>[] impls = di.impls();
+            if (impl == null || "org.support.project.di.NoImpl".equals(impl.getName())) {
+                if (impls == null || impls.length == 0) {
+                    try {
+                        Class.forName(key);
+                        return newInstanceOnClassName(key, type);
+                    } catch (ClassNotFoundException e) {
+                        logger.trace(e.getMessage());
+                    }
+                }
+            }
             if (key.equals(type.getName())) {
-                impl = di.impl();
                 getKeyMap().put(key, impl);
             } else {
                 String[] keys = di.keys();
-                Class<?>[] impls = di.impls();
-
                 if (keys.length != impls.length) {
                     throw new DIException("errors.di.impl.wrong", key, type.getName());
                 }
@@ -95,6 +100,21 @@ public class InterfaceInstanceFactory {
         }
 
         return object;
+    }
+
+    private static <T> T newInstanceOnClassName(String key, final Class<? extends T> type) throws InstantiationException, IllegalAccessException {
+        T object;
+        String className = key;
+        try {
+            Class<?> c = Class.forName(className);
+            if (!type.isAssignableFrom(c)) {
+                throw new DIException("errors.di.impl.wrong", c.getName(), type.getName());
+            }
+            object = (T) c.newInstance();
+            return object;
+        } catch (ClassNotFoundException e) {
+            throw new DIException("errors.di.no.setting", type.getName());
+        }
     }
 
 }
