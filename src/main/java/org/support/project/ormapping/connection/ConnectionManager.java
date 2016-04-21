@@ -153,7 +153,7 @@ public final class ConnectionManager {
             logger.debug("Connection config added. [name]=" + name);
         }
     }
-
+    
     /**
      * 設定していたコネクションの設定を削除
      */
@@ -205,7 +205,14 @@ public final class ConnectionManager {
      * @param name name
      */
     public void setDefaultConnectionName(String name) {
-        logger.debug(name);
+        if (name.equals(this.name)) {
+            // 既にデフォルトは同じ
+            return;
+        }
+        logger.info("change default connection. [form] " + this.name + "  [to] " + name);
+        if (!connectionPools.containsKey(name)) {
+            throw new ORMappingException("conaction config is not exists. [name] = " + name);
+        }
         this.name = name;
     }
 
