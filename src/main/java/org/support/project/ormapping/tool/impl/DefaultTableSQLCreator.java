@@ -472,15 +472,17 @@ public class DefaultTableSQLCreator {
         PrintWriter pw = null;
         try {
             pw = helper.getPrintWriter(sqlFile);
-            pw.println("SELECT * FROM " + config.getTableDefinition().getTable_name().toUpperCase() + "");
+            pw.print("SELECT * FROM " + config.getTableDefinition().getTable_name().toUpperCase() + "");
             if (StringUtils.isNotEmpty(config.getCommonDeleteFlag())) {
+                pw.print("\n");
                 pw.print("WHERE ");
                 pw.print(config.getCommonDeleteFlag());
                 pw.print(" = ");
                 pw.print(INT_FLAG.OFF.getValue());
             }
             if (datetimeColumn != null) {
-                pw.println("ORDER BY " + datetimeColumn.getColumn_name() + " DESC");
+                pw.print("\n");
+                pw.print("ORDER BY " + datetimeColumn.getColumn_name() + " DESC");
             }
             pw.println(";");
             pw.flush();
@@ -495,17 +497,19 @@ public class DefaultTableSQLCreator {
         log.info(sqlFile.getAbsolutePath() + "を作成します");
         try {
             pw = helper.getPrintWriter(sqlFile);
-            pw.println("SELECT * FROM " + config.getTableDefinition().getTable_name().toUpperCase() + "");
+            pw.print("SELECT * FROM " + config.getTableDefinition().getTable_name().toUpperCase() + "");
             if (StringUtils.isNotEmpty(config.getCommonDeleteFlag())) {
+                pw.print("\n");
                 pw.print("WHERE ");
                 pw.print(config.getCommonDeleteFlag());
                 pw.print(" = ");
                 pw.print(INT_FLAG.OFF.getValue());
-                pw.print("\n");
             }
             if (datetimeColumn != null) {
-                pw.println("ORDER BY " + datetimeColumn.getColumn_name() + " DESC");
+                pw.print("\n");
+                pw.print("ORDER BY " + datetimeColumn.getColumn_name() + " DESC");
             }
+            pw.print("\n");
             pw.println("LIMIT ? OFFSET ?;");
             pw.flush();
         } finally {
@@ -558,8 +562,9 @@ public class DefaultTableSQLCreator {
         PrintWriter pw = null;
         try {
             pw = helper.getPrintWriter(sqlFile);
-            pw.println("SELECT * FROM " + config.getTableDefinition().getTable_name().toUpperCase() + "");
+            pw.print("SELECT * FROM " + config.getTableDefinition().getTable_name().toUpperCase() + "");
             if (datetimeColumn != null) {
+                pw.print("\n");
                 pw.print("ORDER BY " + datetimeColumn.getColumn_name() + " DESC");
             }
             pw.println(";");
@@ -575,10 +580,12 @@ public class DefaultTableSQLCreator {
         log.info(sqlFile.getAbsolutePath() + "を作成します");
         try {
             pw = helper.getPrintWriter(sqlFile);
-            pw.println("SELECT * FROM " + config.getTableDefinition().getTable_name().toUpperCase());
+            pw.print("SELECT * FROM " + config.getTableDefinition().getTable_name().toUpperCase());
             if (datetimeColumn != null) {
-                pw.println("ORDER BY " + datetimeColumn.getColumn_name() + " DESC");
+                pw.print("\n");
+                pw.print("ORDER BY " + datetimeColumn.getColumn_name() + " DESC");
             }
+            pw.print("\n");
             pw.println("LIMIT ? OFFSET ?;");
             pw.flush();
         } finally {

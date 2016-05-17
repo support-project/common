@@ -430,9 +430,9 @@ public class DefaultTableDeleteMethodCreator {
             pw.print(helper.feildNameToSetter(feildName));
             pw.print("(");
             if (StringUtils.isNotEmpty(config.getDeleteFlagColumnType()) && "boolean".equals(config.getDeleteFlagColumnType().toLowerCase())) {
-                pw.print("Boolean.FALSE");
+                pw.print("Boolean.TRUE");
             } else {
-                pw.print(INT_FLAG.OFF.getValue());
+                pw.print(INT_FLAG.ON.getValue());
             }
             pw.println(");");
 
