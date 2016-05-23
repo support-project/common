@@ -22,6 +22,7 @@ import org.support.project.di.Instance;
 
 /**
  * Javaからコマンドラインのバッチ処理を呼び出すクラス
+ * 
  * @author Koda
  */
 @DI(instance = Instance.Prototype)
@@ -45,19 +46,20 @@ public class BatJob implements Job {
     private ConsoleListener consoleListener = null;
 
     /**
-     * Jobのインスタンス取得 AOPに対応
+     * Get instance.
      * 
-     * @return
+     * @return BatJob instance.
      */
     public static BatJob get() {
         return Container.getComp(BatJob.class);
     }
 
     /**
-     * コマンド追加
+     * Add command.
      * 
-     * @param command
-     * @return
+     * @param commands
+     *            commands
+     * @return myself
      */
     public BatJob addCommand(String... commands) {
         for (String command : commands) {
@@ -67,10 +69,11 @@ public class BatJob implements Job {
     }
 
     /**
-     * コマンド追加
+     * Add commands.
      * 
-     * @param command
-     * @return
+     * @param commands
+     *            commands
+     * @return myself
      */
     public BatJob addCommand(List<String> commands) {
         for (String command : commands) {
@@ -80,10 +83,13 @@ public class BatJob implements Job {
     }
 
     /**
-     * 環境変数に値を追加
+     * Add env value.
      * 
      * @param key
+     *            key
      * @param value
+     *            value
+     * @return myself
      */
     public BatJob addEnvironment(String key, String value) {
         this.environment.put(key, value);
@@ -94,6 +100,8 @@ public class BatJob implements Job {
      * カレントディレクトリを指定
      * 
      * @param currentDirectory
+     *            currentDirectory
+     * @return myself
      */
     public BatJob setCurrentDirectory(File currentDirectory) {
         this.currentDirectory = currentDirectory;
@@ -104,6 +112,8 @@ public class BatJob implements Job {
      * ジョブのタイムアウト(ミリ秒 / 0以下でタイムアウトしない)を設定
      * 
      * @param timeOutMilliSecond
+     *            timeOutMilliSecond
+     * @return myself
      */
     public BatJob setTimeOutMilliSecond(int timeOutMilliSecond) {
         this.timeOutMilliSecond = timeOutMilliSecond;
@@ -111,11 +121,13 @@ public class BatJob implements Job {
     }
 
     /**
-     * 実行
+     * execute
      * 
-     * @return
+     * @return JobResult
      * @throws IOException
+     *             IOException
      * @throws InterruptedException
+     *             InterruptedException
      */
     public JobResult execute() throws IOException, InterruptedException {
         if (list == null || list.isEmpty()) {

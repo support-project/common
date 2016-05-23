@@ -30,158 +30,158 @@ import org.support.project.common.log.LogFactory;
  * 
  */
 public class ClassSearchImpl implements ClassSearch {
-	/** ログ */
-	private static Log log = LogFactory.getLog(ClassSearchImpl.class);
-	private ClassLoader classLoader;
-	
-	@Override
-	public Class<?>[] classSearch(String packageName, boolean subpackages) throws SystemException {
-		try {
-			String resourceName = packageNameToResourceName(packageName);
-			URL url = classLoader.getResource(resourceName);
-			if (url == null) {
-				JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-				JavaFileManager fm = compiler.getStandardFileManager(new DiagnosticCollector<JavaFileObject>(), null, null);
+    /** ログ */
+    private static Log log = LogFactory.getLog(ClassSearchImpl.class);
+    private ClassLoader classLoader;
 
-				// 一覧に含めるオブジェクト種別。以下はクラスのみを含める。
-				Set<JavaFileObject.Kind> kinds = new HashSet<JavaFileObject.Kind>() {
-					{
-						add(JavaFileObject.Kind.CLASS);
-					}
-				};
-				Iterable<JavaFileObject> iterable;
-				List<Class<?>> classes = new ArrayList<>();
-				iterable = fm.list(StandardLocation.PLATFORM_CLASS_PATH, packageName, kinds, subpackages);
+    @Override
+    public Class<?>[] classSearch(String packageName, boolean subpackages) throws SystemException {
+        try {
+            String resourceName = packageNameToResourceName(packageName);
+            URL url = classLoader.getResource(resourceName);
+            if (url == null) {
+                JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+                JavaFileManager fm = compiler.getStandardFileManager(new DiagnosticCollector<JavaFileObject>(), null, null);
 
-				for (JavaFileObject javaFileObject : iterable) {
-					if (javaFileObject.getKind() == JavaFileObject.Kind.CLASS) {
-						String name = javaFileObject.getName();
-						int start = 0;
-						if (name.lastIndexOf(".jar/") != -1) {
-							start = name.lastIndexOf(".jar/") + ".jar/".length();
-						}
-						String clname = name.substring(start);// クラス名取得
-						if (clname.indexOf(".class") != -1) {
-							int end = clname.indexOf(".class") + ".class".length();
-							clname = clname.substring(0, end);
-						}
-						clname = resourceNameToClassName(clname);
-						log.info(clname);
-						classes.add(Class.forName(clname));
-					}
-				}
-				return classes.toArray(new Class<?>[0]);
+                // 一覧に含めるオブジェクト種別。以下はクラスのみを含める。
+                Set<JavaFileObject.Kind> kinds = new HashSet<JavaFileObject.Kind>() {
+                    {
+                        add(JavaFileObject.Kind.CLASS);
+                    }
+                };
+                Iterable<JavaFileObject> iterable;
+                List<Class<?>> classes = new ArrayList<>();
+                iterable = fm.list(StandardLocation.PLATFORM_CLASS_PATH, packageName, kinds, subpackages);
 
-			} else {
-				return findClasses(packageName).toArray(new Class<?>[0]);
-			}
-		} catch (Exception e) {
-			throw new SystemException(e);
-		}
-	}
+                for (JavaFileObject javaFileObject : iterable) {
+                    if (javaFileObject.getKind() == JavaFileObject.Kind.CLASS) {
+                        String name = javaFileObject.getName();
+                        int start = 0;
+                        if (name.lastIndexOf(".jar/") != -1) {
+                            start = name.lastIndexOf(".jar/") + ".jar/".length();
+                        }
+                        String clname = name.substring(start); // クラス名取得
+                        if (clname.indexOf(".class") != -1) {
+                            int end = clname.indexOf(".class") + ".class".length();
+                            clname = clname.substring(0, end);
+                        }
+                        clname = resourceNameToClassName(clname);
+                        log.info(clname);
+                        classes.add(Class.forName(clname));
+                    }
+                }
+                return classes.toArray(new Class<?>[0]);
 
-//	public static void main(String[] args) throws Exception {
-//		ClassSearchImpl classFinder = new ClassSearchImpl();
-//		// classFinder.printClasses(args[0]);
-//
-//		for (Class<?> clazz : classFinder.findClasses(args[0])) {
-//			System.out.println(clazz);
-//		}
-//	}
+            } else {
+                return findClasses(packageName).toArray(new Class<?>[0]);
+            }
+        } catch (Exception e) {
+            throw new SystemException(e);
+        }
+    }
 
-	public ClassSearchImpl() {
-		this(Thread.currentThread().getContextClassLoader());
-	}
+    // public static void main(String[] args) throws Exception {
+    // ClassSearchImpl classFinder = new ClassSearchImpl();
+    // // classFinder.printClasses(args[0]);
+    //
+    // for (Class<?> clazz : classFinder.findClasses(args[0])) {
+    // System.out.println(clazz);
+    // }
+    // }
 
-	public ClassSearchImpl(ClassLoader classLoader) {
-		this.classLoader = classLoader;
-	}
+    public ClassSearchImpl() {
+        this(Thread.currentThread().getContextClassLoader());
+    }
 
-//	public void printClasses(String rootPackageName) throws Exception {
-//		String resourceName = rootPackageName.replace('.', '/');
-//		URL url = classLoader.getResource(resourceName);
-//		System.out.println("URL = " + url);
-//		System.out.println("URLConnection = " + url.openConnection());
-//	}
+    public ClassSearchImpl(ClassLoader classLoader) {
+        this.classLoader = classLoader;
+    }
 
-	private String fileNameToClassName(String name) {
-		return name.substring(0, name.length() - ".class".length());
-	}
+    // public void printClasses(String rootPackageName) throws Exception {
+    // String resourceName = rootPackageName.replace('.', '/');
+    // URL url = classLoader.getResource(resourceName);
+    // System.out.println("URL = " + url);
+    // System.out.println("URLConnection = " + url.openConnection());
+    // }
 
-	private String resourceNameToClassName(String resourceName) {
-		return fileNameToClassName(resourceName).replace('/', '.');
-	}
+    private String fileNameToClassName(String name) {
+        return name.substring(0, name.length() - ".class".length());
+    }
 
-	private boolean isClassFile(String fileName) {
-		return fileName.endsWith(".class");
-	}
+    private String resourceNameToClassName(String resourceName) {
+        return fileNameToClassName(resourceName).replace('/', '.');
+    }
 
-	private String packageNameToResourceName(String packageName) {
-		return packageName.replace('.', '/');
-	}
+    private boolean isClassFile(String fileName) {
+        return fileName.endsWith(".class");
+    }
 
-	public List<Class<?>> findClasses(String rootPackageName) throws Exception {
-		String resourceName = packageNameToResourceName(rootPackageName);
-		URL url = classLoader.getResource(resourceName);
+    private String packageNameToResourceName(String packageName) {
+        return packageName.replace('.', '/');
+    }
 
-		if (url == null) {
-			return new ArrayList<Class<?>>();
-		}
+    public List<Class<?>> findClasses(String rootPackageName) throws Exception {
+        String resourceName = packageNameToResourceName(rootPackageName);
+        URL url = classLoader.getResource(resourceName);
 
-		String protocol = url.getProtocol();
-		if ("file".equals(protocol)) {
-			return findClassesWithFile(rootPackageName, new File(url.getFile()));
-		} else if ("jar".equals(protocol)) {
-			return findClassesWithJarFile(rootPackageName, url);
-		}
+        if (url == null) {
+            return new ArrayList<Class<?>>();
+        }
 
-		throw new IllegalArgumentException("Unsupported Class Load Protodol[" + protocol + "]");
-	}
+        String protocol = url.getProtocol();
+        if ("file".equals(protocol)) {
+            return findClassesWithFile(rootPackageName, new File(url.getFile()));
+        } else if ("jar".equals(protocol)) {
+            return findClassesWithJarFile(rootPackageName, url);
+        }
 
-	private List<Class<?>> findClassesWithFile(String packageName, File dir) throws Exception {
-		List<Class<?>> classes = new ArrayList<Class<?>>();
-		if (dir != null) {
-			String[] children = dir.list();
-			if (children != null) {
-				for (String path : children) {
-					File entry = new File(dir, path);
-					if (entry.isFile() && isClassFile(entry.getName())) {
-						classes.add(classLoader.loadClass(packageName + "." + fileNameToClassName(entry.getName())));
-					} else if (entry.isDirectory()) {
-						classes.addAll(findClassesWithFile(packageName + "." + entry.getName(), entry));
-					}
-				}
-			}
-		}
+        throw new IllegalArgumentException("Unsupported Class Load Protodol[" + protocol + "]");
+    }
 
-		return classes;
-	}
+    private List<Class<?>> findClassesWithFile(String packageName, File dir) throws Exception {
+        List<Class<?>> classes = new ArrayList<Class<?>>();
+        if (dir != null) {
+            String[] children = dir.list();
+            if (children != null) {
+                for (String path : children) {
+                    File entry = new File(dir, path);
+                    if (entry.isFile() && isClassFile(entry.getName())) {
+                        classes.add(classLoader.loadClass(packageName + "." + fileNameToClassName(entry.getName())));
+                    } else if (entry.isDirectory()) {
+                        classes.addAll(findClassesWithFile(packageName + "." + entry.getName(), entry));
+                    }
+                }
+            }
+        }
 
-	private List<Class<?>> findClassesWithJarFile(String rootPackageName, URL jarFileUrl) throws Exception {
-		List<Class<?>> classes = new ArrayList<Class<?>>();
+        return classes;
+    }
 
-		JarURLConnection jarUrlConnection = (JarURLConnection) jarFileUrl.openConnection();
-		JarFile jarFile = null;
+    private List<Class<?>> findClassesWithJarFile(String rootPackageName, URL jarFileUrl) throws Exception {
+        List<Class<?>> classes = new ArrayList<Class<?>>();
 
-		try {
-			jarFile = jarUrlConnection.getJarFile();
-			Enumeration<JarEntry> jarEnum = jarFile.entries();
+        JarURLConnection jarUrlConnection = (JarURLConnection) jarFileUrl.openConnection();
+        JarFile jarFile = null;
 
-			String packageNameAsResourceName = packageNameToResourceName(rootPackageName);
+        try {
+            jarFile = jarUrlConnection.getJarFile();
+            Enumeration<JarEntry> jarEnum = jarFile.entries();
 
-			while (jarEnum.hasMoreElements()) {
-				JarEntry jarEntry = jarEnum.nextElement();
-				if (jarEntry.getName().startsWith(packageNameAsResourceName) && isClassFile(jarEntry.getName())) {
-					classes.add(classLoader.loadClass(resourceNameToClassName(jarEntry.getName())));
-				}
-			}
-		} finally {
-			if (jarFile != null) {
-				jarFile.close();
-			}
-		}
+            String packageNameAsResourceName = packageNameToResourceName(rootPackageName);
 
-		return classes;
-	}
+            while (jarEnum.hasMoreElements()) {
+                JarEntry jarEntry = jarEnum.nextElement();
+                if (jarEntry.getName().startsWith(packageNameAsResourceName) && isClassFile(jarEntry.getName())) {
+                    classes.add(classLoader.loadClass(resourceNameToClassName(jarEntry.getName())));
+                }
+            }
+        } finally {
+            if (jarFile != null) {
+                jarFile.close();
+            }
+        }
+
+        return classes;
+    }
 
 }

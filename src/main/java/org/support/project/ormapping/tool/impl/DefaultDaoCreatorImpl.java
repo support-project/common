@@ -10,27 +10,23 @@ import org.support.project.ormapping.tool.DaoClassCreator;
 import org.support.project.ormapping.tool.DaoGenConfig;
 
 public class DefaultDaoCreatorImpl implements DaoClassCreator {
-	/** ログ */
-	private static Log log = LogFactory.getLog(DefaultDaoCreatorImpl.class);
+    /** ログ */
+    private static Log log = LogFactory.getLog(DefaultDaoCreatorImpl.class);
 
-	@Override
-	public void create(Collection<TableDefinition> tableDefinitions,
-			DaoGenConfig config) throws ORMappingException {
-		for (TableDefinition tableDefinition : tableDefinitions) {
-			config.setTableDefinition(tableDefinition);
+    @Override
+    public void create(Collection<TableDefinition> tableDefinitions, DaoGenConfig config) throws ORMappingException {
+        for (TableDefinition tableDefinition : tableDefinitions) {
+            config.setTableDefinition(tableDefinition);
 
-			log.info("テーブル [" + config.getTableDefinition().getTable_name()
-					+ "] の処理を開始します。");
+            log.info("テーブル [" + config.getTableDefinition().getTable_name() + "] の処理を開始します。");
 
-			DefaultTableSQLCreator sqlCreator = new DefaultTableSQLCreator(
-					config);
-			sqlCreator.createDefaultSql();
+            DefaultTableSQLCreator sqlCreator = new DefaultTableSQLCreator(config);
+            sqlCreator.createDefaultSql();
 
-			DefaultTableDaoClassCreator daoClassCreator = new DefaultTableDaoClassCreator(
-					config);
+            DefaultTableDaoClassCreator daoClassCreator = new DefaultTableDaoClassCreator(config);
 
-			daoClassCreator.create();
-		}
-	}
+            daoClassCreator.create();
+        }
+    }
 
 }

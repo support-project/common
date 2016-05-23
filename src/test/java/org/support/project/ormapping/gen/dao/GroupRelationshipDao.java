@@ -8,7 +8,7 @@ import org.support.project.ormapping.gen.dao.gen.GenGroupRelationshipDao;
 /**
  * グループの親子関係
  */
-@DI(instance=Instance.Singleton)
+@DI(instance = Instance.Singleton)
 public class GroupRelationshipDao extends GenGroupRelationshipDao {
 
 	/** SerialVersion */
