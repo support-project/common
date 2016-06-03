@@ -11,18 +11,15 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 
+import org.support.project.common.config.AppConfig;
+
 /**
  * パスワードのエンコード／デコードに利用するユーティリティ
- * 
- * CBC（IVを使用）イニシャルバリュー（IV(アイブイ)）は使っていない。
- * 
  * @author koda
- *
  */
 public class PasswordUtil {
     /** ALGORITHM */
     private static final String CIPHER_ALGORITHM = "AES";
-
     // private static final String CIPHER_TRANSFORMATION = CIPHER_ALGORITHM + "/CBC/PKCS5Padding";
     
     /**
@@ -33,7 +30,13 @@ public class PasswordUtil {
      */
     private static byte[] generatSecretKey(String key) throws NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance("MD5");
-        byte[] hash = digest.digest(key.getBytes());
+        StringBuilder builder = new StringBuilder();
+        builder.append(key).append(AppConfig.get().getKey());
+        int hashIterations = 100;
+        byte[] hash = digest.digest(builder.toString().getBytes());
+        for (int i = 0; i < hashIterations; i++) {
+            hash = digest.digest(hash);
+        }
         return hash;
     }
     /**
@@ -78,6 +81,8 @@ public class PasswordUtil {
         Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
         cipher.init(Cipher.ENCRYPT_MODE, secretKey);
         byte[] bytes = cipher.doFinal(string.getBytes());
+        
+        
 
         return Base64Utils.toBase64(bytes);
     }
