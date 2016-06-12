@@ -1,15 +1,10 @@
 package org.support.project.common.config;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Random;
 
-import javax.xml.bind.DatatypeConverter;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.support.project.common.util.FileUtil;
 import org.support.project.common.util.StringUtils;
 import org.support.project.common.util.SystemUtils;
 import org.w3c.dom.Document;
@@ -91,10 +86,6 @@ public class AppConfig {
 
     /** ユーザのホームディレクトリ(BasePath)を指定する環境変数のキー */
     private static String envKey = "";
-    
-    /** 暗号化キー */
-    private static String key;
-    
     
     /** 
      * 環境変数のキー文字列を設定
@@ -256,31 +247,6 @@ public class AppConfig {
      */
     public void setLogsPath(String logsPath) {
         this.logsPath = logsPath;
-    }
-    /**
-     * Get key
-     * @return the key
-     */
-    public String getKey() {
-        if (StringUtils.isEmpty(AppConfig.key)) {
-            try {
-                File keyTxt = new File(AppConfig.get().getBasePath(), "key.txt");
-                if (keyTxt.exists()) {
-                    AppConfig.key = FileUtil.read(new FileInputStream(keyTxt), "UTF-8");
-                } else {
-                    System.out.println("Generate key and write key.txt");
-                    Random randomno = new Random();
-                    byte[] nbyte = new byte[32];
-                    randomno.nextBytes(nbyte);
-                    AppConfig.key = new String(DatatypeConverter.printHexBinary(nbyte));
-                    FileUtil.write(keyTxt, AppConfig.key);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-                System.exit(-1); // システム終了
-            }
-        }
-        return AppConfig.key;
     }
 
 }
