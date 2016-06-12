@@ -264,7 +264,7 @@ public class AppConfig {
     public String getKey() {
         if (StringUtils.isEmpty(AppConfig.key)) {
             try {
-                File keyTxt = new File(getBasePath(), "key.txt");
+                File keyTxt = new File(AppConfig.get().getBasePath(), "key.txt");
                 if (keyTxt.exists()) {
                     AppConfig.key = FileUtil.read(new FileInputStream(keyTxt), "UTF-8");
                 } else {
