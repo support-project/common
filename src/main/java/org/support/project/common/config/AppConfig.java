@@ -266,8 +266,10 @@ public class AppConfig {
             try {
                 File keyTxt = new File(AppConfig.get().getBasePath(), "key.txt");
                 if (keyTxt.exists()) {
+                    System.out.println("Load key.txt");
                     AppConfig.key = FileUtil.read(new FileInputStream(keyTxt), "UTF-8");
                 } else {
+                    System.out.println("Generate key and write key.txt");
                     Random randomno = new Random();
                     byte[] nbyte = new byte[32];
                     randomno.nextBytes(nbyte);
