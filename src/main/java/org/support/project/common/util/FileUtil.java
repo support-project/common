@@ -104,6 +104,10 @@ public class FileUtil {
     public static void write(File file, String string) throws FileNotFoundException, UnsupportedEncodingException, IOException {
         PrintWriter pw = null;
         try {
+            File parent = file.getParentFile();
+            if (!parent.exists()) {
+                parent.mkdirs();
+            }
             // 出力ストリームの生成（文字コード指定）
             FileOutputStream fos = new FileOutputStream(file);
             OutputStreamWriter osw = new OutputStreamWriter(fos, "UTF-8");
