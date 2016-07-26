@@ -121,7 +121,7 @@ public class PasswordUtil {
             byte[] dec = cipher.doFinal(bytes);
             return new String(dec);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
-            LOG.error("decrypt error: ", e);
+            LOG.warn("decrypt error: " + e.getMessage());
             throw e;
         }
     }
