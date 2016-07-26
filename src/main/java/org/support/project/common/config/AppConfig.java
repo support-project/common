@@ -28,6 +28,9 @@ public class AppConfig {
     /** ログ */
     private static final Log LOG = LogFactory.getLog(AppConfig.class);
 
+    /** Sync用オブジェクト */
+    public static final Object sync = new Object();
+    
     /** 設定ファイルのパス */
     public static final String APP_CONFIG = "/appconfig.xml";
     /** インスタンス */
@@ -267,7 +270,7 @@ public class AppConfig {
      * @return the key
      */
     public String getKey() {
-        synchronized (AppConfig.APP_CONFIG) {
+        synchronized (AppConfig.sync) {
             if (StringUtils.isEmpty(AppConfig.key)) {
                 try {
                     File keyTxt = new File(AppConfig.get().getBasePath(), "key.txt");
