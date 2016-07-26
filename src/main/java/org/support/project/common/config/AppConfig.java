@@ -275,15 +275,16 @@ public class AppConfig {
                 try {
                     File keyTxt = new File(AppConfig.get().getBasePath(), "key.txt");
                     if (keyTxt.exists()) {
-                        // System.out.println("Load key file: " + keyTxt.getAbsolutePath());
+                        LOG.info("Load key file: " + keyTxt.getAbsolutePath());
                         AppConfig.key = FileUtil.read(new FileInputStream(keyTxt), "UTF-8");
                     } else {
                         LOG.info("Generate key and write " + keyTxt.getAbsolutePath());
                         Random randomno = new Random();
                         byte[] nbyte = new byte[32];
                         randomno.nextBytes(nbyte);
-                        AppConfig.key = new String(DatatypeConverter.printHexBinary(nbyte));
-                        FileUtil.write(keyTxt, AppConfig.key);
+                        String genKey = new String(DatatypeConverter.printHexBinary(nbyte));
+                        FileUtil.write(keyTxt, genKey);
+                        AppConfig.key = FileUtil.read(new FileInputStream(keyTxt), "UTF-8");
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
