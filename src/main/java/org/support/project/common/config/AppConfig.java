@@ -267,7 +267,7 @@ public class AppConfig {
      * @return the key
      */
     public String getKey() {
-        synchronized (AppConfig.key) {
+        synchronized (AppConfig.APP_CONFIG) {
             if (StringUtils.isEmpty(AppConfig.key)) {
                 try {
                     File keyTxt = new File(AppConfig.get().getBasePath(), "key.txt");
