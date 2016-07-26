@@ -28,6 +28,9 @@ public class AppConfig {
     /** ログ */
     private static final Log LOG = LogFactory.getLog(AppConfig.class);
 
+    /** Sync用オブジェクト */
+    public static final Object sync = new Object();
+    
     /** 設定ファイルのパス */
     public static final String APP_CONFIG = "/appconfig.xml";
     /** インスタンス */
@@ -267,15 +270,15 @@ public class AppConfig {
      * @return the key
      */
     public String getKey() {
-        if (StringUtils.isEmpty(AppConfig.key)) {
-            synchronized (this) {
+        synchronized (AppConfig.sync) {
+            if (StringUtils.isEmpty(AppConfig.key)) {
                 try {
                     File keyTxt = new File(AppConfig.get().getBasePath(), "key.txt");
                     if (keyTxt.exists()) {
                         // System.out.println("Load key file: " + keyTxt.getAbsolutePath());
                         AppConfig.key = FileUtil.read(new FileInputStream(keyTxt), "UTF-8");
                     } else {
-                        System.out.println("Generate key and write key.txt");
+                        LOG.info("Generate key and write " + keyTxt.getAbsolutePath());
                         Random randomno = new Random();
                         byte[] nbyte = new byte[32];
                         randomno.nextBytes(nbyte);
