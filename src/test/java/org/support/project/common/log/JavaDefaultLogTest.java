@@ -37,6 +37,7 @@ public class JavaDefaultLogTest {
 		log.error("error");
 		log.fatal("fatal");
 		
+		/*
 		AppConfig config = new AppConfig();
 		config.setTime_zone("aaa");
 		log.fatal(config);
@@ -67,7 +68,7 @@ public class JavaDefaultLogTest {
 		if (log.isFatalEnabled()) {
 			log.fatal(config);
 		}
-		
+		*/
 		
 	}
 
