@@ -267,26 +267,28 @@ public class AppConfig {
      * @return the key
      */
     public String getKey() {
-        synchronized (this) {
-            try {
-                File keyTxt = new File(AppConfig.get().getBasePath(), "key.txt");
-                if (keyTxt.exists()) {
-                    // System.out.println("Load key file: " + keyTxt.getAbsolutePath());
-                    AppConfig.key = FileUtil.read(new FileInputStream(keyTxt), "UTF-8");
-                } else {
-                    System.out.println("Generate key and write key.txt");
-                    Random randomno = new Random();
-                    byte[] nbyte = new byte[32];
-                    randomno.nextBytes(nbyte);
-                    AppConfig.key = new String(DatatypeConverter.printHexBinary(nbyte));
-                    FileUtil.write(keyTxt, AppConfig.key);
+        if (StringUtils.isEmpty(AppConfig.key)) {
+            synchronized (this) {
+                try {
+                    File keyTxt = new File(AppConfig.get().getBasePath(), "key.txt");
+                    if (keyTxt.exists()) {
+                        // System.out.println("Load key file: " + keyTxt.getAbsolutePath());
+                        AppConfig.key = FileUtil.read(new FileInputStream(keyTxt), "UTF-8");
+                    } else {
+                        System.out.println("Generate key and write key.txt");
+                        Random randomno = new Random();
+                        byte[] nbyte = new byte[32];
+                        randomno.nextBytes(nbyte);
+                        AppConfig.key = new String(DatatypeConverter.printHexBinary(nbyte));
+                        FileUtil.write(keyTxt, AppConfig.key);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    System.exit(-1); // システム終了
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-                System.exit(-1); // システム終了
             }
+            // LOG.trace("Key: " + AppConfig.key);
         }
-        // LOG.trace("Key: " + AppConfig.key);
         return AppConfig.key;
     }
 
