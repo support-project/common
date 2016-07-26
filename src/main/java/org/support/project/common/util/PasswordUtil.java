@@ -12,12 +12,17 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.support.project.common.config.AppConfig;
+import org.support.project.common.log.Log;
+import org.support.project.common.log.LogFactory;
 
 /**
  * パスワードのエンコード／デコードに利用するユーティリティ
  * @author koda
  */
 public class PasswordUtil {
+    /** ログ */
+    private static final Log LOG = LogFactory.getLog(PasswordUtil.class);
+
     /** ALGORITHM */
     private static final String CIPHER_ALGORITHM = "AES";
     // private static final String CIPHER_TRANSFORMATION = CIPHER_ALGORITHM + "/CBC/PKCS5Padding";
@@ -29,15 +34,19 @@ public class PasswordUtil {
      * @throws NoSuchAlgorithmException NoSuchAlgorithmException
      */
     private static byte[] generatSecretKey(String key) throws NoSuchAlgorithmException {
-        MessageDigest digest = MessageDigest.getInstance("MD5");
-        StringBuilder builder = new StringBuilder();
-        builder.append(key).append(AppConfig.get().getKey());
-        int hashIterations = 100;
-        byte[] hash = digest.digest(builder.toString().getBytes());
-        for (int i = 0; i < hashIterations; i++) {
-            hash = digest.digest(hash);
+        synchronized (CIPHER_ALGORITHM) {
+            MessageDigest digest = MessageDigest.getInstance("MD5");
+            StringBuilder builder = new StringBuilder();
+            // LOG.trace(AppConfig.get().getKey());
+            builder.append(key).append(AppConfig.get().getKey());
+            int hashIterations = 100;
+            byte[] hash = digest.digest(builder.toString().getBytes());
+            for (int i = 0; i < hashIterations; i++) {
+                hash = digest.digest(hash);
+            }
+            // LOG.trace(hash);
+            return hash;
         }
-        return hash;
     }
     /**
      * hash on sha 256.
@@ -82,8 +91,6 @@ public class PasswordUtil {
         cipher.init(Cipher.ENCRYPT_MODE, secretKey);
         byte[] bytes = cipher.doFinal(string.getBytes());
         
-        
-
         return Base64Utils.toBase64(bytes);
     }
 
@@ -104,14 +111,19 @@ public class PasswordUtil {
         if (string == null) {
             return null;
         }
-        Key secretKey = makeKey(generatSecretKey(key));
-
-        Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
-        cipher.init(Cipher.DECRYPT_MODE, secretKey);
-
-        byte[] bytes = Base64Utils.fromBase64(string);
-        byte[] dec = cipher.doFinal(bytes);
-        return new String(dec);
+        try {
+            Key secretKey = makeKey(generatSecretKey(key));
+    
+            Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
+            cipher.init(Cipher.DECRYPT_MODE, secretKey);
+    
+            byte[] bytes = Base64Utils.fromBase64(string);
+            byte[] dec = cipher.doFinal(bytes);
+            return new String(dec);
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
+            LOG.error("decrypt error: ", e);
+            throw e;
+        }
     }
 
     /**

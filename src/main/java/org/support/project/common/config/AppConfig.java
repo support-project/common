@@ -9,6 +9,8 @@ import javax.xml.bind.DatatypeConverter;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.support.project.common.log.Log;
+import org.support.project.common.log.LogFactory;
 import org.support.project.common.util.FileUtil;
 import org.support.project.common.util.StringUtils;
 import org.support.project.common.util.SystemUtils;
@@ -23,6 +25,9 @@ import org.xml.sax.SAXException;
  * @author Koda
  */
 public class AppConfig {
+    /** ログ */
+    private static final Log LOG = LogFactory.getLog(AppConfig.class);
+
     /** 設定ファイルのパス */
     public static final String APP_CONFIG = "/appconfig.xml";
     /** インスタンス */
@@ -93,7 +98,7 @@ public class AppConfig {
     private static String envKey = "";
     
     /** 暗号化キー */
-    private static String key;
+    private static String key = null;
     
     
     /** 
@@ -262,11 +267,11 @@ public class AppConfig {
      * @return the key
      */
     public String getKey() {
-        if (StringUtils.isEmpty(AppConfig.key)) {
+        synchronized (this) {
             try {
                 File keyTxt = new File(AppConfig.get().getBasePath(), "key.txt");
                 if (keyTxt.exists()) {
-                    System.out.println("Load key file: " + keyTxt.getAbsolutePath());
+                    // System.out.println("Load key file: " + keyTxt.getAbsolutePath());
                     AppConfig.key = FileUtil.read(new FileInputStream(keyTxt), "UTF-8");
                 } else {
                     System.out.println("Generate key and write key.txt");
@@ -281,6 +286,7 @@ public class AppConfig {
                 System.exit(-1); // システム終了
             }
         }
+        // LOG.trace("Key: " + AppConfig.key);
         return AppConfig.key;
     }
 
