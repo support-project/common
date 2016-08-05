@@ -70,13 +70,13 @@ public class ClobTableDaoTest {
 
         ClobTableEntity entity = new ClobTableEntity();
         entity.setContents("1234567890ABCDEFGH hoge  IJKLMNOPQRSTUVWXYZ");
-        log.info(entity);
+        log.debug(entity);
         entity = dao.insert(entity);
-        log.info(entity);
+        log.debug(entity);
         Assert.assertNotNull(entity.getNo());
 
         List<ClobTableEntity> finds = dao.searchContent("%hoge%");
-        log.info(finds);
+        log.debug(finds);
         org.junit.Assert.assertFalse(finds.isEmpty());
 
         // 少なくともH2 Databaseではtextのカラムを検索出来るようだ

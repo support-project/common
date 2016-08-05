@@ -1,10 +1,17 @@
 package org.support.project.common.config;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Random;
 
+import javax.xml.bind.DatatypeConverter;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.support.project.common.log.Log;
+import org.support.project.common.log.LogFactory;
+import org.support.project.common.util.FileUtil;
 import org.support.project.common.util.StringUtils;
 import org.support.project.common.util.SystemUtils;
 import org.w3c.dom.Document;
@@ -18,6 +25,12 @@ import org.xml.sax.SAXException;
  * @author Koda
  */
 public class AppConfig {
+    /** ログ */
+    private static final Log LOG = LogFactory.getLog(AppConfig.class);
+
+    /** Sync用オブジェクト */
+    public static final Object sync = new Object();
+    
     /** 設定ファイルのパス */
     public static final String APP_CONFIG = "/appconfig.xml";
     /** インスタンス */
@@ -86,6 +99,10 @@ public class AppConfig {
 
     /** ユーザのホームディレクトリ(BasePath)を指定する環境変数のキー */
     private static String envKey = "";
+    
+    /** 暗号化キー */
+    private static String key = null;
+    
     
     /** 
      * 環境変数のキー文字列を設定
@@ -247,6 +264,36 @@ public class AppConfig {
      */
     public void setLogsPath(String logsPath) {
         this.logsPath = logsPath;
+    }
+    /**
+     * Get key
+     * @return the key
+     */
+    public String getKey() {
+        synchronized (AppConfig.sync) {
+            if (StringUtils.isEmpty(AppConfig.key)) {
+                try {
+                    File keyTxt = new File(AppConfig.get().getBasePath(), "key.txt");
+                    if (keyTxt.exists()) {
+                        LOG.info("Load key file: " + keyTxt.getAbsolutePath());
+                        AppConfig.key = FileUtil.read(new FileInputStream(keyTxt), "UTF-8");
+                    } else {
+                        LOG.info("Generate key and write " + keyTxt.getAbsolutePath());
+                        Random randomno = new Random();
+                        byte[] nbyte = new byte[32];
+                        randomno.nextBytes(nbyte);
+                        String genKey = new String(DatatypeConverter.printHexBinary(nbyte));
+                        FileUtil.write(keyTxt, genKey);
+                        AppConfig.key = FileUtil.read(new FileInputStream(keyTxt), "UTF-8");
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    System.exit(-1); // システム終了
+                }
+            }
+            // LOG.trace("Key: " + AppConfig.key);
+        }
+        return AppConfig.key;
     }
 
 }
