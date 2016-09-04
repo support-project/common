@@ -625,5 +625,23 @@ public abstract class StringUtils extends org.apache.commons.lang.StringUtils {
         }
         return str.matches(MAIL_FORMAT);
     }
+    
+    /**
+     * 配列の中に、指定の文字が含まれているかをチェック
+     * @param str
+     * @param strings
+     * @return
+     */
+    public static boolean contains(String str, String ... strings) {
+        if (strings == null) {
+            return false;
+        }
+        for (String string : strings) {
+            if (string.equals(str)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 }
