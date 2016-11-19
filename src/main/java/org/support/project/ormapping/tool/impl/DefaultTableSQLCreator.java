@@ -332,8 +332,6 @@ public class DefaultTableSQLCreator {
                 pw.print(INT_FLAG.OFF.getValue());
             }
             pw.println(";");
-
-            pw.println(";");
             pw.flush();
         } finally {
             if (pw != null) {
@@ -369,8 +367,6 @@ public class DefaultTableSQLCreator {
                 pw.print(" = ");
                 pw.print(INT_FLAG.OFF.getValue());
             }
-            pw.println(";");
-
             pw.println(";");
             pw.flush();
         } finally {
@@ -411,9 +407,6 @@ public class DefaultTableSQLCreator {
 
             pw.print(primary.getColumn_name());
             pw.println(" = ?");
-
-            pw.println(";");
-
             pw.println(";");
             pw.flush();
         } finally {
