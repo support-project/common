@@ -133,7 +133,7 @@ public class PasswordUtil {
      * @return
      * @throws NoSuchAlgorithmException
      */
-    private static String hash(String string) throws NoSuchAlgorithmException {
+    public static String hash(String string) throws NoSuchAlgorithmException {
         byte[] bytes = sha256(string);
         return Base64Utils.toBase64(bytes);
     }
