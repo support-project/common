@@ -219,8 +219,9 @@ public final class SerializeUtils {
     /**
      * Base64のエンコードの内容を、オブジェクトに変換する
      * 
-     * @param obj object
-     * @return base64 string 
+     * @param base64 string
+     * @param type type
+     * @return object
      * @throws SerializeException SerializeException
      */
     public static  <T> T Base64ToObject(String base64, final Class<? extends T> type) throws SerializeException {
