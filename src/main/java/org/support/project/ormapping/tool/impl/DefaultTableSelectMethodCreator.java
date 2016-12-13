@@ -4,10 +4,13 @@ import java.io.PrintWriter;
 import java.util.Collection;
 import java.util.List;
 
+import org.support.project.common.config.INT_FLAG;
 import org.support.project.common.log.Log;
 import org.support.project.common.log.LogFactory;
+import org.support.project.common.util.StringUtils;
 import org.support.project.ormapping.common.NameConvertor;
 import org.support.project.ormapping.entity.ColumnDefinition;
+import org.support.project.ormapping.entity.TableDefinition;
 import org.support.project.ormapping.tool.DaoGenConfig;
 
 public class DefaultTableSelectMethodCreator {
@@ -33,7 +36,33 @@ public class DefaultTableSelectMethodCreator {
 
         writeSelectOn(pw);
         writePhysicalSelectOn(pw);
+        
+        writeSelectCount(pw);
+        
+        
     }
+
+   
+    private void writeSelectCount(PrintWriter pw) {
+        pw.println("    /**");
+        pw.println("     * Count all data");
+        pw.println("     * @return count");
+        pw.println("     */");
+        pw.println("    public int physicalCountAll() {");
+        pw.println("        String sql = \"SELECT COUNT(*) FROM " + config.getTableDefinition().getTable_name().toUpperCase() + "\";");
+        pw.println("        return executeQuerySingle(sql, Integer.class);");
+        pw.println("    }");
+        
+//        pw.println("    /** CountAll(ignore logical delete) */");
+//        pw.println("    public int countAll() {");
+//        pw.println("        String sql = \"SELECT COUNT(*) FROM " + config.getTableDefinition().getTable_name().toUpperCase() + "\";");
+//        if (StringUtils.isNotEmpty(config.getCommonDeleteFlag())) {
+//            pw.println("        sql += \"WHERE " + config.getCommonDeleteFlag() + " = " + INT_FLAG.OFF.getValue() + "\";");
+//        }
+//        pw.println("        return executeQuerySingle(sql, Integer.class);");
+//        pw.println("    }");
+    }
+
 
     /**
      * 複合キーの場合、１つのキーでリストを取得する

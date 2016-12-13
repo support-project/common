@@ -27,6 +27,11 @@ public class DefaultDaoCreatorImpl implements DaoClassCreator {
 
             daoClassCreator.create();
         }
+        
+        // DBの管理用のDaoクラスの生成
+        DatabaseControlDaoCreator creator = new DatabaseControlDaoCreator();
+        creator.create(tableDefinitions, config);
+        
     }
 
 }

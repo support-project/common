@@ -112,10 +112,6 @@ public class DefaultTableDaoClassCreator {
 
     }
 
-    //
-    //
-    //
-    //
     private void createGenDao() {
         log.info(config.getGenDaoFile().getAbsolutePath() + "を作成します");
 
