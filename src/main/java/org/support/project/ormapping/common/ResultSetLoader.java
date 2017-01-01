@@ -116,8 +116,10 @@ public class ResultSetLoader {
                             // Postgresql
                             LOG.trace("Postgresql LOB");
                             byte[] bytes = rs.getBytes(column);
-                            ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
-                            PropertyUtil.setPropertyValue(object, prop, inputStream);
+                            if (bytes != null) {
+                                ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
+                                PropertyUtil.setPropertyValue(object, prop, inputStream);
+                            }
                         }
                     } else {
                         LOG.warn("処理出来ない型のデータです:" + accessType);
