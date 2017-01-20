@@ -52,6 +52,13 @@ public class JavaJob implements Job {
 
     /** コンソール出力を渡すリスナー */
     private ConsoleListener consoleListener = null;
+    
+    /** ヒープ・メモリ全体の起動時のサイズ */
+    private int xms = -1;
+    /** ヒープ・メモリ全体の最大サイズ */
+    private int xmx = -1;
+    /** NEW領域のサイズ */
+    private int xmn = -1;
 
     /**
      * 実行するメインクラスを設定します。
@@ -123,6 +130,18 @@ public class JavaJob implements Job {
         }
 
         batJob.addCommand("java");
+        if (xms != -1) {
+            batJob.addCommand("-Xms" + xms + "m");
+        }
+        if (xmx != -1) {
+            batJob.addCommand("-Xmx" + xmx + "m");
+        }
+        if (xmn != -1) {
+            batJob.addCommand("-Xmn" + xmn + "m");
+        }
+        
+        
+        
         if (!jarDirs.isEmpty() || !classPathDirs.isEmpty()) {
             batJob.addCommand("-classpath");
             batJob.addCommand(makeClassPath());
@@ -221,6 +240,54 @@ public class JavaJob implements Job {
      */
     public void setConsoleListener(ConsoleListener consoleListener) {
         this.consoleListener = consoleListener;
+    }
+
+    /**
+     * Get xms
+     * @return the xms
+     */
+    public int getXms() {
+        return xms;
+    }
+
+    /**
+     * Set xms
+     * @param xms the xms to set
+     */
+    public void setXms(int xms) {
+        this.xms = xms;
+    }
+
+    /**
+     * Get xmx
+     * @return the xmx
+     */
+    public int getXmx() {
+        return xmx;
+    }
+
+    /**
+     * Set xmx
+     * @param xmx the xmx to set
+     */
+    public void setXmx(int xmx) {
+        this.xmx = xmx;
+    }
+
+    /**
+     * Get xmn
+     * @return the xmn
+     */
+    public int getXmn() {
+        return xmn;
+    }
+
+    /**
+     * Set xmn
+     * @param xmn the xmn to set
+     */
+    public void setXmn(int xmn) {
+        this.xmn = xmn;
     }
 
 }

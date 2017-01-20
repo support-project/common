@@ -217,6 +217,22 @@ public final class SerializeUtils {
     }
 
     /**
+     * Base64のエンコードの内容を、オブジェクトに変換する
+     * 
+     * @param base64 string
+     * @param type type
+     * @return object
+     * @throws SerializeException SerializeException
+     */
+    public static  <T> T Base64ToObject(String base64, final Class<? extends T> type) throws SerializeException {
+        byte[] bytes = Base64Utils.fromBase64(base64);
+        return bytesToObject(bytes, type);
+    }
+
+    
+    
+    
+    /**
      * オブジェクトをXML形式で出力する
      * 
      * @param obj Object

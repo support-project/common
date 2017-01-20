@@ -71,7 +71,7 @@ public class DaoMaker {
         DatabaseMetaDataDao metaDataDao = Container.getComp(DatabaseMetaDataDao.class);
         metaDataDao.dbAnalysis();
 
-        // データベース毎のEntity生成クラスに処理を委譲
+        // データベース毎のDao生成クラスに処理を委譲
         ConnectionManager connectionManager = ConnectionManager.getInstance();
         DaoClassCreator creator = ORMappingToolFactory.getDaoClassCreator(connectionManager.getDriverClass());
         creator.create(metaDataDao.getTableInfos(), config);

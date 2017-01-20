@@ -54,6 +54,7 @@ public class InitializeDao extends DatabaseMetaDataDao {
     /**
      * 全てのデータをクリア
      */
+    @Deprecated
     public void deleteAllData() {
         // DBの情報を解析
         super.dbAnalysis();
@@ -75,6 +76,7 @@ public class InitializeDao extends DatabaseMetaDataDao {
     /**
      * 全てのテーブルを削除
      */
+    @Deprecated
     public void dropAllTable() {
         // DBの情報を解析
         super.dbAnalysis();
