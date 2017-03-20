@@ -108,10 +108,12 @@ public class ResultSetLoader {
                             Blob blob = rs.getBlob(column);
                             // いったんメモリ内のみで制御
                             // TODO Out of Memory になる可能性があるため、必要に応じファイルIOで処理する
-                            ByteArrayOutputStream out = new ByteArrayOutputStream();
-                            FileUtil.copy(blob.getBinaryStream(), out);
-                            ByteArrayInputStream inputStream = new ByteArrayInputStream(out.toByteArray());
-                            PropertyUtil.setPropertyValue(object, prop, inputStream);
+                            if (blob != null && blob.getBinaryStream() != null) {
+                                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                                FileUtil.copy(blob.getBinaryStream(), out);
+                                ByteArrayInputStream inputStream = new ByteArrayInputStream(out.toByteArray());
+                                PropertyUtil.setPropertyValue(object, prop, inputStream);
+                            }
                         } else {
                             // Postgresql
                             LOG.trace("Postgresql LOB");

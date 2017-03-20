@@ -140,8 +140,10 @@ public class DefaultTableSelectMethodCreator {
         List<String> fileNames = sqlCreator.getSelectOnSqlFileNames();
         int idx = 0;
         for (ColumnDefinition primary : primaryKeys) {
-            String fileName = fileNames.get(idx++);
-            writeSelectOn(pw, primary, fileName);
+            if (!primary.getColumn_name().toLowerCase().equals("key")) {
+                String fileName = fileNames.get(idx++);
+                writeSelectOn(pw, primary, fileName);
+            }
         }
     }
 

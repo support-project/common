@@ -95,7 +95,9 @@ public class DefaultTableSQLCreator {
             return list;
         }
         for (ColumnDefinition primary : primaryKeys) {
-            list.add(config.getDaoClassName() + "_select_on_" + primary.getColumn_name().toLowerCase() + ".sql");
+            if (!primary.getColumn_name().toLowerCase().equals("key")) {
+                list.add(config.getDaoClassName() + "_select_on_" + primary.getColumn_name().toLowerCase() + ".sql");
+            }
         }
         return list;
     }
@@ -307,8 +309,10 @@ public class DefaultTableSQLCreator {
 
         int idx = 0;
         for (ColumnDefinition primary : primaryKeys) {
-            String fileName = sqls.get(idx++);
-            createSelectOn(primary, fileName);
+            if (!primary.getColumn_name().toLowerCase().equals("key")) {
+                String fileName = sqls.get(idx++);
+                createSelectOn(primary, fileName);
+            }
         }
     }
 
@@ -369,6 +373,7 @@ public class DefaultTableSQLCreator {
             }
             pw.println(";");
             pw.flush();
+            log.debug(pw.toString());
         } finally {
             if (pw != null) {
                 pw.close();

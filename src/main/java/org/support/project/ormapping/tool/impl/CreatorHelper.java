@@ -31,7 +31,7 @@ public class CreatorHelper {
             FileOutputStream outputStream = new FileOutputStream(file);
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream, Charset.forName("UTF-8"));
             BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
-            return new PrintWriter(bufferedWriter);
+            return new DebugAblePrintWriter(bufferedWriter);
         } catch (FileNotFoundException e) {
             throw new ORMappingException(e);
         }
