@@ -281,19 +281,11 @@ public final class SerializeUtils {
     }
 
     /**
-     * 入力をオブジェクトに変換する
-     * 
-     * @param <T>
-     *            クラスの型
-     * @param content
-     *            バイト配列
+     * シリアライズに使うSerializerを取得（デフォルトはJSONから）
      * @param type
-     *            Class
-     * @return オブジェクト
-     * @throws SerializeException
-     *             XmlException
+     * @return
      */
-    public static <T> T bytesToObject(final byte[] content, final Class<? extends T> type) throws SerializeException {
+    private static Serializer getSerializer(final Class<?> type) {
         Serializer serializer = null;
         if (type.isAnnotationPresent(Serialize.class)) {
             Serialize xmlSerializer = type.getAnnotation(Serialize.class);
@@ -322,10 +314,79 @@ public final class SerializeUtils {
         if (serializer == null) {
             serializer = getSerializerInstanse(SerializerForJSONOnJSONICImpl.class);
         }
+        return serializer;
+    }
+    
+    /**
+     * 入力をオブジェクトに変換する
+     * 
+     * @param <T>
+     *            クラスの型
+     * @param content
+     *            バイト配列
+     * @param type
+     *            Class
+     * @return オブジェクト
+     * @throws SerializeException
+     *             XmlException
+     */
+    public static <T> T bytesToObject(final byte[] content, final Class<? extends T> type) throws SerializeException {
+        Serializer serializer = getSerializer(type); 
+        return bytesToObject(content, type, serializer);
+    }
+    
+    /**
+     * 入力をオブジェクトに変換する
+     * 
+     * @param <T>
+     *            クラスの型
+     * @param content
+     *            バイト配列
+     * @param type
+     *            Class
+     * @param serializer
+     *            Serializer
+     * @return オブジェクト
+     * @throws SerializeException
+     *             XmlException
+     */
+    public static <T> T bytesToObject(final byte[] content, final Class<? extends T> type, Serializer serializer) throws SerializeException {
         return serializer.bytesToObject(content, type);
-
     }
 
+    /**
+     * 入力(XMLのストリーム)からオブジェクトに変換する
+     * 
+     * @param <T>
+     *            クラスの型
+     * @param inputStream
+     *            InputStream
+     * @param type
+     *            Class
+     * @param serializer
+     *            Serializer
+     * @return オブジェクト
+     * @throws SerializeException
+     *             XmlException
+     * @throws IOException
+     *             IOException
+     */
+    public static <T> T bytesToObject(final InputStream inputStream, final Class<? extends T> type, Serializer serializer) throws SerializeException, IOException {
+        byte[] buf = new byte[256];
+        ByteArrayOutputStream outputStream = null;
+        try {
+            outputStream = new ByteArrayOutputStream();
+            int n;
+            while ((n = inputStream.read(buf, 0, buf.length)) != -1) {
+                outputStream.write(buf, 0, n);
+            }
+            return bytesToObject(outputStream.toByteArray(), type, serializer);
+        } finally {
+            if (outputStream != null) {
+                outputStream.close();
+            }
+        }
+    }
     /**
      * 入力(XMLのストリーム)からオブジェクトに変換する
      * 
@@ -342,22 +403,11 @@ public final class SerializeUtils {
      *             IOException
      */
     public static <T> T bytesToObject(final InputStream inputStream, final Class<? extends T> type) throws SerializeException, IOException {
-        byte[] buf = new byte[256];
-        ByteArrayOutputStream outputStream = null;
-        try {
-            outputStream = new ByteArrayOutputStream();
-            int n;
-            while ((n = inputStream.read(buf, 0, buf.length)) != -1) {
-                outputStream.write(buf, 0, n);
-            }
-            return bytesToObject(outputStream.toByteArray(), type);
-        } finally {
-            if (outputStream != null) {
-                outputStream.close();
-            }
-        }
-
+        Serializer serializer = getSerializer(type); 
+        return bytesToObject(inputStream, type, serializer);
     }
+    
+    
 
     /**
      * 入力をオブジェクトに変換する
