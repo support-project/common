@@ -130,7 +130,7 @@ public class ClassSearchImpl implements ClassSearch {
 
         String protocol = url.getProtocol();
         if ("file".equals(protocol)) {
-            return findClassesWithFile(rootPackageName, new File(url.getFile()));
+            return findClassesWithFile(rootPackageName, new File(url.toURI().getPath()));
         } else if ("jar".equals(protocol)) {
             return findClassesWithJarFile(rootPackageName, url);
         }
