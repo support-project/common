@@ -7,6 +7,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.support.project.common.exception.ParseException;
 
 public class HtmlUtilsTest {
 
@@ -36,5 +37,9 @@ public class HtmlUtilsTest {
 		String str = HtmlUtils.escapeHTML("<div style=\"aaa\">aaa</div>");
 		assertEquals("&lt;div style=&quot;aaa&quot;&gt;aaa&lt;/div&gt;", str);
 	}
-
+	@Test
+	public void test3() throws ParseException {
+		String str = HtmlUtils.escapeURL("/&:; あ");
+		assertEquals("%2F%26%3A%3B+%E3%81%82", str);
+	}
 }
