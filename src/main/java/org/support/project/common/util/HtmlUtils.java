@@ -84,7 +84,7 @@ public class HtmlUtils {
     /**
      * 指定の文字列を URL に含められるようにエンコードします。
      * 
-     * @param target エンコード対象の文字列
+     * @param str エンコード対象の文字列
      * @return エンコード後の文字列
      * @throws ParseException UTF-8 がサポートされていない場合
      */
