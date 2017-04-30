@@ -1,5 +1,10 @@
 package org.support.project.common.util;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
+import org.support.project.common.exception.ParseException;
+
 /**
  * Utility for HTML.
  * 
@@ -74,6 +79,28 @@ public class HtmlUtils {
             }
         }
         return escapeStr.toString();
+    }
+
+    /**
+     * 指定の文字列を URL に含められるようにエンコードします。
+     * 
+     * @param target エンコード対象の文字列
+     * @return エンコード後の文字列
+     * @throws ParseException UTF-8 がサポートされていない場合
+     */
+    public static String escapeURL(String str) throws ParseException {
+        if (str == null) {
+            return null;
+        }
+
+        String encoded;
+        try {
+            encoded = URLEncoder.encode(str, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new ParseException(e);
+        }
+
+        return encoded;
     }
 
 }
