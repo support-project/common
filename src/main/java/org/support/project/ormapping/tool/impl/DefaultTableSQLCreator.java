@@ -95,9 +95,11 @@ public class DefaultTableSQLCreator {
             return list;
         }
         for (ColumnDefinition primary : primaryKeys) {
-            if (!primary.getColumn_name().toLowerCase().equals("key")) {
-                list.add(config.getDaoClassName() + "_select_on_" + primary.getColumn_name().toLowerCase() + ".sql");
+            String col = primary.getColumn_name().toLowerCase();
+            if (col.equals("key")) {
+                col = "col_key";
             }
+            list.add(config.getDaoClassName() + "_select_on_" + col + ".sql");
         }
         return list;
     }
@@ -110,7 +112,11 @@ public class DefaultTableSQLCreator {
             return list;
         }
         for (ColumnDefinition primary : primaryKeys) {
-            list.add(config.getDaoClassName() + "_physical_select_on_" + primary.getColumn_name().toLowerCase() + ".sql");
+            String col = primary.getColumn_name().toLowerCase();
+            if (col.equals("key")) {
+                col = "col_key";
+            }
+            list.add(config.getDaoClassName() + "_physical_select_on_" + col + ".sql");
         }
         return list;
     }
