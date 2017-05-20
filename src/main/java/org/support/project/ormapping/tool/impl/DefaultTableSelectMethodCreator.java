@@ -4,13 +4,10 @@ import java.io.PrintWriter;
 import java.util.Collection;
 import java.util.List;
 
-import org.support.project.common.config.INT_FLAG;
 import org.support.project.common.log.Log;
 import org.support.project.common.log.LogFactory;
-import org.support.project.common.util.StringUtils;
 import org.support.project.ormapping.common.NameConvertor;
 import org.support.project.ormapping.entity.ColumnDefinition;
-import org.support.project.ormapping.entity.TableDefinition;
 import org.support.project.ormapping.tool.DaoGenConfig;
 
 public class DefaultTableSelectMethodCreator {
@@ -140,10 +137,8 @@ public class DefaultTableSelectMethodCreator {
         List<String> fileNames = sqlCreator.getSelectOnSqlFileNames();
         int idx = 0;
         for (ColumnDefinition primary : primaryKeys) {
-            if (!primary.getColumn_name().toLowerCase().equals("key")) {
-                String fileName = fileNames.get(idx++);
-                writeSelectOn(pw, primary, fileName);
-            }
+            String fileName = fileNames.get(idx++);
+            writeSelectOn(pw, primary, fileName);
         }
     }
 
