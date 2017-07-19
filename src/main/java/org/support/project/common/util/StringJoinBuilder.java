@@ -3,27 +3,27 @@ package org.support.project.common.util;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StringJoinBuilder {
+public class StringJoinBuilder<T extends Object> {
 
-    private List<Object> params = new ArrayList<>();
+    private List<T> params = new ArrayList<>();
 
     public StringJoinBuilder() {
         super();
     }
 
-    public StringJoinBuilder(List<Object> params) {
+    public StringJoinBuilder(List<T> params) {
         super();
         this.params = params;
     }
 
-    public StringJoinBuilder(Object[] array) {
+    public StringJoinBuilder(T[] array) {
         super();
-        for (Object o : array) {
+        for (T o : array) {
             params.add(o);
         }
     }
 
-    public StringJoinBuilder append(Object obj) {
+    public StringJoinBuilder append(T obj) {
         params.add(obj);
         return this;
     }
@@ -31,7 +31,7 @@ public class StringJoinBuilder {
     public String join(String delimiter) {
         StringBuilder builder = new StringBuilder();
         int count = 0;
-        for (Object object : params) {
+        for (T object : params) {
             if (count > 0) {
                 builder.append(delimiter);
             }
