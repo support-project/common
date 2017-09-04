@@ -45,6 +45,7 @@ public class DefaultTableSelectMethodCreator {
         pw.println("     * Count all data");
         pw.println("     * @return count");
         pw.println("     */");
+        pw.println("    @Aspect(advice = org.support.project.ormapping.transaction.Transaction.class)");
         pw.println("    public int physicalCountAll() {");
         pw.println("        String sql = \"SELECT COUNT(*) FROM " + config.getTableDefinition().getTable_name().toUpperCase() + "\";");
         pw.println("        return executeQuerySingle(sql, Integer.class);");
@@ -94,7 +95,7 @@ public class DefaultTableSelectMethodCreator {
         pw.println("");
         pw.println("     * @return list");
         pw.println("     */");
-
+        pw.println("    @Aspect(advice = org.support.project.ormapping.transaction.Transaction.class)");
         // メソッド定義
         pw.print("    public List<");
         pw.print(config.getEntityClassName());
@@ -159,7 +160,7 @@ public class DefaultTableSelectMethodCreator {
         pw.println("");
         pw.println("     * @return list");
         pw.println("     */");
-
+        pw.println("    @Aspect(advice = org.support.project.ormapping.transaction.Transaction.class)");
         // メソッド定義
         pw.print("    public List<");
         pw.print(config.getEntityClassName());
@@ -194,7 +195,7 @@ public class DefaultTableSelectMethodCreator {
         helper.writeKeyParamOnJavadoc(pw, config); // キーのJavadocを出力
         pw.println("     * @return data");
         pw.println("     */");
-
+        pw.println("    @Aspect(advice = org.support.project.ormapping.transaction.Transaction.class)");
         // メソッド定義
         pw.print("    public ");
         pw.print(config.getEntityClassName());
@@ -225,7 +226,7 @@ public class DefaultTableSelectMethodCreator {
         helper.writeKeyParamOnJavadoc(pw, config); // キーのJavadocを出力
         pw.println("     * @return data");
         pw.println("     */");
-
+        pw.println("    @Aspect(advice = org.support.project.ormapping.transaction.Transaction.class)");
         // メソッド定義
         pw.print("    public ");
         pw.print(config.getEntityClassName());
@@ -255,7 +256,7 @@ public class DefaultTableSelectMethodCreator {
         pw.println("     * Select all data that not deleted.");
         pw.println("     * @return all data");
         pw.println("     */");
-
+        pw.println("    @Aspect(advice = org.support.project.ormapping.transaction.Transaction.class)");
         // メソッド定義
         pw.print("    public List<");
         pw.print(config.getEntityClassName());
@@ -283,6 +284,7 @@ public class DefaultTableSelectMethodCreator {
         pw.println("     * @param offset offset");
         pw.println("     * @return all data");
         pw.println("     */");
+        pw.println("    @Aspect(advice = org.support.project.ormapping.transaction.Transaction.class)");
 
         // メソッド定義
         pw.print("    public List<");
@@ -309,6 +311,7 @@ public class DefaultTableSelectMethodCreator {
         pw.println("     * Select count that not deleted.");
         pw.println("     * @return count");
         pw.println("     */");
+        pw.println("    @Aspect(advice = org.support.project.ormapping.transaction.Transaction.class)");
 
         // メソッド定義
         pw.print("    public Integer");
@@ -335,6 +338,7 @@ public class DefaultTableSelectMethodCreator {
         pw.println("     * Select all data.");
         pw.println("     * @return all data");
         pw.println("     */");
+        pw.println("    @Aspect(advice = org.support.project.ormapping.transaction.Transaction.class)");
 
         // メソッド定義
         pw.print("    public List<");
@@ -363,6 +367,7 @@ public class DefaultTableSelectMethodCreator {
         pw.println("     * @param offset offset");
         pw.println("     * @return all data on limit and offset");
         pw.println("     */");
+        pw.println("    @Aspect(advice = org.support.project.ormapping.transaction.Transaction.class)");
 
         // メソッド定義
         pw.print("    public List<");
