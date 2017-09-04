@@ -262,6 +262,21 @@ public class DefaultTableSelectMethodCreator {
         pw.print(config.getEntityClassName());
         pw.print("> selectAll() { ");
         pw.println();
+        pw.println("        return selectAll(Order.DESC);");
+        pw.println("    }");
+        
+        // コメント
+        pw.println("    /**");
+        pw.println("     * Select all data that not deleted.");
+        pw.println("     * @param order order");
+        pw.println("     * @return all data");
+        pw.println("     */");
+        pw.println("    @Aspect(advice = org.support.project.ormapping.transaction.Transaction.class)");
+        // メソッド定義
+        pw.print("    public List<");
+        pw.print(config.getEntityClassName());
+        pw.print("> selectAll(Order order) { ");
+        pw.println();
 
         // SQLの取得
         pw.print("        String sql = SQLManager.getInstance().getSql(\"");
@@ -271,11 +286,10 @@ public class DefaultTableSelectMethodCreator {
         pw.println("\");");
 
         // SQLの実行
+        pw.println("        sql = String.format(sql, order.toString());");
         pw.print("        return executeQueryList(sql, ");
         pw.println(config.getEntityClassName() + ".class);");
-
         pw.println("    }");
-        
         
         // コメント
         pw.println("    /**");
@@ -285,11 +299,28 @@ public class DefaultTableSelectMethodCreator {
         pw.println("     * @return all data");
         pw.println("     */");
         pw.println("    @Aspect(advice = org.support.project.ormapping.transaction.Transaction.class)");
-
         // メソッド定義
         pw.print("    public List<");
         pw.print(config.getEntityClassName());
         pw.print("> selectAllWidthPager(int limit, int offset) { ");
+        pw.println();
+        pw.println("        return selectAllWidthPager(limit, offset, Order.DESC);");
+        pw.println("    }");
+        
+        // コメント
+        pw.println("    /**");
+        pw.println("     * Select all data that not deleted with pager.");
+        pw.println("     * @param limit limit");
+        pw.println("     * @param offset offset");
+        pw.println("     * @param order order");
+        pw.println("     * @return all data");
+        pw.println("     */");
+        pw.println("    @Aspect(advice = org.support.project.ormapping.transaction.Transaction.class)");
+
+        // メソッド定義
+        pw.print("    public List<");
+        pw.print(config.getEntityClassName());
+        pw.print("> selectAllWidthPager(int limit, int offset, Order order) { ");
         pw.println();
 
         // SQLの取得
@@ -300,6 +331,7 @@ public class DefaultTableSelectMethodCreator {
         pw.println("\");");
 
         // SQLの実行
+        pw.println("        sql = String.format(sql, order.toString());");
         pw.print("        return executeQueryList(sql, ");
         pw.println(config.getEntityClassName() + ".class, limit, offset);");
 
@@ -339,11 +371,26 @@ public class DefaultTableSelectMethodCreator {
         pw.println("     * @return all data");
         pw.println("     */");
         pw.println("    @Aspect(advice = org.support.project.ormapping.transaction.Transaction.class)");
-
         // メソッド定義
         pw.print("    public List<");
         pw.print(config.getEntityClassName());
         pw.print("> physicalSelectAll() { ");
+        pw.println();
+        pw.println("        return physicalSelectAll(Order.DESC);");
+        pw.println("    }");
+        
+        // コメント
+        pw.println("    /**");
+        pw.println("     * Select all data.");
+        pw.println("     * @param order order");
+        pw.println("     * @return all data");
+        pw.println("     */");
+        pw.println("    @Aspect(advice = org.support.project.ormapping.transaction.Transaction.class)");
+
+        // メソッド定義
+        pw.print("    public List<");
+        pw.print(config.getEntityClassName());
+        pw.print("> physicalSelectAll(Order order) { ");
         pw.println();
 
         // SQLの取得
@@ -354,11 +401,11 @@ public class DefaultTableSelectMethodCreator {
         pw.println("\");");
 
         // SQLの実行
+        pw.println("        sql = String.format(sql, order.toString());");
         pw.print("        return executeQueryList(sql, ");
         pw.println(config.getEntityClassName() + ".class);");
 
         pw.println("    }");
-        
         
         // コメント
         pw.println("    /**");
@@ -368,11 +415,28 @@ public class DefaultTableSelectMethodCreator {
         pw.println("     * @return all data on limit and offset");
         pw.println("     */");
         pw.println("    @Aspect(advice = org.support.project.ormapping.transaction.Transaction.class)");
-
         // メソッド定義
         pw.print("    public List<");
         pw.print(config.getEntityClassName());
         pw.print("> physicalSelectAllWithPager(int limit, int offset) { ");
+        pw.println();
+        pw.println("        return physicalSelectAllWithPager(limit, offset, Order.DESC);");
+        pw.println("    }");
+        
+        // コメント
+        pw.println("    /**");
+        pw.println("     * Select all data with pager.");
+        pw.println("     * @param limit limit");
+        pw.println("     * @param offset offset");
+        pw.println("     * @param order order");
+        pw.println("     * @return all data on limit and offset");
+        pw.println("     */");
+        pw.println("    @Aspect(advice = org.support.project.ormapping.transaction.Transaction.class)");
+
+        // メソッド定義
+        pw.print("    public List<");
+        pw.print(config.getEntityClassName());
+        pw.print("> physicalSelectAllWithPager(int limit, int offset, Order order) { ");
         pw.println();
 
         // SQLの取得
@@ -383,6 +447,7 @@ public class DefaultTableSelectMethodCreator {
         pw.println("\");");
 
         // SQLの実行
+        pw.println("        sql = String.format(sql, order.toString());");
         pw.print("        return executeQueryList(sql, ");
         pw.println(config.getEntityClassName() + ".class, limit, offset);");
 
