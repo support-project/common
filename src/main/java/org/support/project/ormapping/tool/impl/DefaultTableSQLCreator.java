@@ -486,7 +486,7 @@ public class DefaultTableSQLCreator {
             }
             if (datetimeColumn != null) {
                 pw.print("\n");
-                pw.print("ORDER BY " + datetimeColumn.getColumn_name() + " DESC");
+                pw.print("ORDER BY " + datetimeColumn.getColumn_name() + " %s");
             }
             pw.println(";");
             pw.flush();
@@ -511,7 +511,7 @@ public class DefaultTableSQLCreator {
             }
             if (datetimeColumn != null) {
                 pw.print("\n");
-                pw.print("ORDER BY " + datetimeColumn.getColumn_name() + " DESC");
+                pw.print("ORDER BY " + datetimeColumn.getColumn_name() + " %s");
             }
             pw.print("\n");
             pw.println("LIMIT ? OFFSET ?;");
@@ -569,7 +569,7 @@ public class DefaultTableSQLCreator {
             pw.print("SELECT * FROM " + config.getTableDefinition().getTable_name().toUpperCase() + "");
             if (datetimeColumn != null) {
                 pw.print("\n");
-                pw.print("ORDER BY " + datetimeColumn.getColumn_name() + " DESC");
+                pw.print("ORDER BY " + datetimeColumn.getColumn_name() + " %s");
             }
             pw.println(";");
             pw.flush();
@@ -587,7 +587,7 @@ public class DefaultTableSQLCreator {
             pw.print("SELECT * FROM " + config.getTableDefinition().getTable_name().toUpperCase());
             if (datetimeColumn != null) {
                 pw.print("\n");
-                pw.print("ORDER BY " + datetimeColumn.getColumn_name() + " DESC");
+                pw.print("ORDER BY " + datetimeColumn.getColumn_name() + " %s");
             }
             pw.print("\n");
             pw.println("LIMIT ? OFFSET ?;");

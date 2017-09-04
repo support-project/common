@@ -138,6 +138,7 @@ public class DefaultTableDaoClassCreator {
             // pw.println("import org.support.project.ormapping.exception.ORMappingException;");
             pw.println("import org.support.project.ormapping.common.IDGen;");
             pw.println("import org.support.project.ormapping.config.ORMappingParameter;");
+            pw.println("import org.support.project.ormapping.config.Order;");
             pw.println("import org.support.project.ormapping.connection.ConnectionManager;");
 
             pw.println("import org.support.project.common.util.PropertyUtil;");
