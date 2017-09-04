@@ -337,6 +337,7 @@ public abstract class AbstractDao implements Serializable {
             con = getConnection();
             stmt = con.prepareStatement(sql);
             StringBuilder builder = new StringBuilder();
+            builder.append("[connection]").append(con.hashCode());
             builder.append("[executeQuery]").append(sql).append("\n     ");
             if (params != null) {
                 int count = 1;
@@ -380,6 +381,7 @@ public abstract class AbstractDao implements Serializable {
             con = getConnection();
             stmt = con.prepareStatement(sql);
             StringBuilder builder = new StringBuilder();
+            builder.append("[connection]").append(con.hashCode());
             builder.append("[executeQuery]").append(sql).append("\n     ");
             if (params != null) {
                 int count = 1;
@@ -457,6 +459,7 @@ public abstract class AbstractDao implements Serializable {
 
             stmt = con.prepareStatement(sql);
             StringBuilder builder = new StringBuilder();
+            builder.append("[connection]").append(con.hashCode());
             builder.append("[executeUpdate]").append(sql).append("\n     ");
             if (params != null) {
                 int count = 1;
@@ -505,6 +508,7 @@ public abstract class AbstractDao implements Serializable {
 
             stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             StringBuilder builder = new StringBuilder();
+            builder.append("[connection]").append(con.hashCode());
             builder.append("[executeUpdate]").append(sql).append("\n     ");
             if (params != null) {
                 int count = 1;
