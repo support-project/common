@@ -8,12 +8,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.support.project.common.log.Log;
+import org.support.project.common.log.LogFactory;
+import org.support.project.common.util.StringUtils;
+import org.support.project.ormapping.connection.ConnectionManager;
 import org.support.project.ormapping.exception.ORMappingException;
 
 /**
  * SQLのリソースを読み込む
  */
 public class SQLManager {
+    /** ログ */
+    private static Log LOG = LogFactory.getLog(SQLManager.class);
 
     /**
      * シングルトンで管理されたconnectionManagerのインスタンス
@@ -63,6 +69,48 @@ public class SQLManager {
      * 
      */
     public String[] getSqls(String sqlFilePath) {
+        List<String> sqlFilePaths = getSqlFilePaths(sqlFilePath);
+        LOG.trace("load sql");
+        for (String path : sqlFilePaths) {
+            LOG.trace(path);
+            if (this.getClass().getResourceAsStream(path) != null) {
+                return readSqls(path);
+            }
+        }
+        throw new ORMappingException("SQL Resource is not found. " + sqlFilePath);
+    }
+    
+    private List<String> getSqlFilePaths(String sqlFilePath) {
+        List<String> paths = new ArrayList<>();
+        // 現在のコネクションを取得
+        String driver = ConnectionManager.getInstance().getDriverClass();
+        if (!StringUtils.isEmpty(driver)) {
+            if (driver.indexOf("postgresql") != -1) {
+                paths.add(connectDatabaseToSqlFileName(sqlFilePath, "postgresql"));
+            } else if (driver.indexOf("h2") != -1) {
+                paths.add(connectDatabaseToSqlFileName(sqlFilePath, "h2"));
+            }
+        }
+        paths.add(sqlFilePath);
+        return paths;
+    }
+    
+    private String connectDatabaseToSqlFileName(String sqlFilePath, String databasename) {
+        StringBuilder path = new StringBuilder();
+        if (sqlFilePath.indexOf(".") != -1) {
+            path.append(sqlFilePath.substring(0, sqlFilePath.lastIndexOf(".")));
+            path.append("_");
+            path.append(databasename);
+            path.append(sqlFilePath.substring(sqlFilePath.lastIndexOf(".")));
+        } else {
+            path.append(sqlFilePath);
+            path.append("_");
+            path.append(databasename);
+        }
+        return path.toString();
+    }
+
+    private String[] readSqls(String sqlFilePath) {
         try {
             if (sqlMap.containsKey(sqlFilePath)) {
                 return sqlMap.get(sqlFilePath);
@@ -108,5 +156,7 @@ public class SQLManager {
             throw new ORMappingException(e);
         }
     }
+    
+    
 
 }
