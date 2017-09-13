@@ -6,8 +6,6 @@ import java.util.Collection;
 import java.util.List;
 
 import org.support.project.common.config.INT_FLAG;
-import org.support.project.common.log.Log;
-import org.support.project.common.log.LogFactory;
 import org.support.project.common.util.StringUtils;
 import org.support.project.ormapping.common.NameConvertor;
 import org.support.project.ormapping.entity.ColumnDefinition;
@@ -19,9 +17,6 @@ import org.support.project.ormapping.tool.DaoGenConfig;
  * @author Koda
  */
 public class DefaultTableInsertMethodCreator {
-    /** ログ */
-    private static Log log = LogFactory.getLog(DefaultTableSelectMethodCreator.class);
-
     private CreatorHelper helper = new CreatorHelper();
     private NameConvertor nameConvertor = new NameConvertor();
 
@@ -365,13 +360,18 @@ public class DefaultTableInsertMethodCreator {
             String tableName = config.getTableDefinition().getTable_name();
             String primary = keycol.getColumn_name();
             String seq = tableName + "_" + primary + "_" + "seq";
-            String sql = "\"select setval('" + seq + "', (select max(" + primary + ") from " + tableName + "));\"";
-
+            // まず、現在の最大値を取得
+            String max = "\"SELECT MAX(" + primary + ") from " + tableName + ";\"";
+            String sql = "\"SELECT SETVAL('" + seq + "', ?);\"";
             pw.println("        String driverClass = ConnectionManager.getInstance().getDriverClass(getConnectionName());");
             pw.println("        if (ORMappingParameter.DRIVER_NAME_POSTGRESQL.equals(driverClass)) {");
-            // pw.println("            String setValSql = \"select setval('likes_no_seq',(select max(no) from likes));\";");
+            pw.println("            String maxSql = " + max + ";");
+            pw.println("            long max = executeQuerySingle(maxSql, Long.class);");
+            pw.println("            if (max < 1) {");
+            pw.println("                max = 1;");
+            pw.println("            }");
             pw.println("            String setValSql = " + sql + ";");
-            pw.println("            executeQuerySingle(setValSql, Long.class);");
+            pw.println("            executeQuerySingle(setValSql, Long.class, max);");
             pw.println("        }");
         }
 
