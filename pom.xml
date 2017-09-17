@@ -224,9 +224,6 @@
                                         </limit>
                                     </limits>
                                 </rule>
-                                <excludes>
-                                    <exclude>**/ormapping/**</exclude>
-                                </excludes>
                             </rules>
                         </configuration>
                     </execution>
