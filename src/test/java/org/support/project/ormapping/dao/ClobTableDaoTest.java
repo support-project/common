@@ -8,7 +8,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.support.project.common.log.Log;
 import org.support.project.common.log.LogFactory;
-import org.support.project.common.logic.H2DBServerLogic;
 import org.support.project.common.util.StringUtils;
 import org.support.project.ormapping.gen.dao.ClobTableDao;
 import org.support.project.ormapping.gen.entity.ClobTableEntity;
@@ -38,7 +37,7 @@ public class ClobTableDaoTest {
      */
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        H2DBServerLogic.get().stop();
+        // H2DBServerLogic.get().stop();
     }
     /**
      * test

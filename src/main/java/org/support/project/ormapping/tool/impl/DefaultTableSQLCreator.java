@@ -263,7 +263,7 @@ public class DefaultTableSQLCreator {
             pw.println(") VALUES (");
             pw2.println(") VALUES (");
             count = 0;
-            for (ColumnDefinition column : primaryKeys) {
+            for (@SuppressWarnings("unused") ColumnDefinition column : primaryKeys) {
                 if (count > 0) {
                     pw.print(" , ");
                     pw2.print(" , ");

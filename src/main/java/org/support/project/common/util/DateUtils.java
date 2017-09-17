@@ -16,9 +16,44 @@ import org.support.project.common.log.LogFactory;
  * 
  */
 public class DateUtils {
+    /** ログ */
+    private static final Log LOG = LogFactory.getLog(DateUtils.class);
+
     /** 通信で利用する日付のフォーマット文字列 */
     public static final String TRANSFER_DATETIME_FORMAT = "yyyyMMddHHmmssSSS";
 
+    private static long offset = 0;
+    /**
+     * テストなどで日付を指定して動かすさいに使うオフセットを指定
+     * @param offset オフセット
+     */
+    public static void setOffset(long offset) {
+        LOG.warn("Set offset for system timestamp: " + offset);
+        DateUtils.offset = offset;
+    }
+    /**
+     * 現在の時刻のDateオブジェクトを取得
+     * テストなどで日付を指定して動かせるために、オフセットを指定でき、そのオフセット分ずらした日付を取得できる
+     * @return Date
+     */
+    public static Date now() {
+        Date now = new Date();
+        if (offset != 0) {
+            now.setTime(now.getTime() + offset);
+        }
+        return now;
+    }
+    /**
+     * 現在の時刻のCalendarオブジェクトを取得
+     * テストなどで日付を指定して動かせるために、オフセットを指定でき、そのオフセット分ずらした日付を取得できる
+     * @return Calendar
+     */
+    public static Calendar nowCalendar() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(calendar.getTimeInMillis() + offset);
+        return calendar;
+    }
+    
     /**
      * 通信で利用する日付のフォーマット
      * 
@@ -66,10 +101,6 @@ public class DateUtils {
     public static final DateFormat getSimpleFormat() {
         return new SimpleDateFormat(SECOND_FORMAT_STR);
     }
-
-    /** ログ */
-    private static final Log LOG = LogFactory.getLog(DateUtils.class);
-
     /**
      * 通信に使用する日付フォーマットによる日付文字列の取得
      * 
