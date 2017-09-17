@@ -23,7 +23,7 @@ public class IDGen {
 
     public IDGen() {
         super();
-        Date now = new Date();
+        Date now = DateUtils.now();
         count = now.getTime();
     }
 
@@ -34,7 +34,7 @@ public class IDGen {
             digest = MessageDigest.getInstance(ALGORITHM);
             StringBuilder builder = new StringBuilder();
             builder.append(key);
-            builder.append(DateUtils.getTransferDateFormat().format(new Date()));
+            builder.append(DateUtils.getTransferDateFormat().format(DateUtils.now()));
             builder.append(count);
             byte[] hash = digest.digest(builder.toString().getBytes());
             StringBuilder sb = new StringBuilder();

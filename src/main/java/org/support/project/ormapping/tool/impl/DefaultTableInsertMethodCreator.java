@@ -121,7 +121,7 @@ public class DefaultTableInsertMethodCreator {
                 String feildName = nameConvertor.colmnNameToFeildName(datetimeColumn.getColumn_name());
                 pw.print("        entity.");
                 pw.print(helper.feildNameToSetter(feildName));
-                pw.println("(new Timestamp(new java.util.Date().getTime()));");
+                pw.println("(new Timestamp(DateUtils.now().getTime()));");
             }
 
             if (updateUserColumn != null) {
@@ -136,7 +136,7 @@ public class DefaultTableInsertMethodCreator {
                 String feildName = nameConvertor.colmnNameToFeildName(updateDatetimeColumn.getColumn_name());
                 pw.print("        entity.");
                 pw.print(helper.feildNameToSetter(feildName));
-                pw.println("(new Timestamp(new java.util.Date().getTime()));");
+                pw.println("(new Timestamp(DateUtils.now().getTime()));");
             }
 
         }

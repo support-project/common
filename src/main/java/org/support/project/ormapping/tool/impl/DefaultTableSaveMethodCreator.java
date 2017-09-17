@@ -4,25 +4,18 @@ import java.io.PrintWriter;
 import java.util.Collection;
 import java.util.List;
 
-import org.support.project.common.log.Log;
-import org.support.project.common.log.LogFactory;
 import org.support.project.ormapping.common.NameConvertor;
 import org.support.project.ormapping.entity.ColumnDefinition;
 import org.support.project.ormapping.tool.DaoGenConfig;
 
 public class DefaultTableSaveMethodCreator {
-    /** ログ */
-    private static Log log = LogFactory.getLog(DefaultTableSaveMethodCreator.class);
-
     private CreatorHelper helper = new CreatorHelper();
     private NameConvertor nameConvertor = new NameConvertor();
 
     private DaoGenConfig config;
-    private DefaultTableSQLCreator sqlCreator;
 
     public void writeSaveMethod(DaoGenConfig config, PrintWriter pw) {
         this.config = config;
-        this.sqlCreator = new DefaultTableSQLCreator(config);
 
         writeSaveOnUser(pw);
         writeSave(pw);

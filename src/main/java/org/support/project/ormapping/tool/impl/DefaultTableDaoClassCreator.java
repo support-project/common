@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.support.project.common.log.Log;
 import org.support.project.common.log.LogFactory;
-import org.support.project.ormapping.common.NameConvertor;
 import org.support.project.ormapping.entity.ColumnDefinition;
 import org.support.project.ormapping.tool.DaoGenConfig;
 
@@ -16,8 +15,6 @@ public class DefaultTableDaoClassCreator {
     private static Log log = LogFactory.getLog(DefaultTableDaoClassCreator.class);
 
     private CreatorHelper helper = new CreatorHelper();
-    private NameConvertor nameConvertor = new NameConvertor();
-
     private DaoGenConfig config;
 
     public DefaultTableDaoClassCreator(DaoGenConfig config) {
@@ -142,6 +139,7 @@ public class DefaultTableDaoClassCreator {
             pw.println("import org.support.project.ormapping.connection.ConnectionManager;");
 
             pw.println("import org.support.project.common.util.PropertyUtil;");
+            pw.println("import org.support.project.common.util.DateUtils;");
             pw.println();
             pw.println("import org.support.project.di.Container;");
             pw.println("import org.support.project.di.DI;");
