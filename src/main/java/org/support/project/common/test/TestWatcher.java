@@ -31,4 +31,13 @@ public class TestWatcher extends org.junit.rules.TestWatcher {
         long time = end.getTime() - start.getTime();
         LOG.info("@@@@@@ TEST FINISHED - "  + time + " [ms]" + "  -  " + description.getClassName() + "#" + description.getMethodName());
     }
+    
+    @Override
+    protected void failed(Throwable e, Description description) {
+        LOG.error(description, e);
+    }
+
+    @Override
+    protected void succeeded(Description description) {
+    }
 }
