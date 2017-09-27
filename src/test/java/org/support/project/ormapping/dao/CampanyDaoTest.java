@@ -36,7 +36,7 @@ public class CampanyDaoTest {
      */
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        H2DBServerLogic.get().stop();
+        // H2DBServerLogic.get().stop();
     }
     /**
      * test

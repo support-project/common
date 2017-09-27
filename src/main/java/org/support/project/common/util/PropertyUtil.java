@@ -125,7 +125,7 @@ public class PropertyUtil {
             if (value != null) {
                 error.append("\tValueClass=").append(value.getClass().getName()).append("\n");
             }
-            LOG.error(error.toString());
+            LOG.error(error.toString(), e);
             SystemException exception = new SystemException(e.getMessage());
             exception.setStackTrace(e.getStackTrace());
             throw exception;
@@ -383,6 +383,26 @@ public class PropertyUtil {
     // return builder.toString();
     // }
     //
+    
+    /**
+     * 指定のオブジェクトの private フィールドの値を取得する
+     * テスト用
+     * 
+     * @param class1 取得するフィールドの型
+     * @param obj オブジェクト
+     * @param property プロパティ名
+     * @return プロパティの値
+     * @throws NoSuchFieldException NoSuchFieldException
+     * @throws SecurityException SecurityException
+     * @throws IllegalArgumentException IllegalArgumentException
+     * @throws IllegalAccessException IllegalAccessException
+     */
+    public static <T> T getPrivateFeildOnReflection(Class<T> class1, Object obj, String property)
+            throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+        Field field = obj.getClass().getDeclaredField(property);
+        field.setAccessible(true);
+        return (T) field.get(obj);
+    }
     
     /**
      * 指定のクラスが値を持つクラスかどうか
