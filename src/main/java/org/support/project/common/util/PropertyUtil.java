@@ -125,7 +125,7 @@ public class PropertyUtil {
             if (value != null) {
                 error.append("\tValueClass=").append(value.getClass().getName()).append("\n");
             }
-            LOG.error(error.toString());
+            LOG.error(error.toString(), e);
             SystemException exception = new SystemException(e.getMessage());
             exception.setStackTrace(e.getStackTrace());
             throw exception;
