@@ -12,10 +12,8 @@ import org.junit.Test;
 import org.support.project.common.log.Log;
 import org.support.project.common.log.LogFactory;
 import org.support.project.common.logic.H2DBServerLogic;
-import org.support.project.di.Container;
-import org.support.project.ormapping.common.ResultSetLoader;
-import org.support.project.ormapping.config.ORMappingParameter;
 import org.support.project.ormapping.config.Connection.ConfigType;
+import org.support.project.ormapping.config.ORMappingParameter;
 import org.support.project.ormapping.connection.ConnectionManager;
 import org.support.project.ormapping.entity.TableDefinition;
 
@@ -23,16 +21,19 @@ public class ConnectionManagerTest {
     /** ログ */
     private static Log logger = LogFactory.getLog(ConnectionManagerTest.class);
 
+    /**
+     * @BeforeClass
+     * @throws Exception
+     */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        H2DBServerLogic logic = Container.getComp(H2DBServerLogic.class);
-        logic.start();
+        if (!H2DBServerLogic.get().isActive()) {
+            H2DBServerLogic.get().start();
+        }
     }
 
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        H2DBServerLogic logic = Container.getComp(H2DBServerLogic.class);
-        logic.stop();
     }
 
     @Test

@@ -5,18 +5,12 @@ import java.util.Collection;
 import java.util.List;
 
 import org.support.project.common.config.INT_FLAG;
-import org.support.project.common.log.Log;
-import org.support.project.common.log.LogFactory;
 import org.support.project.common.util.StringUtils;
 import org.support.project.ormapping.common.NameConvertor;
 import org.support.project.ormapping.entity.ColumnDefinition;
 import org.support.project.ormapping.tool.DaoGenConfig;
 
 public class DefaultTableDeleteMethodCreator {
-
-    /** ログ */
-    private static Log log = LogFactory.getLog(DefaultTableDeleteMethodCreator.class);
-
     private CreatorHelper helper = new CreatorHelper();
     private NameConvertor nameConvertor = new NameConvertor();
 
@@ -243,7 +237,7 @@ public class DefaultTableDeleteMethodCreator {
                 feildName = nameConvertor.colmnNameToFeildName(datetimeColumn.getColumn_name());
                 pw.print("        db.");
                 pw.print(helper.feildNameToSetter(feildName));
-                pw.println("(new Timestamp(new java.util.Date().getTime()));");
+                pw.println("(new Timestamp(DateUtils.now().getTime()));");
             }
             pw.println("        physicalUpdate(db);");
         }
@@ -461,7 +455,7 @@ public class DefaultTableDeleteMethodCreator {
                 feildName = nameConvertor.colmnNameToFeildName(datetimeColumn.getColumn_name());
                 pw.print("        db.");
                 pw.print(helper.feildNameToSetter(feildName));
-                pw.println("(new Timestamp(new java.util.Date().getTime()));");
+                pw.println("(new Timestamp(DateUtils.now().getTime()));");
             }
             pw.println("        physicalUpdate(db);");
         }

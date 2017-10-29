@@ -5,17 +5,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.support.project.common.log.Log;
-import org.support.project.common.log.LogFactory;
 import org.support.project.common.util.StringUtils;
 import org.support.project.ormapping.common.NameConvertor;
 import org.support.project.ormapping.entity.ColumnDefinition;
 import org.support.project.ormapping.tool.DaoGenConfig;
 
 public class DefaultTableUpdateMethodCreator {
-    /** ログ */
-    private static Log log = LogFactory.getLog(DefaultTableUpdateMethodCreator.class);
-
     private CreatorHelper helper = new CreatorHelper();
     private NameConvertor nameConvertor = new NameConvertor();
 
@@ -167,7 +162,7 @@ public class DefaultTableUpdateMethodCreator {
                 String feildName = nameConvertor.colmnNameToFeildName(datetimeColumn.getColumn_name());
                 pw.print("        entity.");
                 pw.print(helper.feildNameToSetter(feildName));
-                pw.println("(new Timestamp(new java.util.Date().getTime()));");
+                pw.println("(new Timestamp(DateUtils.now().getTime()));");
             }
         }
         pw.println("        return physicalUpdate(entity);");

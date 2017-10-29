@@ -44,7 +44,9 @@ public class DatabaseInitialization {
         LOG.info("App home path: '" + AppConfig.get().getBasePath() + "'");
         LOG.info("[APP LOG] " + logDir.getAbsolutePath() + "/app.log");
         
-        H2DBServerLogic.get().start();
+        if (!H2DBServerLogic.get().isActive()) {
+            H2DBServerLogic.get().start();
+        }
         InitializeDao dao = InitializeDao.get();
         //全テーブル削除
         dao.dropAllTable();
