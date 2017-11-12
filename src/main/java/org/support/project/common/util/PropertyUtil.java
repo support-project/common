@@ -63,6 +63,17 @@ public class PropertyUtil {
     }
 
     /**
+     * 指定のプロパティを持つかチェック
+     * @param clazz クラス
+     * @param prop プロパティ
+     * @return 結果
+     */
+    public static boolean hasProperty(Class<?> clazz, String prop) {
+        List<String> props = getPropertyNames(clazz);
+        return props.contains(prop);
+    }
+    
+    /**
      * オブジェクトのプロパティ値を取得
      * 
      * @param object
