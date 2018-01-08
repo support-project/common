@@ -44,5 +44,13 @@ public class StringJoinBuilder<T extends Object> {
     public int length() {
         return params.size();
     }
-
+    
+    public T get(int i) {
+        return params.get(i);
+    }
+    public void set(int i, T element) {
+        params.set(i, element);
+    }
+    
+    
 }

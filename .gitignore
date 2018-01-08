@@ -4,3 +4,5 @@ target
 .settings
 out.txt
 .checkstyle
+.idea
+common.iml
