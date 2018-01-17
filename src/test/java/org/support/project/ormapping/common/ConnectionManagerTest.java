@@ -1,5 +1,6 @@
 package org.support.project.ormapping.common;
 
+import java.lang.invoke.MethodHandles;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
@@ -19,7 +20,7 @@ import org.support.project.ormapping.entity.TableDefinition;
 
 public class ConnectionManagerTest {
     /** ログ */
-    private static Log logger = LogFactory.getLog(ConnectionManagerTest.class);
+    private static Log logger = LogFactory.getLog(MethodHandles.lookup());
 
     /**
      * @BeforeClass

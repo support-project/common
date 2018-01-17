@@ -1,5 +1,6 @@
 package org.support.project.ormapping.transaction;
 
+import java.lang.invoke.MethodHandles;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -19,7 +20,7 @@ import org.support.project.ormapping.connection.ConnectionManager;
 @DI(instance = Instance.Singleton)
 public class TransactionManager {
     /** LOG */
-    private static final Log LOG = LogFactory.getLog(TransactionManager.class);
+    private static final Log LOG = LogFactory.getLog(MethodHandles.lookup());
     /**
      * Thread単位にコネクションを保持するマップ 一スレッドは一つのトランザクションを管理できる (一つのスレッドで複数のトランザクションを同時に行うことは、たぶんありえない)
      * 

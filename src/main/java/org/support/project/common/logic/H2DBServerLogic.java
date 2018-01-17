@@ -1,5 +1,6 @@
 package org.support.project.common.logic;
 
+import java.lang.invoke.MethodHandles;
 import java.sql.SQLException;
 
 import org.h2.tools.Server;
@@ -15,7 +16,7 @@ import org.support.project.ormapping.connection.ConnectionManager;
 
 @DI(instance = Instance.Singleton)
 public class H2DBServerLogic {
-    private static Log LOG = LogFactory.getLog(H2DBServerLogic.class);
+    private static Log LOG = LogFactory.getLog(MethodHandles.lookup());
 
     private Server server = null;
     private boolean active;

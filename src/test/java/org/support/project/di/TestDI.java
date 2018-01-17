@@ -3,6 +3,8 @@ package org.support.project.di;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import java.lang.invoke.MethodHandles;
+
 import org.junit.Test;
 import org.support.project.common.log.Log;
 import org.support.project.common.log.LogFactory;
@@ -11,7 +13,7 @@ import org.support.project.di.exception.DIException;
 
 public class TestDI {
     /** ログ */
-    private static Log logger = LogFactory.getLog(TestDI.class);
+    private static Log logger = LogFactory.getLog(MethodHandles.lookup());
 
     @Test
     public void test() {

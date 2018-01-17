@@ -1,6 +1,7 @@
 package org.support.project.common.classanalysis.impl;
 
 import java.io.File;
+import java.lang.invoke.MethodHandles;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ import org.support.project.common.log.LogFactory;
  */
 public class ClassSearchImpl implements ClassSearch {
     /** ログ */
-    private static Log log = LogFactory.getLog(ClassSearchImpl.class);
+    private static Log log = LogFactory.getLog(MethodHandles.lookup());
     private ClassLoader classLoader;
 
     @Override

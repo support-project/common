@@ -3,6 +3,7 @@ package org.support.project.ormapping.dao;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.lang.invoke.MethodHandles;
 import java.math.BigDecimal;
 import java.sql.Blob;
 import java.sql.Clob;
@@ -37,7 +38,7 @@ import org.support.project.ormapping.exception.ORMappingException;
  */
 public abstract class AbstractDao implements Serializable {
     /** ログ */
-    private static Log logger = LogFactory.getLog(AbstractDao.class);
+    private static Log logger = LogFactory.getLog(MethodHandles.lookup());
 
     /**
      * シリアルバージョン

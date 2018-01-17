@@ -1,5 +1,6 @@
 package org.support.project.ormapping.connection;
 
+import java.lang.invoke.MethodHandles;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -20,7 +21,7 @@ import org.support.project.ormapping.exception.ORMappingException;
 @DI(instance = Instance.Singleton)
 public class ConnectionPoolImpl implements ConnectionPool {
     /** ログ */
-    private static Log logger = LogFactory.getLog(ConnectionPoolImpl.class);
+    private static Log logger = LogFactory.getLog(MethodHandles.lookup());
 
     /** コネクションの設定 */
     private ConnectionConfig config;

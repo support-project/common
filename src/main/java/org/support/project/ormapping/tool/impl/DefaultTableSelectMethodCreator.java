@@ -1,6 +1,7 @@
 package org.support.project.ormapping.tool.impl;
 
 import java.io.PrintWriter;
+import java.lang.invoke.MethodHandles;
 import java.util.Collection;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import org.support.project.ormapping.tool.DaoGenConfig;
 
 public class DefaultTableSelectMethodCreator {
     /** ログ */
-    private static final Log LOG = LogFactory.getLog(DefaultTableSelectMethodCreator.class);
+    private static final Log LOG = LogFactory.getLog(MethodHandles.lookup());
 
     private CreatorHelper helper = new CreatorHelper();
     private NameConvertor nameConvertor = new NameConvertor();

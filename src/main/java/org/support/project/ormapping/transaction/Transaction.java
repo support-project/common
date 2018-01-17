@@ -1,5 +1,6 @@
 package org.support.project.ormapping.transaction;
 
+import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
 
 import org.support.project.aop.Advice;
@@ -9,9 +10,9 @@ import org.support.project.di.Container;
 import org.support.project.ormapping.connection.ConnectionManager;
 import org.support.project.ormapping.dao.AbstractDao;
 
-public class Transaction implements Advice {
+public class Transaction implements Advice<Object> {
     /** ログ */
-    private static Log log = LogFactory.getLog(Transaction.class);
+    private static Log log = LogFactory.getLog(MethodHandles.lookup());
 
     @Override
     public Object invoke(Object object, Method method, Object[] args) throws Throwable {

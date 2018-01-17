@@ -2,6 +2,7 @@ package org.support.project.ormapping.tool.impl;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.lang.invoke.MethodHandles;
 import java.util.Collection;
 import java.util.List;
 import java.util.TreeMap;
@@ -16,7 +17,7 @@ import org.support.project.ormapping.tool.EntityClassCreator;
 
 public class DefaultEntityCteatorImpl implements EntityClassCreator {
     /** ログ */
-    private static Log log = LogFactory.getLog(DefaultEntityCteatorImpl.class);
+    private static Log log = LogFactory.getLog(MethodHandles.lookup());
 
     private CreatorHelper helper = new CreatorHelper();
     private NameConvertor nameConvertor = new NameConvertor();

@@ -1,6 +1,7 @@
 package org.support.project.common.bat;
 
 import java.io.File;
+import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -21,7 +22,7 @@ import org.support.project.di.Instance;
 @DI(instance = Instance.Prototype)
 public class JavaJob implements Job {
     /** ログ */
-    private static final Log LOG = LogFactory.getLog(JavaJob.class);
+    private static final Log LOG = LogFactory.getLog(MethodHandles.lookup());
 
     /**
      * インスタンス取得

@@ -1,5 +1,6 @@
 package org.support.project.common.config;
 
+import java.lang.invoke.MethodHandles;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -20,7 +21,7 @@ import org.support.project.common.util.PropertyUtil;
  */
 public class ConfigLoader {
     /** ログ */
-    private static final Log LOG = LogFactory.getLog(ConfigLoader.class);
+    private static final Log LOG = LogFactory.getLog(MethodHandles.lookup());
     /** config map */
     public static Map<String, Object> configMap = null;
 

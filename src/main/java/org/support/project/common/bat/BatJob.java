@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.invoke.MethodHandles;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -28,7 +29,7 @@ import org.support.project.di.Instance;
 @DI(instance = Instance.Prototype)
 public class BatJob implements Job {
     /** ログ */
-    private static final Log LOG = LogFactory.getLog(BatJob.class);
+    private static final Log LOG = LogFactory.getLog(MethodHandles.lookup());
 
     /** バッチのパラメータのリスト */
     private List<String> list = new ArrayList<>();

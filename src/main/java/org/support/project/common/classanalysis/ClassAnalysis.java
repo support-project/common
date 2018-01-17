@@ -1,5 +1,6 @@
 package org.support.project.common.classanalysis;
 
+import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -23,7 +24,7 @@ import org.support.project.common.log.LogFactory;
  */
 public class ClassAnalysis {
     /** ログ */
-    private static Log log = LogFactory.getLog(ClassAnalysis.class);
+    private static Log log = LogFactory.getLog(MethodHandles.lookup());
 
     /** プロパティにフィールドとしてアクセスする */
     public static final int PROPERTY_ACCESS_FIELD = 0;

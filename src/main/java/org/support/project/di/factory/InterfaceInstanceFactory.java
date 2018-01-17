@@ -1,5 +1,6 @@
 package org.support.project.di.factory;
 
+import java.lang.invoke.MethodHandles;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,7 +14,7 @@ import org.support.project.di.exception.DIException;
 
 public class InterfaceInstanceFactory {
     /** ログ */
-    private static Log logger = LogFactory.getLog(InterfaceInstanceFactory.class);
+    private static Log logger = LogFactory.getLog(MethodHandles.lookup());
 
     /** キーに対する実装クラスを保持するマップ */
     private static Map<String, Class<?>> keyMap = null;

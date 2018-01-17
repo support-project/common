@@ -3,6 +3,7 @@ package org.support.project.ormapping.common;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
 import java.sql.Blob;
 import java.sql.ResultSet;
@@ -25,7 +26,7 @@ import org.support.project.ormapping.conv.ObjectToDatabaseConvFactory;
 import org.support.project.ormapping.exception.ORMappingException;
 
 public class ResultSetLoader {
-    private static final Log LOG = LogFactory.getLog(ResultSetLoader.class);
+    private static final Log LOG = LogFactory.getLog(MethodHandles.lookup());
 
     public static void load(ResultSet rs, Object object, String driverClass) {
         try {

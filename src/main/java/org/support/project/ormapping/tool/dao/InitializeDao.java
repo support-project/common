@@ -1,5 +1,6 @@
 package org.support.project.ormapping.tool.dao;
 
+import java.lang.invoke.MethodHandles;
 import java.util.Collection;
 
 import org.support.project.common.log.Log;
@@ -24,7 +25,7 @@ public class InitializeDao extends DatabaseMetaDataDao {
      */
     private static final long serialVersionUID = 1L;
     /** ログ */
-    private static Log log = LogFactory.getLog(InitializeDao.class);
+    private static Log log = LogFactory.getLog(MethodHandles.lookup());
 
     /**
      * インスタンス取得 AOPに対応

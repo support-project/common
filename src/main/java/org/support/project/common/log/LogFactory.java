@@ -1,5 +1,6 @@
 package org.support.project.common.log;
 
+import java.lang.invoke.MethodHandles;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,7 +25,11 @@ public class LogFactory {
 
     private static LogInitializer logInitializer = null;
 
-    public static final Log getLog(Class<?> clazz) {
+    public static final Log getLog(MethodHandles.Lookup lookup) {
+        return getLog(lookup.lookupClass());
+    }
+    
+    private static final Log getLog(Class<?> clazz) {
         if (!init) {
             logMap = new HashMap<Class, Log>();
             try {

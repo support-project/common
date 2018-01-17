@@ -1,6 +1,7 @@
 package org.support.project.ormapping.conv.impl;
 
 import java.io.InputStream;
+import java.lang.invoke.MethodHandles;
 import java.math.BigDecimal;
 import java.sql.Blob;
 import java.sql.Time;
@@ -17,7 +18,7 @@ import org.support.project.ormapping.conv.DatabaseAccessType;
 import org.support.project.ormapping.conv.ObjectToDatabaseConv;
 
 public class ObjectToDatabaseConvDefaultImpl implements ObjectToDatabaseConv {
-    private static final Log LOG = LogFactory.getLog(ObjectToDatabaseConvDefaultImpl.class);
+    private static final Log LOG = LogFactory.getLog(MethodHandles.lookup());
     private static final Resources resources = Resources.getInstance(ORMappingParameter.OR_MAPPING_RESOURCE);
 
     @Override

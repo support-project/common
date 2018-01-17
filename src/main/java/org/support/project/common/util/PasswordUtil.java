@@ -1,5 +1,6 @@
 package org.support.project.common.util;
 
+import java.lang.invoke.MethodHandles;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.MessageDigest;
@@ -21,7 +22,7 @@ import org.support.project.common.log.LogFactory;
  */
 public class PasswordUtil {
     /** ログ */
-    private static final Log LOG = LogFactory.getLog(PasswordUtil.class);
+    private static final Log LOG = LogFactory.getLog(MethodHandles.lookup());
 
     /** ALGORITHM */
     private static final String CIPHER_ALGORITHM = "AES";

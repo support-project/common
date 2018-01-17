@@ -2,6 +2,8 @@ package org.support.project.aop;
 
 import static org.junit.Assert.*;
 
+import java.lang.invoke.MethodHandles;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -14,7 +16,7 @@ import org.support.project.di.Container;
 
 public class IntercepterTest {
     /** ログ */
-    private static final Log LOG = LogFactory.getLog(IntercepterTest.class);
+    private static final Log LOG = LogFactory.getLog(MethodHandles.lookup());
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {

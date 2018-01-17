@@ -1,5 +1,6 @@
 package org.support.project.ormapping.dao;
 
+import java.lang.invoke.MethodHandles;
 import java.util.List;
 
 import org.junit.AfterClass;
@@ -20,7 +21,7 @@ import org.support.project.ormapping.gen.entity.ClobTableEntity;
 public class ClobTableDaoTest {
 
     /** ログ */
-    private static Log log = LogFactory.getLog(ClobTableDaoTest.class);
+    private static Log log = LogFactory.getLog(MethodHandles.lookup());
 
     /**
      * setUpBeforeClass

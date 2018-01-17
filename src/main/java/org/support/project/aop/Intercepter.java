@@ -1,5 +1,6 @@
 package org.support.project.aop;
 
+import java.lang.invoke.MethodHandles;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -15,7 +16,7 @@ import javassist.util.proxy.MethodHandler;
 
 public class Intercepter implements InvocationHandler, MethodHandler {
     /** ログ */
-    private static Log logger = LogFactory.getLog(Intercepter.class);
+    private static Log logger = LogFactory.getLog(MethodHandles.lookup());
 
     private Object target;
     private Class<?> intf;

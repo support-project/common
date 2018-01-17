@@ -1,5 +1,6 @@
 package org.support.project.di.factory;
 
+import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
 
 import org.support.project.aop.Intercepter;
@@ -16,7 +17,7 @@ import javassist.util.proxy.ProxyFactory;
 
 public class ClassInstanceFactory {
     /** ログ */
-    private static Log logger = LogFactory.getLog(ClassInstanceFactory.class);
+    private static Log logger = LogFactory.getLog(MethodHandles.lookup());
 
     public static <T> T newInstance(String key, final Class<? extends T> type) throws InstantiationException, IllegalAccessException {
         T object;

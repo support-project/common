@@ -1,6 +1,7 @@
 package org.support.project.common.config;
 
 import java.io.InputStream;
+import java.lang.invoke.MethodHandles;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -17,7 +18,7 @@ import org.support.project.common.util.StringUtils;
  */
 public class LocaleConfigLoader {
     /** ログ */
-    private static final Log LOG = LogFactory.getLog(LocaleConfigLoader.class);
+    private static final Log LOG = LogFactory.getLog(MethodHandles.lookup());
 
     /** 設定ファイル＋ロケールで、どの設定ファイルを読み込むかを保持するマップ */
     public static Map<String, String> configPathMap = null;

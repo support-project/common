@@ -3,6 +3,7 @@ package org.support.project.common.config;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.invoke.MethodHandles;
 import java.util.Random;
 
 import javax.xml.bind.DatatypeConverter;
@@ -26,7 +27,7 @@ import org.xml.sax.SAXException;
  */
 public class AppConfig {
     /** ログ */
-    private static final Log LOG = LogFactory.getLog(AppConfig.class);
+    private static final Log LOG = LogFactory.getLog(MethodHandles.lookup());
 
     /** Sync用オブジェクト */
     public static final Object sync = new Object();

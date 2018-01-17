@@ -1,5 +1,6 @@
 package org.support.project.di;
 
+import java.lang.invoke.MethodHandles;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -20,7 +21,7 @@ import org.support.project.di.factory.InterfaceInstanceFactory;
  */
 public class Container {
     /** ログ */
-    private static Log logger = LogFactory.getLog(Container.class);
+    private static Log logger = LogFactory.getLog(MethodHandles.lookup());
     /** シングルトンのオブジェクトを管理するマップ */
     private static Map<String, Object> objectMap = null;
 

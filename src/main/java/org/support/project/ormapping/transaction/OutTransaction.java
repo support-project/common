@@ -3,8 +3,6 @@ package org.support.project.ormapping.transaction;
 import java.lang.reflect.Method;
 
 import org.support.project.aop.Advice;
-import org.support.project.common.log.Log;
-import org.support.project.common.log.LogFactory;
 
 /**
  * AbstractDaoを継承したメソッドは、デフォルトでTracsactionを継承する。
@@ -14,13 +12,10 @@ import org.support.project.common.log.LogFactory;
  * @author Koda
  *
  */
-public class OutTransaction implements Advice {
-	/** ログ */
-	private static Log log = LogFactory.getLog(OutTransaction.class);
-
-	@Override
-	public Object invoke(Object object, Method method, Object[] args) throws Throwable {
-		Object r = method.invoke(object, args);
-		return r;
-	}
+public class OutTransaction implements Advice<Object> {
+    @Override
+    public Object invoke(Object object, Method method, Object[] args) throws Throwable {
+        Object r = method.invoke(object, args);
+        return r;
+    }
 }

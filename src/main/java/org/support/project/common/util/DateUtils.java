@@ -1,5 +1,6 @@
 package org.support.project.common.util;
 
+import java.lang.invoke.MethodHandles;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -17,7 +18,7 @@ import org.support.project.common.log.LogFactory;
  */
 public class DateUtils {
     /** ログ */
-    private static final Log LOG = LogFactory.getLog(DateUtils.class);
+    private static final Log LOG = LogFactory.getLog(MethodHandles.lookup());
 
     /** 通信で利用する日付のフォーマット文字列 */
     public static final String TRANSFER_DATETIME_FORMAT = "yyyyMMddHHmmssSSS";

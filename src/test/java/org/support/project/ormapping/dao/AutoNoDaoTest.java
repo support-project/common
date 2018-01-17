@@ -1,5 +1,7 @@
 package org.support.project.ormapping.dao;
 
+import java.lang.invoke.MethodHandles;
+
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -18,7 +20,7 @@ import org.support.project.ormapping.gen.entity.AutoNoEntity;
  */
 public class AutoNoDaoTest {
     /** ログ */
-    private static Log log = LogFactory.getLog(AutoNoDaoTest.class);
+    private static Log log = LogFactory.getLog(MethodHandles.lookup());
     /**
      * setUpBeforeClass
      * @throws Exception

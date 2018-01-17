@@ -1,5 +1,6 @@
 package org.support.project.ormapping.tool.impl;
 
+import java.lang.invoke.MethodHandles;
 import java.util.Collection;
 
 import org.support.project.common.log.Log;
@@ -11,7 +12,7 @@ import org.support.project.ormapping.tool.DaoGenConfig;
 
 public class DefaultDaoCreatorImpl implements DaoClassCreator {
     /** ログ */
-    private static Log log = LogFactory.getLog(DefaultDaoCreatorImpl.class);
+    private static Log log = LogFactory.getLog(MethodHandles.lookup());
 
     @Override
     public void create(Collection<TableDefinition> tableDefinitions, DaoGenConfig config) throws ORMappingException {

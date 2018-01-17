@@ -1,5 +1,6 @@
 package org.support.project.common.test;
 
+import java.lang.invoke.MethodHandles;
 import java.util.Date;
 
 import org.junit.runner.Description;
@@ -13,7 +14,7 @@ import org.support.project.common.util.DateUtils;
  */
 public class TestWatcher extends org.junit.rules.TestWatcher {
     /** ログ */
-    private static final Log LOG = LogFactory.getLog(TestWatcher.class);
+    private static final Log LOG = LogFactory.getLog(MethodHandles.lookup());
     /** Date */
     private Date start;
     

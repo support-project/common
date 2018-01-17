@@ -1,6 +1,7 @@
 package org.support.project.ormapping.tool;
 
 import java.io.IOException;
+import java.lang.invoke.MethodHandles;
 
 import org.support.project.common.exception.SerializeException;
 import org.support.project.common.log.Log;
@@ -19,7 +20,7 @@ import org.support.project.ormapping.tool.config.ORmappingToolConfig;
  */
 public class DaoMaker {
     /** ログ */
-    private static Log log = LogFactory.getLog(DaoMaker.class);
+    private static Log log = LogFactory.getLog(MethodHandles.lookup());
 
     /**
      * main process.

@@ -1,5 +1,6 @@
 package org.support.project.ormapping.transaction;
 
+import java.lang.invoke.MethodHandles;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ import org.support.project.ormapping.exception.ORMappingException;
 @DI(instance = Instance.Prototype)
 public class TransactionPool implements ConnectionPool {
     /** ログ */
-    private static Log logger = LogFactory.getLog(PoolableConnectionWrapper.class);
+    private static Log logger = LogFactory.getLog(MethodHandles.lookup());
 
     /** Threadで利用したコネクション */
     private List<PoolableConnectionWrapper> connections;

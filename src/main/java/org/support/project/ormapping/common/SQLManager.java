@@ -3,6 +3,7 @@ package org.support.project.ormapping.common;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +20,7 @@ import org.support.project.ormapping.exception.ORMappingException;
  */
 public class SQLManager {
     /** ログ */
-    private static Log LOG = LogFactory.getLog(SQLManager.class);
+    private static Log LOG = LogFactory.getLog(MethodHandles.lookup());
 
     /**
      * シングルトンで管理されたconnectionManagerのインスタンス

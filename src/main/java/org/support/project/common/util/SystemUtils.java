@@ -1,5 +1,6 @@
 package org.support.project.common.util;
 
+import java.lang.invoke.MethodHandles;
 import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
 
@@ -12,7 +13,7 @@ import org.support.project.common.log.LogFactory;
  */
 public class SystemUtils {
     /** ログ */
-    private static final Log LOG = LogFactory.getLog(SystemUtils.class);
+    private static final Log LOG = LogFactory.getLog(MethodHandles.lookup());
     /**
      * システム情報を取得
      * 

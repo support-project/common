@@ -1,6 +1,7 @@
 package org.support.project.ormapping.dao;
 
 import java.io.File;
+import java.lang.invoke.MethodHandles;
 
 import org.apache.log4j.FileAppender;
 import org.apache.log4j.Logger;
@@ -16,7 +17,7 @@ import org.support.project.ormapping.tool.dao.InitializeDao;
  */
 public class DatabaseInitialization {
     /** ログ */
-    private static final Log LOG = LogFactory.getLog(DatabaseInitialization.class);
+    private static final Log LOG = LogFactory.getLog(MethodHandles.lookup());
     
     /**
      * set up

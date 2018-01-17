@@ -1,5 +1,6 @@
 package org.support.project.ormapping.connection;
 
+import java.lang.invoke.MethodHandles;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
@@ -30,7 +31,7 @@ import org.support.project.ormapping.transaction.TransactionManager;
 @DI(instance = Instance.Singleton)
 public final class ConnectionManager {
     /** ログ */
-    private static Log logger = LogFactory.getLog(ConnectionManager.class);
+    private static Log logger = LogFactory.getLog(MethodHandles.lookup());
 
     /** シングルトンで管理されたconnectionManagerのインスタンス */
     private static ConnectionManager connectionManager = null;

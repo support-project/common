@@ -2,6 +2,7 @@ package org.support.project.ormapping.tool.impl;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.lang.invoke.MethodHandles;
 import java.util.Collection;
 
 import org.support.project.common.log.Log;
@@ -11,7 +12,7 @@ import org.support.project.ormapping.tool.DaoGenConfig;
 
 public class DatabaseControlDaoCreator {
     /** ログ */
-    private static final Log LOG = LogFactory.getLog(DefaultTableDaoClassCreator.class);
+    private static final Log LOG = LogFactory.getLog(MethodHandles.lookup());
     private CreatorHelper helper = new CreatorHelper();
 
     public void create(Collection<TableDefinition> tableDefinitions, DaoGenConfig config) {

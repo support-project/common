@@ -1,5 +1,6 @@
 package org.support.project.ormapping.dao;
 
+import java.lang.invoke.MethodHandles;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
@@ -28,7 +29,7 @@ import org.support.project.ormapping.exception.ORMappingException;
  */
 public class DatabaseMetaDataDao extends AbstractDao {
     /** ログ. */
-    private static final Log LOG = LogFactory.getLog(DatabaseMetaDataDao.class);
+    private static final Log LOG = LogFactory.getLog(MethodHandles.lookup());
 
     /** シリアルバージョン. */
     private static final long serialVersionUID = 1L;

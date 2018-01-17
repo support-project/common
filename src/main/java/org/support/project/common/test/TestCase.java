@@ -1,5 +1,7 @@
 package org.support.project.common.test;
 
+import java.lang.invoke.MethodHandles;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -12,11 +14,11 @@ import org.support.project.common.logic.H2DBServerLogic;
 @RunWith(OrderedRunner.class)
 public class TestCase {
     /** ログ */
-    protected Log LOG = LogFactory.getLog(TestCase.class);
+    protected Log LOG = LogFactory.getLog(MethodHandles.lookup());
     
     public TestCase() {
         super();
-        LOG = LogFactory.getLog(this.getClass());
+//        LOG = LogFactory.getLog(this.getClass());
     }
     
     @Rule
