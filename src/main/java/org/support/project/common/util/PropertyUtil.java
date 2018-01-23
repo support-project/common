@@ -100,18 +100,26 @@ public class PropertyUtil {
             throw new SystemException(e);
         }
     }
-
     /**
      * オブジェクトのプロパティ値に値をセット
      * 
-     * @param object
-     *            オブジェクト
-     * @param propertyName
-     *            プロパティ名
-     * @param value
-     *            セットする値
+     * @param object オブジェクト
+     * @param propertyName プロパティ名
+     * @param value セットする値
      */
     public static void setPropertyValue(Object object, String propertyName, Object value) {
+        setPropertyValue(object, propertyName, value, false);
+    }
+    
+    /**
+     * オブジェクトのプロパティ値に値をセット
+     * 
+     * @param object オブジェクト
+     * @param propertyName プロパティ名
+     * @param value セットする値
+     * @param skipError エラーが発生してもスキップするか
+     */
+    public static void setPropertyValue(Object object, String propertyName, Object value, boolean skipError) {
         try {
             ClassAnalysis analysis = ClassAnalysisFactory.getClassAnalysis(object.getClass());
             int accessType = analysis.getPropertyAccessType(propertyName);
@@ -129,30 +137,42 @@ public class PropertyUtil {
                 throw new SystemException(new NoSuchMethodException(propertyName));
             }
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-            StringBuilder error = new StringBuilder();
-            error.append("Error on setPropertyValue.\n");
-            error.append("\tClass=").append(object.getClass().getName()).append("\n");
-            error.append("\tProperty=").append(propertyName).append("\n");
-            error.append("\tValue=").append(value).append("\n");
-            if (value != null) {
-                error.append("\tValueClass=").append(value.getClass().getName()).append("\n");
+            if (!skipError) {
+                StringBuilder error = new StringBuilder();
+                error.append("Error on setPropertyValue.\n");
+                error.append("\tClass=").append(object.getClass().getName()).append("\n");
+                error.append("\tProperty=").append(propertyName).append("\n");
+                error.append("\tValue=").append(value).append("\n");
+                if (value != null) {
+                    error.append("\tValueClass=").append(value.getClass().getName()).append("\n");
+                }
+                LOG.error(error.toString(), e);
+                SystemException exception = new SystemException(e.getMessage());
+                exception.setStackTrace(e.getStackTrace());
+                throw exception;
             }
-            LOG.error(error.toString(), e);
-            SystemException exception = new SystemException(e.getMessage());
-            exception.setStackTrace(e.getStackTrace());
-            throw exception;
         }
+    }
+
+
+    /**
+     * プロパティの値を同一のプロパティにコピーする (同一名のプロパティで、型が異なる場合はエラー) 渡すプロパティのインスタンスがNULLの場合もNullPointerが発生する
+     * 
+     * @param base コピー元
+     * @param target コピー先
+     */
+    public static void copyPropertyValue(Object base, Object target) {
+        copyPropertyValue(base, target, false);
     }
 
     /**
      * プロパティの値を同一のプロパティにコピーする (同一名のプロパティで、型が異なる場合はエラー) 渡すプロパティのインスタンスがNULLの場合もNullPointerが発生する
      * 
-     * @param base
-     *            コピー元
-     * @param target
-     *            コピー先
+     * @param base コピー元
+     * @param target コピー先
+     * @param skipError エラーが発生してもスキップするか
      */
-    public static void copyPropertyValue(Object base, Object target) {
+    public static void copyPropertyValue(Object base, Object target, boolean skipError) {
         try {
             List<String> baseProps = getPropertyNames(base);
             List<String> targetProps = getPropertyNames(target);
@@ -181,7 +201,7 @@ public class PropertyUtil {
                     }
 
                     if (getType != null && setType != null && getType.equals(setType)) {
-                        setPropertyValue(target, prop, getPropertyValue(base, prop));
+                        setPropertyValue(target, prop, getPropertyValue(base, prop), skipError);
                     }
                 }
             }
