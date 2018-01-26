@@ -49,7 +49,7 @@ public final class SerializeUtils {
      * @throws SerializeException
      *             SerializeException
      */
-    private static <T> Serializer getSerializerInstanse(final Class<? extends Serializer> class1) throws SerializeException {
+    public static <T> Serializer getSerializerInstanse(final Class<? extends Serializer> class1) throws SerializeException {
         try {
             if (xmlSerializerInstanceMap == null) {
                 xmlSerializerInstanceMap = new HashMap<String, Serializer>();
@@ -228,9 +228,6 @@ public final class SerializeUtils {
         byte[] bytes = Base64Utils.fromBase64(base64);
         return bytesToObject(bytes, type);
     }
-
-    
-    
     
     /**
      * オブジェクトをXML形式で出力する
